@@ -8,6 +8,8 @@ import LogOut from '../LogOut/LogOut'
 import { RiUser3Line } from 'react-icons/ri';
 import { CgHome } from 'react-icons/cg';
 import { AiFillStar } from 'react-icons/ai';
+import { IoNotificationsOutline } from 'react-icons/io5';
+
 
 
 
@@ -19,14 +21,27 @@ import selfie22 from '../../images/selfie22.jpg'
 
 const Navbar$ = () => {
 
+    const numberOfNotif = 0;
+
     return (
         <Navbar collapseOnSelect bg="white" variant="light" expand="lg">
             <Link to="/Main" className='navbar-brand'><Logo width='150' /></Link>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-                    <NavLink to="/Main" className='nav-link'><CgHome size={14} className='iconsNavbar'/>Acceuil</NavLink>
-                    <NavLink to="/Profile" className='nav-link'><RiUser3Line size={16} className='iconsNavbar'/>Profil</NavLink>
+                    <NavLink to="/Main" className='nav-link'>
+                        <CgHome size={14} className='iconsNavbar'/>
+                        Acceuil
+                    </NavLink>
+                    <NavLink to="/Profile" className='nav-link'>
+                        <RiUser3Line size={16} className='iconsNavbar'/>
+                        Profil
+                    </NavLink>
+                    <NavLink to="/Notifications" className='nav-link'>
+                        <IoNotificationsOutline size={16} className='iconsNavbar'/>
+                        Notifications
+                        <span className={`nb-notifications ${numberOfNotif > 0 ? "notifs-true" : "notifs-false"}`}>{numberOfNotif}</span>
+                    </NavLink>
                 </Nav>
                 <Nav>
                     <div className='centerElementsInPage' style={{flexDirection: 'row'}}>

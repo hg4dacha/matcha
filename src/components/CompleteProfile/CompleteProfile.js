@@ -551,7 +551,7 @@ const CompleteProfile = () => {
             }
             <header>
                 <Alert variant='warning' className='complete-profile-alert'>
-                    <TiInfo className='mr-2' />
+                    <TiInfo className='mr-2 complete-info-alert-logo' />
                     Veuillez compléter votre profil afin d'accéder aux autres services
                 </Alert>
             </header>
@@ -568,13 +568,13 @@ const CompleteProfile = () => {
                             )
                         })
                     }
-                    <BsPersonCheck className='complete-profile-icons' color='#65746E' />
+                    <BsPersonCheck className='complete-profile-icons val-inf-log' color='#65746E' />
                 </div>
                 <hr className='hr-profile vf-hr'/>
                 <Form className='complete-profile-form' onSubmit={handleSubmitComplementaryInformation}>
                     <h2 className='personal-information-profile-picture'>Photo de profil</h2>
                     <h4 className='complete-profile-indication'><BsInfoCircle className='mr-1' />Importez une photo pour votre profil</h4>
-                    <div className='info-container-profile-picture'>
+                    <div className='info-container-profile-picture inf-cnt-marg'>
                         <div className='profile-picture-from'>
                             <ProfilePictureSection
                                 picture={profilePicture.profilePicture}
@@ -628,7 +628,7 @@ const CompleteProfile = () => {
                     <h2 className='personal-information'>Date de naissance</h2>
                     <div className='info-container'>
                         <h4 className='complete-profile-indication'><BsInfoCircle className='mr-1' />Définissez votre date de naissance</h4>
-                        <div className='d-flex align-items-center'>
+                        <div className='d-flex align-items-center dat-pic-cnt'>
                             <div className='age-user-label'>Âge</div>
                             <div className='age-user-div'>
                                 <div className='age-user'>{`${userAge} ans`}</div>

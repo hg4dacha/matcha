@@ -5,8 +5,9 @@ import SignUp from './components/SignUp/SignUp';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import NewPassword from './components/NewPassword/NewPassword';
 import CompleteProfile from './components/CompleteProfile/CompleteProfile';
-import Profile from './components/Profile/Profile';
 import Main from './components/Main/Main';
+import Notifications from './components/Notifications/Notifications';
+import Profile from './components/Profile/Profile';
 import MemberProfile from './components/MemberProfile/MemberProfile';
 import NotFound from './components/NotFound/NotFound';
 import Footer from './components/Footer/Footer';
@@ -28,6 +29,7 @@ function App() {
         <Route path='/CompleteProfile' component={CompleteProfile} />
         <Route path='/Main' component={Main} />
         <Route path='/Profile' component={Profile} />
+        <Route path='/Notifications' component={Notifications} />
         <Route path='/MemberProfile' component={MemberProfile} />
         <Route component={NotFound} />
       </Switch>

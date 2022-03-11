@@ -1173,8 +1173,260 @@ color: #ced6e0;
 }
 
 
+@media all and (max-width: 1030px)
+{
+    .big-info-container {
+        padding-top: 20%;
+    }
 
-/*****************************   ALERT   *****************************/
+    .info-container, .info-container-profile-picture, .personal-information {
+        width: 85%;
+    }
+
+    .info-container.account-deletion {
+        margin-bottom: 13%;
+    }
+}
+
+@media all and (max-width: 950px)
+{
+    .info-container, .info-container-profile-picture, .personal-information {
+        width: 90%;
+    }
+}
+
+@media all and (max-width: 600px)
+{
+    .big-info-container {
+        padding-top: 25%;
+    }
+
+    .personal-information-profile-picture {
+        font-size: 11px;
+    }
+
+    .info-container-profile-picture {
+        width: 99%;
+        padding: 3px 10px 50px 10px;
+    }
+
+    .profile-picture-avatar-div {
+        width: 85px;
+        height: 84px;
+        margin: 3px;
+    }
+
+    .profile-picture-spinner {
+        top: 30%;
+        left: 30%;
+    }
+
+    .profile-picture-label {
+        padding: 3px 7px;
+    }
+
+    .profile-picture-label-icon {
+        width: 15px;
+        height: 15px;
+    }
+
+    .personal-information {
+        width: 99%;
+        font-size: 11px;
+    }
+
+    .info-container {
+        width: 99%;
+        padding: 15px 10px 50px 10px;
+    }
+
+    .buttons-form-profile {
+        right: 0;
+        top: initial;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 10px;
+        font-size: 13px;
+    }
+
+    .hr-profile {
+        width: 85%;
+    }
+
+    .user-photo-from {
+        width: 100%;
+    }
+
+    .user-photo-img {
+        max-width: 50px;
+    }
+
+    .user-photo-label {
+        padding: 0px 3px 0px 3px;
+    }
+
+    .user-photo-edit {
+        width: 14px;
+        height: 14px;
+    }
+
+    .user-photo-number {
+        width: 50%;
+        font-size: 11px;
+    }
+
+    .user-photo-delete {
+        width: 50%;
+    }
+
+    .user-photo-delete-icon {
+        width: 14px;
+        height: 14px;
+    }
+
+    .user-photo-spinner1 {
+        top: 14%;
+        left: 28%;
+        width: 20px;
+        height: 20px;
+    }
+
+    .form-control-profile {
+        width: 100% !important;
+        font-size: 12px !important;
+    }
+
+    .form-control-profile::placeholder {
+        font-size: 8px !important;
+    }
+
+    .user-info-section-label {
+        font-size: 11px;
+    }
+
+    .age-user-from {
+        align-items: initial !important;
+    }
+
+    .age-user-label {
+        font-size: 12px;
+    }
+
+    .age-user {
+        font-size: 14px;
+    }
+
+    .age-user-div {
+        margin-left: 0%;
+        width: 85%;
+    }
+
+    .gender-and-orientation {
+        font-size: 12px !important;
+    }
+
+    .orientation-check, .gender-check {
+        height: 14px;
+        width: 14px;
+    }
+
+    .gend-ori-label {
+        font-size: 11px;
+    }
+
+    .profile-description-textarea {
+        width: 100%;
+        padding: 4px 5px;
+        font-size: 10px;
+    }
+
+    .profile-description-textarea::placeholder {
+        font-size: 10px;
+    }
+
+    .tags-section {
+        width: 100%;
+    }
+
+    .user-tags-selected {
+        width: 100%;
+    }
+
+    .tags-badge-style {
+        padding: 4px 5px !important;
+    }
+
+    .tag-hide {
+        margin-left: -5px;
+        width: 12px;
+        height: 12px;
+    }
+
+    .container-map-style {
+        width: 100%;
+    }
+
+    .user-city-location-container {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .user-city-location {
+        font-size: 9px;
+    }
+
+    .activate-geolocation {
+        font-size: 9px;
+    }
+
+    .pswrd-section-label {
+        font-size: 11px;
+    }
+
+    .info-container.account-deletion {
+        margin-bottom: 25%;
+        padding: 15px 10px 50px 10px;
+    }
+
+    .form-control-profile-account-deletion {
+        width: 100% !important;
+    }
+
+    .account-deletion-logo {
+        width: 28px;
+        height: 28px;
+    }
+
+    .account-deletion-form-group {
+        margin: 0 !important;
+    }
+
+    .form-control-profile-account-deletion {
+        font-size: 12px !important;
+    }
+
+    .form-control-profile-account-deletion::placeholder {
+        font-size: 10px !important;
+    }
+
+    .buttons-form-profile.account-deletion {
+        font-size: 12px !important;
+        right: 0%;
+    }
+
+    .error-update-profile-div {
+        width: 100%;
+    }
+
+    .error-update-profile {
+        font-size: 10px !important;
+    }
+}
+
+
+
+
+/*****************************   COMPLETE PROFILE   *****************************/
 
 .complete-profile-alert {
     display: flex;
@@ -1190,6 +1442,8 @@ color: #ced6e0;
     border-color: #FEF3CD;
     border-radius: 0;
     color: #485460;
+    top: 0;
+    left: 0;
 }
 
 .complete-profile-logo {
@@ -1280,6 +1534,81 @@ color: #ced6e0;
     background-color: #4D8963;
 }
 
+
+@media all and (max-width: 1030px)
+{
+    .complete-profile-validated-information-container {
+        width: 85%;
+    }
+}
+
+@media all and (max-width: 950px)
+{
+    .complete-profile-validated-information-container {
+        width: 90%;
+    }
+}
+
+@media all and (max-width: 600px)
+{
+    .complete-profile-alert {
+        font-size: 9px;
+        padding: 0;
+    }
+
+    .complete-info-alert-logo {
+        width: 13px;
+        height: 13px;
+        margin: 1px !important;
+    }
+
+    .complete-profile-validated-information-container {
+        width: 99%;
+    }
+
+    .complete-profile-icons {
+        display: none;
+    }
+
+    .val-inf-log {
+        display: initial;
+        width: 25px;
+        height: 25px;
+    }
+
+    .complete-profile-indication {
+        font-size: 8px;
+    }
+
+    .complete-profile-validated-information-label, .complete-profile-validated-information-info {
+        font-size: 9px;
+    }
+
+    .validate-info-logo {
+        width: 9px;
+        height: 9px;
+    }
+
+    .vf-hr {
+        margin-bottom: 2rem;
+    }
+
+    .inf-cnt-marg {
+        padding: 3px 10px 25px 10px;
+        margin-bottom: 0;
+    }
+
+    .dat-pic-cnt {
+        align-items: initial !important;
+    }
+
+    .complete-profile-button {
+        font-size: 9px;
+    }
+}
+
+
+
 /*****************************   CHAT   *****************************/
 
 .chat {
@@ -1334,7 +1663,7 @@ color: #ced6e0;
     position: absolute;
     top: -10px;
     left: -10px;
-    padding: 5px 10px;
+    padding: 3px 10px;
     border-radius: 50%;
     background: #F60C1E;
     color: whitesmoke;
@@ -1705,10 +2034,32 @@ color: #ced6e0;
 
 }
 
-.blocked-user-image {
+.blocked-user-image-div-div {
+    position: relative;
+    border: 1px solid #dbdbdb;
     border-radius: 50%;
-    width: 10%;
+    background-color: white;
     margin-left: 5%;
+}
+
+.blocked-user-image-div {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+    pointer-events: none;
+    margin: 5px;
+    background-color: transparent;
+}
+
+.blocked-user-image {
+    position: relative;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
 }
 
 .blocked-user-username {
@@ -1744,6 +2095,9 @@ color: #ced6e0;
     .blocking-information {
         margin-bottom: 4%;
     }
+    .blocked-user-image-div-div {
+        margin-right: 1%;
+    }
 }
 
 @media all and (max-width: 950px)
@@ -1760,6 +2114,10 @@ color: #ced6e0;
 
     .info-deblocked {
         margin-top: 30%
+    }
+    .blocked-user-image-div {
+        width: 100px;
+        height: 100px;
     }
 }
 
@@ -1779,6 +2137,14 @@ color: #ced6e0;
     }
     .blocked {
         font-size: 10px;
+    }
+    .blocked-user-image-div {
+        width: 50px;
+        height: 50px;
+        margin: 2px;
+    }
+    .blocked-user-image-div-div {
+        margin-right: 1%;
     }
 }
 
@@ -2066,6 +2432,8 @@ color: #ced6e0;
         font-size: 6px;
     }
 }
+
+
 /*****************************   TAGS BADGE  *****************************/
 
 .tags-badge-style {
@@ -2076,6 +2444,199 @@ color: #ced6e0;
     width: fit-content;
     margin: 1%;
     padding: 5px 10px;
+}
+
+
+
+/*****************************   NOTIFICATIONS   *****************************/
+
+.nb-notifications {
+    padding: 2px 7px;
+    border-radius: 7px;
+    color: whitesmoke;
+    font-weight: 500;
+    font-size: 11px;
+    margin-left: 2px;
+}
+
+.notifs-true {
+    background: #F60C1E;
+}
+
+.notifs-false {
+    background: #b2bec3;
+}
+
+.notifications-container {
+    width: 100%;
+    height: 100%;
+    margin-top: 8rem;
+}
+
+.notifications-tittle-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 0;
+}
+
+.notifications-tittle-div {
+    width: 100%;
+    height: 3rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+.notifications-tittle {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    padding: 5px 10px;
+    background-color: whitesmoke;
+    margin-left: 4rem;
+    z-index: 5;
+    color: #222f3e;
+    font-weight: 400;
+}
+
+.notification-hr {
+    border-top: 1px solid #b2bec3;
+    width: 30%;
+    margin: 0;
+    margin-left: 2rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.notification-alert-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 2px;
+    padding: 7px 25px;
+    width: 50%;
+    border: 1px solid #dfe6e9;
+    background-color: white;
+    position: relative;
+    margin: 0.3rem 0;
+    -webkit-transition: 0.2s ease-in;
+    -moz-transition: 0.2s ease-in;
+    -o-transition: 0.2s ease-in;
+    transition: 0.2s ease-in;
+}
+
+.notification-alert-hover {
+    box-shadow: 0px 0px 5px -2px #2d3436;
+    background-color: #dfe6e9;
+}
+
+.notification-hide {
+    opacity: 0;
+}
+
+.notification-delete {
+    display: none;
+}
+
+.notification-alert-picture-div-div {
+    position: relative;
+    border: 1px solid #dbdbdb;
+    border-radius: 50%;
+    background-color: white;
+    margin-right: 8px;
+}
+
+.notification-alert-picture-div {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 45px;
+    height: 45px;
+    pointer-events: none;
+    margin: 1px;
+    background-color: transparent;
+}
+
+.notification-alert-picture {
+    position: relative;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+}
+
+.notification-text {
+    display: flex;
+    align-items: center;
+}
+
+.notification-user-link {
+    color: currentColor;
+    font-weight: bold;
+}
+
+.notification-user-link:hover {
+    color: currentColor;
+}
+
+.notification-logo {
+    width: 20px;
+    height: 20px;
+    color: darkred;
+}
+
+.notification-date {
+    position: absolute;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a4b0be;
+}
+
+.notification-alert-close {
+    border: 0;
+    background-color: transparent;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+
+.notification-alert-close-logo {
+    width: 30px;
+    height: 30px;
+    color: #34495e;
+}
+
+.notification-alert-close-logo:hover {
+    color: #636e72;
+}
+
+.notifications-empty {
+    display: flex;
+    align-items: center;
+    color: #b2bec3;
+    font-size: 18px;
+}
+
+.new-notif-empty-logo {
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+}
+
+.historical-empty-logo {
+    width: 18px;
+    height: 18px;
+    margin-right: 2px;
 }
 
 
@@ -2238,6 +2799,13 @@ color: #ced6e0;
 .btn.cancel-action:active {
     background-color: whitesmoke!important;
     color: #008176!important;
+}
+
+@media all and (max-width: 1030px)
+{
+    .confirm-window-frame {
+        width: 70%;
+    }
 }
 
 @media all and (max-width: 600px)

@@ -17,7 +17,7 @@ const UserPhotosSection = ({ picture, id, number, handleDeletePicture, handlePic
                 <div className='user-photo-img-div'>
                     <img src={picture} alt={id} className='user-photo-img' />
                     <label className="user-photo-label" htmlFor={id}>
-                        <MdEdit />
+                        <MdEdit className='user-photo-edit' />
                         <input onChange={handlePictureChange} type="file" id={id} className="user-photo-input" />
                     </label>
                     <div className='user-photo-number-and-delete-div'>
@@ -28,7 +28,7 @@ const UserPhotosSection = ({ picture, id, number, handleDeletePicture, handlePic
                             className='user-photo-delete'
                             disabled={pictureLoading ? true : false}
                         >
-                            <MdDelete />
+                            <MdDelete className='user-photo-delete-icon' />
                         </button>
                     </div>
                     {

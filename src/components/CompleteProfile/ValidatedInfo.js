@@ -7,7 +7,7 @@ const ValidatedInfo = (props) => {
     return (
         <div className='complete-profile-validated-information-div'>
             <div className='complete-profile-validated-information-label'>{props.label}</div>
-            <HiOutlineBadgeCheck color='#0F5132' />
+            <HiOutlineBadgeCheck color='#0F5132' className='validate-info-logo' />
             <div className='complete-profile-validated-information-info'>{props.info}</div>
         </div>
     )

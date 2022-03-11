@@ -974,7 +974,7 @@ const Profile = () => {
             <hr className='hr-profile'/>
                 <h2 className='personal-information'>Date de naissance</h2>
                 <div className='info-container'>
-                    <Form className='d-flex align-items-center' onSubmit={handleSubmitUpdatedUserAge}>
+                    <Form className='d-flex align-items-center age-user-from' onSubmit={handleSubmitUpdatedUserAge}>
                         <div className='age-user-label'>Âge</div>
                         <div className='age-user-div'>
                             <div className='age-user'>{`${userAge} ans`}</div>

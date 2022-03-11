@@ -12,7 +12,7 @@ const UserInformationSection = (props) => {
 
     return (
         <Form.Group as={Row} className="mb-1" controlId={props.id}>
-            <Form.Label column sm="2">
+            <Form.Label column sm="2" className='user-info-section-label'>
                 {props.label}
             </Form.Label>
             <Col sm="10">

@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 import { BiLockOpenAlt } from "react-icons/bi";
 
 
-import UserImage from "../../images/user-image.jpg"
+import selfie22 from '../../images/selfie22.jpg'
 
 
 
@@ -37,7 +37,11 @@ const BlockedProfile = (props) => {
             {confirmationWindow}
             <div className='blocked-profile-div'>
                 <div className='blocked-profile-contain b-profile'>
-                    <img src={UserImage} alt='interlocutor' className='blocked-user-image'/>
+                    <div className='blocked-user-image-div-div'>
+                        <div className='blocked-user-image-div'>
+                            <img src={selfie22} alt='interlocutor' className='blocked-user-image'/>
+                        </div>
+                    </div>
                     <span className='blocked-user-username'>username-269428</span>
                     <div className='info-deblocked'>
                         <span className='blocking-information'>username-269428 est bloqué, vous ne pouvez pas accéder à son profil.</span>

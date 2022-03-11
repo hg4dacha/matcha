@@ -10,7 +10,7 @@ const GenderAndOrientation = (props) => {
     return (
         <Fragment>
             <Form.Group as={Row} className="mb-3 d-flex align-items-center">
-                <Form.Label column sm="2">
+                <Form.Label column sm="2" className='gend-ori-label'>
                     Je suis
                 </Form.Label>
                 <Col sm="6" className='d-flex justify-content-around'>
@@ -93,7 +93,7 @@ const GenderAndOrientation = (props) => {
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-1 d-flex align-items-center">
-                <Form.Label column sm="2">
+                <Form.Label column sm="2" className='gend-ori-label'>
                     Je cherche
                 </Form.Label>
                 <Col sm="6" className='d-flex justify-content-around'>
