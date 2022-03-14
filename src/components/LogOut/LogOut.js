@@ -1,5 +1,8 @@
 import React from 'react'
 import { AiOutlinePoweroff } from 'react-icons/ai';
+import { BiLogOutCircle } from 'react-icons/bi';
+
+
 
 const LogOut = () => {
 
@@ -12,8 +15,8 @@ const LogOut = () => {
     return (
         <button
             onClick={handleLogout}
-            className='dropdown-log-out'>
-                <AiOutlinePoweroff className='icons-dropdown'/>
+            className='log-out-button'>
+                <BiLogOutCircle className='log-out-logo'/>
                 Déconnexion
         </button>
     )
