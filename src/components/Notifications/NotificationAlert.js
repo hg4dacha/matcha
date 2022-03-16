@@ -4,6 +4,8 @@ import { IoClose } from 'react-icons/io5';
 import { IoMdHeart, IoIosMail, IoMdHeartDislike } from 'react-icons/io';
 import { MdVisibility } from 'react-icons/md';
 import { RiFireFill } from 'react-icons/ri';
+import { GoPrimitiveDot } from 'react-icons/go';
+import { BiArchive } from 'react-icons/bi';
 
 
 
@@ -11,7 +13,10 @@ import { RiFireFill } from 'react-icons/ri';
 
 
 
-const NotificationAlert = ({ userImage, userName, notificationDate, notificationType }) => {
+
+const NotificationAlert = ({
+    notificationId, userImage, userName, notificationDate, notificationType,
+    notificationAge, notificationList, setNotificationList }) => {
 
 
 // _-_-_-_-_-_-_-_-_- HIDE AND DELETE NOTIFICATION -_-_-_-_-_-_-_-_-_
@@ -22,7 +27,10 @@ const NotificationAlert = ({ userImage, userName, notificationDate, notification
 
     const onHideNotif = () => {
         setHideNotif(true)
-        setTimeout( () => { setDeleteNotif(true) } , 200)
+        setTimeout( () => {
+            setDeleteNotif(true);
+            setNotificationList( (notificationList.filter( notification => notification.notificationId !== notificationId)) );
+        } , 200)
     }
 
 
@@ -71,29 +79,39 @@ const NotificationAlert = ({ userImage, userName, notificationDate, notification
 
 
     return (
-        <div
-            className={`notification-alert-container
-                        ${hideNotif ? "notification-hide" : ""}
-                        ${deleteNotif ? "notification-delete" : ""}
-                      `}
+        <div className={`notification-alert-container-div
+                         ${hideNotif ? "notification-hide" : ""}
+                         ${deleteNotif ? "notification-delete" : ""}`}
         >
-            <div className='notification-alert-picture-div-div'>
-                <div className='notification-alert-picture-div'>
-                    <img src={userImage} alt='user' className='notification-alert-picture'/>
+            {
+            notificationAge === 'new'
+            ?
+            <GoPrimitiveDot className='notif-age-logo-new' />
+            :
+            <BiArchive className='notif-age-logo-old' />
+            }
+            <div
+                className={`notification-alert-container
+                            ${notificationAge === 'new' ? "new-notif" : "old-notif"}`}
+            >
+                <div className='notification-alert-picture-div-div'>
+                    <div className='notification-alert-picture-div'>
+                        <img src={userImage} alt='user' className='notification-alert-picture'/>
+                    </div>
                 </div>
+                <div className='notification-text'>
+                    <Link to={`/MemberProfile`} className='notification-user-link'>
+                        {userName}
+                    </Link>
+                    <NotificationType/>
+                </div>
+                <small className='notification-date'>
+                    {`${newDate.toLocaleDateString('fr-FR', {day: '2-digit', month: 'short', year: 'numeric'})} - ${newDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}`}
+                </small>
+                <button className='notification-alert-close' onClick={onHideNotif}>
+                    <IoClose className='notification-alert-close-logo' />
+                </button>
             </div>
-            <div className='notification-text'>
-                <Link to={`/MemberProfile`} className='notification-user-link'>
-                    {userName}
-                </Link>
-                <NotificationType/>
-            </div>
-            <small className='notification-date'>
-                {`${newDate.toLocaleDateString('fr-FR', {day: '2-digit', month: 'short', year: 'numeric'})} - ${newDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}`}
-            </small>
-            <button className='notification-alert-close' onClick={onHideNotif}>
-                <IoClose className='notification-alert-close-logo' />
-            </button>
         </div>
     )
 }

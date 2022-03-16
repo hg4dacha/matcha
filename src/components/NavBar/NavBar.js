@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
 import { Link, NavLink } from 'react-router-dom'
 import Logo from '../Logo/Logo'
 import LogOut from '../LogOut/LogOut'
@@ -9,7 +8,6 @@ import { RiUser3Line, RiHistoryFill } from 'react-icons/ri';
 import { CgHome } from 'react-icons/cg';
 import { AiFillStar } from 'react-icons/ai';
 import { IoNotificationsOutline } from 'react-icons/io5';
-import { IoMdHeartEmpty } from 'react-icons/io';
 import { RiHeart3Line } from 'react-icons/ri';
 
 
@@ -65,13 +63,6 @@ const Navbar$ = () => {
                             </div>
                             <span className='navbar-username'>username-269428</span>
                         </div>
-                        {/* <NavDropdown title="username-269428" id="collasible-nav-dropdown">
-                            <NavLink to="/Profile" className='dropdown-profile'>
-                                <RiUser3Line className='icons-dropdown'/>Profil
-                            </NavLink>
-                            <NavDropdown.Divider />
-                            <LogOut/>
-                        </NavDropdown> */}
                     </div>
                 </Nav>
             </Navbar.Collapse>

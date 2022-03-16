@@ -1,5 +1,4 @@
 import React from 'react'
-import { AiOutlinePoweroff } from 'react-icons/ai';
 import { BiLogOutCircle } from 'react-icons/bi';
 
 

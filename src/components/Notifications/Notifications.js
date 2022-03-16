@@ -1,11 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import Navbar from '../NavBar/NavBar';
 import NotificationAlert from './NotificationAlert';
 import { v4 as uuidv4 } from 'uuid';
 import { RiHistoryFill } from 'react-icons/ri';
 import { BiNotification } from 'react-icons/bi';
 import { CgSmileSad } from 'react-icons/cg';
-import { GoInfo, GoPrimitiveDot } from 'react-icons/go';
+import { GoInfo } from 'react-icons/go';
+
 
 
 
@@ -16,66 +17,142 @@ import jeanma3 from '../../images/jeanma3.jpg'
 import selfie from '../../images/selfie.jpg'
 
 
-const notificationList = [
+const newNotificationList = [
     {
+        notificationId : uuidv4(),
         userImage: selfie22,
         userName: "Toto-27",
         notificationDate: '2021-06-17T03:24:00',
-        notificationType: 'visit'
+        notificationType: 'visit',
+        notificationAge: 'new'
     },
     {
+        notificationId : uuidv4(),
         userImage: jeanma1,
         userName: "Jean-luc",
         notificationDate: '2021-12-20T14:01:00',
-        notificationType: 'message'
+        notificationType: 'message',
+        notificationAge: 'new'
     },
     {
+        notificationId : uuidv4(),
         userImage: jeanma2,
         userName: "warrior",
         notificationDate: '2021-08-12T22:59:00',
-        notificationType: 'match'
+        notificationType: 'match',
+        notificationAge: 'new'
     },
     {
+        notificationId : uuidv4(),
         userImage: jeanma3,
         userName: "Ketur00",
         notificationDate: '2021-06-17T03:24:00',
-        notificationType: 'like'
+        notificationType: 'like',
+        notificationAge: 'new'
     },
     {
+        notificationId : uuidv4(),
         userImage: selfie,
         userName: "Momo-du-nord",
         notificationDate: '2021-06-17T03:24:00',
-        notificationType: 'visit'
+        notificationType: 'visit',
+        notificationAge: 'new'
     },
     {
+        notificationId : uuidv4(),
         userImage: selfie22,
         userName: "Bilout-bilout",
         notificationDate: '2021-06-17T03:24:00',
-        notificationType: 'dislike'
+        notificationType: 'dislike',
+        notificationAge: 'new'
+    }
+]
+
+const oldNotificationList = [
+    {
+        notificationId : uuidv4(),
+        userImage: selfie22,
+        userName: "Toto-27",
+        notificationDate: '2021-06-17T03:24:00',
+        notificationType: 'visit',
+        notificationAge: 'old'
     },
     {
+        notificationId : uuidv4(),
+        userImage: jeanma1,
+        userName: "Jean-luc",
+        notificationDate: '2021-12-20T14:01:00',
+        notificationType: 'message',
+        notificationAge: 'old'
+    },
+    {
+        notificationId : uuidv4(),
+        userImage: jeanma2,
+        userName: "warrior",
+        notificationDate: '2021-08-12T22:59:00',
+        notificationType: 'match',
+        notificationAge: 'old'
+    },
+    {
+        notificationId : uuidv4(),
+        userImage: jeanma3,
+        userName: "Ketur00",
+        notificationDate: '2021-06-17T03:24:00',
+        notificationType: 'like',
+        notificationAge: 'old'
+    },
+    {
+        notificationId : uuidv4(),
+        userImage: selfie,
+        userName: "Momo-du-nord",
+        notificationDate: '2021-06-17T03:24:00',
+        notificationType: 'visit',
+        notificationAge: 'old'
+    },
+    {
+        notificationId : uuidv4(),
+        userImage: selfie22,
+        userName: "Bilout-bilout",
+        notificationDate: '2021-06-17T03:24:00',
+        notificationType: 'dislike',
+        notificationAge: 'old'
+    },
+    {
+        notificationId : uuidv4(),
         userImage: jeanma1,
         userName: "User-404",
         notificationDate: '2021-06-17T03:24:00',
-        notificationType: 'like'
+        notificationType: 'like',
+        notificationAge: 'old'
     },
     {
+        notificationId : uuidv4(),
         userImage: jeanma2,
         userName: "Doudou",
         notificationDate: '2021-06-17T03:24:00',
-        notificationType: 'message'
+        notificationType: 'message',
+        notificationAge: 'old'
     },
     {
+        notificationId : uuidv4(),
         userImage: selfie,
         userName: "Arnaud",
         notificationDate: '2021-06-17T03:24:00',
-        notificationType: 'visit'
+        notificationType: 'visit',
+        notificationAge: 'old'
     }
 ]
 
 
 
 const Notifications = () => {
+
+
+    const [newNotifications, setNewNotifications] = useState(newNotificationList)
+
+    const [oldNotifications, setOldNotifications] = useState(oldNotificationList)
+
+
 
     return (
         <Fragment>
@@ -91,24 +168,26 @@ const Notifications = () => {
                     </div>
                     <div className='notifications-tittle-container'>
                         {
-                        notificationList.length < 1
+                        newNotifications.length < 1
                         ?
                         <span className='notifications-empty'>
                             <CgSmileSad className='new-notif-empty-logo' />
                             Pas de nouvelles notifications pour le moment
                         </span>
                         :
-                        notificationList.map( data => {
+                        newNotifications.map( data => {
                             return (
-                                <div key={uuidv4()} className='new-notif-div'>
-                                    <GoPrimitiveDot className='new-notif-dot' />
-                                    <NotificationAlert
-                                        userImage={data.userImage}
-                                        userName={data.userName}
-                                        notificationDate={data.notificationDate}
-                                        notificationType={data.notificationType}
-                                    />
-                                </div>
+                                <NotificationAlert
+                                    key={data.notificationId}
+                                    notificationId={data.notificationId}
+                                    userImage={data.userImage}
+                                    userName={data.userName}
+                                    notificationDate={data.notificationDate}
+                                    notificationType={data.notificationType}
+                                    notificationAge={data.notificationAge}
+                                    notificationList={newNotifications}
+                                    setNotificationList={setNewNotifications}
+                                />
                             )
                         })
                         }
@@ -124,22 +203,26 @@ const Notifications = () => {
                     </div>
                     <div className='notifications-tittle-container'>
                         {
-                            notificationList.length < 1
+                            oldNotifications.length < 1
                             ?
                             <span className='notifications-empty'>
                                 <GoInfo className='historical-empty-logo' />
                                 Historique des notifications vide
                             </span>
                             :
-                            notificationList.map( data => {
+                            oldNotifications.map( data => {
                                 return (
-                                    <NotificationAlert
-                                        key={uuidv4()}
-                                        userImage={data.userImage}
-                                        userName={data.userName}
-                                        notificationDate={data.notificationDate}
-                                        notificationType={data.notificationType}
-                                    />
+                                <NotificationAlert
+                                    key={data.notificationId}
+                                    notificationId={data.notificationId}
+                                    userImage={data.userImage}
+                                    userName={data.userName}
+                                    notificationDate={data.notificationDate}
+                                    notificationType={data.notificationType}
+                                    notificationAge={data.notificationAge}
+                                    notificationList={oldNotifications}
+                                    setNotificationList={setOldNotifications}
+                                />
                                 )
                             })
                             }
