@@ -599,26 +599,54 @@ color: #ced6e0;
     padding-top: 5%;
 }
 
+.tittle-offcanvas {
+    font-size: 20px;
+    color: #34495e;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hr-offcanvas {
+    width: 60%;
+    border-top: 1px solid #dbdbdb;
+    margin: 15px auto 30px auto;
+}
+
 .range-filter-offcanvas {
     background-color: white;
-    width: 60%;
+    width: 30%;
+    height: 92%;
     position: fixed;
-    top: 15%;
-    padding: 25px 50px;
+    padding: 25px 15px;
     border: 1px solid #dbdbdb;
-    position: relative;
-    margin: 0 auto;
+    left: 0;
+    bottom: 0;
+    -webkit-transition: 0.2s ease-in;
+    -moz-transition: 0.2s ease-in;
+    -o-transition: 0.2s ease-in;
+    transition: 0.2s ease-in;
+}
+
+.offcanvas-hide {
+    left: -30%;
+}
+
+.offcanvas-display {
+    left: 0%;
 }
 
 .filter-button {
     position: absolute;
-    bottom: -48px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: -1px;
+    right: -62px;
     border: 1px solid #dbdbdb;
     background-color: white;
-    padding: 8px 40px;
-    border-radius: 0 0 5px 5px;
+    padding: 30px 15px;
+    border-radius: 0 0 50px 0;
     -webkit-transition: 0.2s ease-in;
     -moz-transition: 0.2s ease-in;
     -o-transition: 0.2s ease-in;
@@ -626,7 +654,7 @@ color: #ced6e0;
 }
 
 .filter-button:hover {
-    background-color: #222f3e;
+    background-color: #EBEBE4;
 }
 
 .filter-logo {
@@ -635,14 +663,28 @@ color: #ced6e0;
     color: #95a5a6;
 }
 
-.range-filter-container {
+.range-filter-container-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 65px;
     position: relative;
 }
 
+.range-filter-container {
+    /* position: relative; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 75%;
+}
+
 .slider-track {
-    width: 100%;
+    width: 75%;
     height: 4px;
-    background-color: #d5d5d5;
     position: absolute;
     margin: auto;
     top: 0;
@@ -654,7 +696,7 @@ color: #ced6e0;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    width: 100%;
+    width: 75%;
     outline: none;
     position: absolute;
     margin: auto;
@@ -683,31 +725,68 @@ color: #ced6e0;
     -webkit-appearance: none;
     height: 1em;
     width: 1em;
-    background-color: #007bff;
-    cursor: pointer;
+    background-color: #008176;
+    border: 1px solid #008176;
     border-radius: 50px;
-    margin-top: -6px;
+    /* box-shadow: inset 0 0 1px #fff, inset 0 1px 6px #ebebeb, 1px 1px 4px rgb(0 0 0 / 10%); */
+    cursor: pointer;
+    margin-top: -5px;
     pointer-events: auto;
 }
 
 .range-filter::-moz-range-thumb {
     -moz-appearance: none;
-    height: 1em;
-    width: 1em;
-    background-color: #007bff;
+    height: 1.2em;
+    width: 2em;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    box-shadow: inset 0 0 1px #fff, inset 0 1px 6px #ebebeb, 1px 1px 4px rgb(0 0 0 / 10%);
     cursor: pointer;
-    border-radius: 50px;
+    margin-top: -7px;
     pointer-events: auto;
 }
 
 .range-filter::-ms-thumb {
     appearance: none;
-    height: 1em;
-    width: 1em;
-    background-color: #007bff;
+    height: 1.2em;
+    width: 2em;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    box-shadow: inset 0 0 1px #fff, inset 0 1px 6px #ebebeb, 1px 1px 4px rgb(0 0 0 / 10%);
     cursor: pointer;
-    border-radius: 50px;
+    margin-top: -7px;
     pointer-events: auto;
+}
+
+.range-value-display {
+    padding: 5px;
+    border: 1px solid #dbdbdb;
+    background-color: whitesmoke;
+    pointer-events: none;
+    width: 45px;
+    height: 31px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #57606f;
+}
+
+.range-dash {
+    font-size: 13px;
+    font-weight: bolder;
+    color: #57606f;
+}
+
+.range-tittle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 500;
 }
 
 
