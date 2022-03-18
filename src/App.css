@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Train+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 
 html, body {
@@ -56,97 +55,56 @@ a, a:hover{
 
 /*****************************   HOME   *****************************/
 
-.HomeContent {
+.home-content {
     height: 100vh;
-    background-image: url(./images/background.jpg);
+    background-image: url(./images/home-background.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
 }
 
-/*  HOMEHEADER  */
-.HomeHeader {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 10px;
+.home-header {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.sidesDivWidth {
-    width: 125px;
-}
-
-/*  HOMESECTION  */
-.HomeSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 50px;
     width: 100%;
-    height: 50%;
+    height: 7%;
+    position: fixed;
+    top: 0;
 }
 
-p.slogan {
-    font-family: 'Dancing Script', cursive;
-    font-size: 40px;
-    color: #d63031;
-    text-shadow: 2px 2px 3px #333
+.signup-signin-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.sign-up {
-    width: 250px;
-    height: 45px;
-    font-size: 20px;
-    box-shadow: 0px 0px 15px #2d3436;
+.signup-button, .signin-button {
+    margin: 0 3px;
 }
+
 
 @media all and (max-width: 950px)
 {
-    p.slogan {
-        font-size: 33px;
-    }
 
-    .sign-up {
-        width: 220px;
-    }
 }
 
 @media all and (max-width: 600px)
 {
-    header {
-        padding: 7px;
-    }
-
-    .sidesDivWidth {
-        width: 80px;
-    }
-
-    .logo {
-        width: 110px;
-    }
-
-    .sign-in {
-        width: 80px;
-        height: 28px;
+    .home-header {
+        height: 9%;
         padding: 5px;
+    }
+
+    .signup-button, .signin-button {
         font-size: 10px;
     }
 
-    section {
-        padding: 10px 30px;
-    }
-
-    p.slogan {
-        font-size: 22px;
-    }
-    
-    .sign-up {
-        width: 150px;
-        height: 40px;
-        font-size: 17px;
+    .logo {
+        width: 100px;
     }
 }
 
@@ -601,7 +559,7 @@ color: #ced6e0;
 
 .tittle-offcanvas {
     font-size: 20px;
-    color: #34495e;
+    color: #343a40;
     margin: 0;
     width: 100%;
     text-align: center;
@@ -641,12 +599,11 @@ color: #ced6e0;
 
 .filter-button {
     position: absolute;
-    top: -1px;
+    top: 20px;
     right: -62px;
     border: 1px solid #dbdbdb;
     background-color: white;
-    padding: 30px 15px;
-    border-radius: 0 0 50px 0;
+    padding: 7px 15px;
     -webkit-transition: 0.2s ease-in;
     -moz-transition: 0.2s ease-in;
     -o-transition: 0.2s ease-in;
@@ -787,6 +744,27 @@ color: #ced6e0;
     transform: translateX(-50%);
     font-size: 12px;
     font-weight: 500;
+    color: #57606f;
+}
+
+.apply-filters-button {
+    border: 1px solid #00b894;
+    background-color: #008176;
+    padding: 5px 15px;
+    font-size: 15px;
+    color: whitesmoke;
+    font-weight: 500;
+    border-radius: 3px;
+}
+
+.apply-filters-button:hover {
+    border: 1px solid #008176;
+    background-color: #006266;
+}
+
+.apply-filters-button:focus {
+    border: 1px solid #008176;
+    background-color: #16a085;
 }
 
 
@@ -1877,17 +1855,13 @@ color: #ced6e0;
 
 .iconChatDrawerDiv {
     background-color: #007bff;
+    border: 1px solid #60a3bc;
     position: absolute;
-    height: 15%;
-    top: 50%;
+    top: 102px;
     transform: translateY(-50%);
-    left: -51px;
-    border-left: 1px solid #007bff;
-    border-top: 1px solid #007bff;
-    border-bottom: 1px solid #007bff;
-    box-shadow: #7f8c8d -2px 0px 10px !important;
-    border-radius: 50% 0% 0% 50%;
+    left: -82px;
     cursor: pointer;
+    padding: 15px 25px;
     -webkit-transition: 0.2s ease-in;
     -moz-transition: 0.2s ease-in;
     -o-transition: 0.2s ease-in;
@@ -1906,9 +1880,8 @@ color: #ced6e0;
 }
 
 .iconChatDrawer {
-    height: 50px;
-    width: 50px;
-    padding:10px;
+    height: 30px;
+    width: 30px;
     color: white;
 }
 
@@ -2200,12 +2173,12 @@ color: #ced6e0;
 @media all and (max-width: 600px)
 {
     .iconChatDrawerDiv {
-        left: -32px;
-        height: 13%;
+        left: -51px;
+        padding: 15px 15px;
     }
     .iconChatDrawer {
-        width: 32px;
-        height: 32px;
+        width: 19px;
+        height: 19px;
     }
     .nb-notif-chat-drawer {
         font-size: 9px;

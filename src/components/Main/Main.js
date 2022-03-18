@@ -133,7 +133,7 @@ const Main = () => {
                 <h2 className='tittle-offcanvas'><IoOptions />Filtres</h2>
                 <hr className='hr-offcanvas' />
                 <div className='range-filter-container-div'>
-                    <div className='range-tittle'>Tranche d'âge</div>
+                    <div className='range-tittle'>Tranche d'âge (ans)</div>
                     <div className='range-value-display'>{ageRange.minimumAge}</div>
                     <span className='range-dash'>&nbsp;-</span>
                     <div className='range-filter-container'>
@@ -168,6 +168,7 @@ const Main = () => {
                 {/* <div>Popularité</div>
                 <div>Localisation</div>
                 <div>Tags en commun</div> */}
+                <button className='apply-filters-button'>Appliquer</button>
                 <button className='filter-button' onClick={handleOffcanvasChange}>
                     {offcanvasVisibility ?
                     <IoClose className='filter-logo' /> :
