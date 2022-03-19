@@ -1,9 +1,18 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import Navbar from '../NavBar/NavBar';
-import { IoClose, IoOptions } from 'react-icons/io5';
-import { IoMdOptions } from 'react-icons/io';
+import SearchOption from './SearchOption';
+import Card from '../Card/Card';
+import { IoClose, IoOptions, IoCalendarClear } from 'react-icons/io5';
+import { AiFillStar } from 'react-icons/ai';
+import { FaSlackHash, FaMapMarkedAlt } from "react-icons/fa";
 
 
+
+import jeanma1 from '../../images/jeanma1.jpg'
+import jeanma2 from '../../images/jeanma2.jpg'
+import jeanma3 from '../../images/jeanma3.jpg'
+import selfie from '../../images/selfie.jpg'
+import selfie22 from '../../images/selfie22.jpg'
 
 
 
@@ -17,7 +26,8 @@ const Main = () => {
         document.title = 'Acceuil - Matcha'
     }, [])
 
-
+    
+// _-_-_-_-_-_-_-_-_- OFF CANVAS -_-_-_-_-_-_-_-_-_
 
     const [offcanvasVisibility, setOffcanvasVisibility] = useState(false)
 
@@ -27,102 +37,86 @@ const Main = () => {
 
 
 
-    // const [ageRange, setAgeRange] = useState({ minimumAge: '18', maximumAge: '100' })
+// _-_-_-_-_-_-_-_-_- OPTIONS STATES -_-_-_-_-_-_-_-_-_
 
-    // const [sliderTrackBg, setSliderTrackBg] = useState({ minPercentage: ((ageRange.minimumAge - 18) / 100) * 100,
-    //                                                      maxPercentage: (ageRange.maximumAge / 100) * 100 })
+    const [ageRange, setAgeRange] = useState({ minimumValue: '18', maximumValue: '99' })
 
+    const [popularityRange, setPopularityRange] = useState({ minimumValue: '0', maximumValue: '5000' })
+    
+    const [gapRange, setGapRange] = useState({ minimumValue: '0', maximumValue: '1000' })
 
-
-    // const handleMinValueChange = (e) => {
-
-    //     if ( (parseInt(ageRange.maximumAge) - parseInt(e.target.value)) <= 0 )
-    //     {
-    //         setAgeRange({ ...ageRange, minimumAge: ageRange.maximumAge });
-    //         setSliderTrackBg({
-    //             minPercentage: ((ageRange.minimumAge -18) / 100) * 100,
-    //             maxPercentage: (ageRange.maximumAge / 100) * 100
-    //         });
-    //     }
-    //     else
-    //     {
-    //         setAgeRange({ ...ageRange, minimumAge: e.target.value });
-    //         setSliderTrackBg({
-    //             minPercentage: ((e.target.value - 18) / 100) * 100,
-    //             maxPercentage: (ageRange.maximumAge / 100) * 100
-    //         });
-    //     }
-    // }
-
-    // const handleMaxValueChange = (e) => {
-
-    //     if ( (parseInt(e.target.value) - parseInt(ageRange.maximumAge)) <= 0 )
-    //     {
-    //         setAgeRange({ ...ageRange, maximumAge: ageRange.minimumAge });
-    //         setSliderTrackBg({
-    //             minPercentage: ((ageRange.minimumAge - 18) / 100) * 100,
-    //             maxPercentage: (ageRange.maximumAge / 100) * 100
-    //         });
-    //     }
-    //     else
-    //     {
-    //         setAgeRange({ ...ageRange, maximumAge: e.target.value });
-    //         setSliderTrackBg({
-    //             minPercentage: ((ageRange.minimumAge - 18) / 100) * 100,
-    //             maxPercentage: (e.target.value / 100) * 100
-    //         });
-    //     }
-    // }
-
-
-    const [ageRange, setAgeRange] = useState({ minimumAge: '0', maximumAge: '100' })
-
-    const [sliderTrackBg, setSliderTrackBg] = useState({ minPercentage: (ageRange.minimumAge / 100) * 100,
-                                                         maxPercentage: (ageRange.maximumAge / 100) * 100 })
+    const [tagsRange, setTagsRange] = useState({ minimumValue: '0', maximumValue: '5' })
 
 
 
-    const handleMinValueChange = (e) => {
 
-        if ( (parseInt(ageRange.maximumAge) - parseInt(e.target.value)) <= 0 )
-        {
-            setAgeRange({ ...ageRange, minimumAge: ageRange.maximumAge });
-            setSliderTrackBg({
-                minPercentage: (ageRange.minimumAge / 100) * 100,
-                maxPercentage: (ageRange.maximumAge / 100) * 100
-            });
+
+// _-_-_-_-_-_-_-_-_- IMPLEMENTING OPTIONS -_-_-_-_-_-_-_-_-_
+
+    const handleImplementingOptions = () => {
+
+        const optionsSelected = {
+            ageRangeSelected : { min: ageRange.minimumValue, max: ageRange.maximumValue },
+            popularityRangeSelected : { min: popularityRange.minimumValue, max: popularityRange.maximumValue },
+            gapRangeSelected : { min: gapRange.minimumValue, max: gapRange.maximumValue },
+            tagsRangeSelected : { min: tagsRange.minimumValue, max: tagsRange.maximumValue }
         }
-        else
-        {
-            setAgeRange({ ...ageRange, minimumAge: e.target.value });
-            setSliderTrackBg({
-                minPercentage: (e.target.value / 100) * 100,
-                maxPercentage: (ageRange.maximumAge / 100) * 100
-            });
-        }
-    }
 
-    const handleMaxValueChange = (e) => {
-
-        if ( (parseInt(e.target.value) - parseInt(ageRange.minimumAge)) <= 0 )
-        {
-            setAgeRange({ ...ageRange, maximumAge: ageRange.minimumAge });
-            setSliderTrackBg({
-                minPercentage: (ageRange.minimumAge / 100) * 100,
-                maxPercentage: (ageRange.maximumAge / 100) * 100
-            });
-        }
-        else
-        {
-            setAgeRange({ ...ageRange, maximumAge: e.target.value });
-            setSliderTrackBg({
-                minPercentage: (ageRange.minimumAge / 100) * 100,
-                maxPercentage: (e.target.value / 100) * 100
-            });
-        }
+        console.log(optionsSelected);
     }
 
 
+
+
+
+// _-_-_-_-_-_-_-_-_- SEARCH OPTIONS LIST -_-_-_-_-_-_-_-_-_
+
+    const searchOptionsList = [
+        {
+            key: '1',
+            optionTitle: <><IoCalendarClear className='range-logo age'/>Âge (ans)</>,
+            basicMinValue: "18",
+            basicMaxValue: "99",
+            minValueID: "minimumAge",
+            maxValueID: "maximumAge",
+            step: '1',
+            values: ageRange,
+            setValues: setAgeRange
+        },
+        {
+            key: '2',
+            optionTitle: <><AiFillStar className='range-logo pop'/>Popularité</>,
+            basicMinValue: "0",
+            basicMaxValue: "5000",
+            minValueID: "minimumPopularity",
+            maxValueID: "maximumPopularity",
+            step: '10',
+            values: popularityRange,
+            setValues: setPopularityRange
+        },
+        {
+            key: '3',
+            optionTitle: <><FaMapMarkedAlt className='range-logo gap'/>Distance (km)</>,
+            basicMinValue: "0",
+            basicMaxValue: "1000",
+            minValueID: "minimumGap",
+            maxValueID: "maximumGap",
+            step: '10',
+            values: gapRange,
+            setValues: setGapRange
+        },
+        {
+            key: '4',
+            optionTitle: <><FaSlackHash className='range-logo tag'/>Tags en commun</>,
+            basicMinValue: "0",
+            basicMaxValue: "5",
+            minValueID: "minimumTags",
+            maxValueID: "maximumTags",
+            step: '1',
+            values: tagsRange,
+            setValues: setTagsRange
+        },
+    ]
 
 
 
@@ -130,45 +124,24 @@ const Main = () => {
         <Fragment>
             <Navbar />
             <div className={`range-filter-offcanvas ${offcanvasVisibility ? "offcanvas-display" : "offcanvas-hide"}`}>
-                <h2 className='tittle-offcanvas'><IoOptions />Filtres</h2>
+                <h2 className='tittle-offcanvas'><IoOptions className='mr-1' />Filtrer les profils</h2>
                 <hr className='hr-offcanvas' />
-                <div className='range-filter-container-div'>
-                    <div className='range-tittle'>Tranche d'âge (ans)</div>
-                    <div className='range-value-display'>{ageRange.minimumAge}</div>
-                    <span className='range-dash'>&nbsp;-</span>
-                    <div className='range-filter-container'>
-                    <div
-                        className='slider-track'
-                        style={{background:`linear-gradient(to right, #d5d5d5 ${sliderTrackBg.minPercentage}%, #008176 ${sliderTrackBg.minPercentage}%, #008176 ${sliderTrackBg.maxPercentage}%, #d5d5d5 ${sliderTrackBg.maxPercentage}%`}}
-                    ></div>
-                    <input
-                        type="range"
-                        className='range-filter'
-                        id="minimumAge"
-                        name="minimumAge"
-                        min="0"
-                        max="100"
-                        value={ageRange.minimumAge}
-                        onChange={handleMinValueChange}
-                    />
-                    <input
-                        type="range"
-                        className='range-filter'
-                        id="maximumAge"
-                        name="maximumAge"
-                        min="0"
-                        max="100"
-                        value={ageRange.maximumAge}
-                        onChange={handleMaxValueChange}
-                    />
-                </div>
-                    <span className='range-dash'>-&nbsp;</span>
-                    <div className='range-value-display'>{ageRange.maximumAge}</div>
-                    </div>
-                {/* <div>Popularité</div>
-                <div>Localisation</div>
-                <div>Tags en commun</div> */}
-                <button className='apply-filters-button'>Appliquer</button>
+                {searchOptionsList.map( data => {
+                    return (
+                        <SearchOption
+                            key={data.key}
+                            optionTitle={data.optionTitle}
+                            basicMinValue={data.basicMinValue}
+                            basicMaxValue={data.basicMaxValue}
+                            minValueID={data.minValueID}
+                            maxValueID={data.maxValueID}
+                            step={data.step}
+                            values={data.values}
+                            setValues={data.setValues}
+                        />
+                    )
+                })}
+                <button className='apply-filters-button' onClick={handleImplementingOptions}>Appliquer</button>
                 <button className='filter-button' onClick={handleOffcanvasChange}>
                     {offcanvasVisibility ?
                     <IoClose className='filter-logo' /> :
@@ -176,6 +149,7 @@ const Main = () => {
                 </button>
             </div>
             <div className='main-container'>
+                <Card/>
             </div>
         </Fragment>
     )
