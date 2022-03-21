@@ -2,17 +2,101 @@ import React, { Fragment, useEffect, useState } from 'react';
 import Navbar from '../NavBar/NavBar';
 import SearchOption from './SearchOption';
 import Card from '../Card/Card';
+import { v4 as uuidv4 } from 'uuid';
 import { IoClose, IoOptions, IoCalendarClear } from 'react-icons/io5';
 import { AiFillStar } from 'react-icons/ai';
 import { FaSlackHash, FaMapMarkedAlt } from "react-icons/fa";
 
 
 
-import jeanma1 from '../../images/jeanma1.jpg'
-import jeanma2 from '../../images/jeanma2.jpg'
-import jeanma3 from '../../images/jeanma3.jpg'
-import selfie from '../../images/selfie.jpg'
-import selfie22 from '../../images/selfie22.jpg'
+// import { USERS_LIST } from "../../other/USERS_LIST";
+
+import selfie22 from '../../images/selfie22.jpg';
+import selfie23 from '../../images/selfie23.jpg';
+import selfie24 from '../../images/selfie24.jpg';
+import selfie25 from '../../images/selfie25.jpg';
+import selfie26 from '../../images/selfie26.jpeg';
+import selfie27 from '../../images/selfie27.jpeg';
+import selfie28 from '../../images/selfie28.jpeg';
+import selfie29 from '../../images/selfie29.jpeg';
+import selfie30 from '../../images/selfie30.jpeg';
+import selfie31 from '../../images/selfie31.jpeg';
+
+const usersList = [
+    {
+        username: 'Maurice',
+        age: '1992-06-01T08:59:24.000Z',
+        popularity: '1367',
+        location: { latitude: 45.764043, longitude: 4.835659 },
+        thumbnail: selfie22
+    },
+    {
+        username: 'Biloute-64',
+        age: '1981-12-01T08:59:24.000Z',
+        popularity: '73',
+        location: { latitude: 50.62925, longitude: 3.057256 },
+        thumbnail: selfie23
+    },
+    {
+        username: 'Zozio',
+        age: '2000-06-01T08:59:24.000Z',
+        popularity: '1367',
+        location: { latitude: 50.42893, longitude: 2.83183 },
+        thumbnail: selfie24
+    },
+    {
+        username: 'Joulitouro',
+        age: '1978-06-01T08:59:24.000Z',
+        popularity: '119',
+        location: { latitude: 45.7797, longitude: 3.08694 },
+        thumbnail: selfie25
+    },
+    {
+        username: 'Scofield',
+        age: '1996-06-01T08:59:24.000Z',
+        popularity: '2395',
+        location: { latitude: 49.4295387, longitude: 2.0807123 },
+        thumbnail: selfie26
+    },
+    {
+        username: 'Kareem',
+        age: '1998-06-01T08:59:24.000Z',
+        popularity: '4967',
+        location: { latitude: 45.764043, longitude: 4.835659 },
+        thumbnail: selfie27
+    },
+    {
+        username: 'Batman',
+        age: '1965-12-01T08:59:24.000Z',
+        popularity: '3981',
+        location: { latitude: 50.62925, longitude: 3.057256 },
+        thumbnail: selfie28
+    },
+    {
+        username: 'King-Kong',
+        age: '1945-06-01T08:59:24.000Z',
+        popularity: '2479',
+        location: { latitude: 50.42893, longitude: 2.83183 },
+        thumbnail: selfie29
+    },
+    {
+        username: 'Shrek',
+        age: '1971-06-01T08:59:24.000Z',
+        popularity: '1219',
+        location: { latitude: 45.7797, longitude: 3.08694 },
+        thumbnail: selfie30
+    },
+    {
+        username: 'Amstrong',
+        age: '1996-06-01T08:59:24.000Z',
+        popularity: '1604',
+        location: { latitude: 49.4295387, longitude: 2.0807123 },
+        thumbnail: selfie31
+    },
+]
+
+
+const currentUserLocation = { latitude: 48.856614, longitude: 2.3522219 };
 
 
 
@@ -90,7 +174,7 @@ const Main = () => {
             basicMaxValue: "5000",
             minValueID: "minimumPopularity",
             maxValueID: "maximumPopularity",
-            step: '10',
+            step: '50',
             values: popularityRange,
             setValues: setPopularityRange
         },
@@ -149,7 +233,21 @@ const Main = () => {
                 </button>
             </div>
             <div className='main-container'>
-                <Card/>
+                {
+                    usersList.map( data => {
+                        return (
+                            <Card
+                                key={uuidv4()}
+                                username={data.username}
+                                age={data.age}
+                                popularity={data.popularity}
+                                location={data.location}
+                                thumbnail={data.thumbnail}
+                                currentUserLocation={currentUserLocation}
+                            />
+                        )
+                    })
+                }
             </div>
         </Fragment>
     )
