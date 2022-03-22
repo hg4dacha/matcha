@@ -9,15 +9,10 @@ import { MdLocationOn } from 'react-icons/md';
 
 
 
-// const username = 'Abdelrahman';
-// const age = '1992-06-01T08:59:24.000Z';
-// const popularity = '1367';
-// const userLocation = { latitude: 45.764043, longitude: 4.835659 };
-// const currentUserLocation = { latitude: 48.856614, longitude: 2.3522219 };
 
 
 
-const Card = (username, age, popularity, location, thumbnail, currentUserLocation) => {
+const Card = ({ username, age, popularity, location, thumbnail, currentUserLocation }) => {
 
 
 

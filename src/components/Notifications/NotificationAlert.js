@@ -2,12 +2,8 @@ import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom'
 import { IoClose } from 'react-icons/io5';
 import { IoMdHeart, IoIosMail, IoMdHeartDislike } from 'react-icons/io';
-import { MdVisibility } from 'react-icons/md';
-import { RiFireFill } from 'react-icons/ri';
-import { GoPrimitiveDot } from 'react-icons/go';
-import { BiArchive } from 'react-icons/bi';
-
-
+import { WiFire } from 'react-icons/wi';
+import { VscEye } from 'react-icons/vsc';
 
 
 
@@ -39,37 +35,65 @@ const NotificationAlert = ({
     const newDate = new Date(notificationDate)
 
 
-// _-_-_-_-_-_-_-_-_- NOTIFICATION TYPE -_-_-_-_-_-_-_-_-_
+// _-_-_-_-_-_-_-_-_- ICON TYPE -_-_-_-_-_-_-_-_-_
 
-    function NotificationType() {
+    function IconType() {
+        if (notificationType === 'like') {
+            return <div className='notification-logo-content like'>
+                        <IoMdHeart className='notification-logo' color='darkred' />
+                </div>
+        }
+        else if (notificationType === 'visit') {
+            return <div className='notification-logo-content visit'>
+                        <VscEye className='notification-logo' color='#27ae60' />
+                </div>
+        }
+        else if (notificationType === 'message') {
+            return <div className='notification-logo-content message'>
+                        <IoIosMail className='notification-logo' color='#007bff' />
+                </div>
+        }
+        else if (notificationType === 'match') {
+            return <div className='notification-logo-content match'>
+                        <WiFire className='notification-logo match' color='rgb(226, 88, 34)' />
+                </div>
+        }
+        else if (notificationType === 'dislike') {
+            return <div className='notification-logo-content dislike'>
+                        <IoMdHeartDislike className='notification-logo' color='#95a5a6' />
+                </div>
+        }
+        else
+            return null
+    }
+
+
+// _-_-_-_-_-_-_-_-_- MESSAGE TYPE -_-_-_-_-_-_-_-_-_
+
+    function MessageType() {
         if (notificationType === 'like') {
             return <Fragment>
                         &nbsp;a aimé votre profil&nbsp;
-                        <IoMdHeart className='notification-logo' color='darkred' />
                    </Fragment>
         }
         else if (notificationType === 'visit') {
             return <Fragment>
                         &nbsp;a visité votre profil&nbsp;
-                        <MdVisibility className='notification-logo' color='#006266' />
                    </Fragment>
         }
         else if (notificationType === 'message') {
             return <Fragment>
                         &nbsp;vous a envoyé un message&nbsp;
-                        <IoIosMail className='notification-logo' color='#007bff' />
                    </Fragment>
         }
         else if (notificationType === 'match') {
             return <Fragment>
                         &nbsp;a également aimé votre profil - MATCHA !&nbsp;
-                        <RiFireFill className='notification-logo' color='#e25822' />
                    </Fragment>
         }
         else if (notificationType === 'dislike') {
             return <Fragment>
                         &nbsp;a retiré le j'aime de votre profil&nbsp;
-                        <IoMdHeartDislike className='notification-logo' color='#636e72' />
                    </Fragment>
         }
         else
@@ -83,27 +107,18 @@ const NotificationAlert = ({
                          ${hideNotif ? "notification-hide" : ""}
                          ${deleteNotif ? "notification-delete" : ""}`}
         >
-            {
-            notificationAge === 'new'
-            ?
-            <GoPrimitiveDot className='notif-age-logo-new' />
-            :
-            <BiArchive className='notif-age-logo-old' />
-            }
-            <div
-                className={`notification-alert-container
-                            ${notificationAge === 'new' ? "new-notif" : "old-notif"}`}
-            >
-                <div className='notification-alert-picture-div-div'>
+            <div className={`notification-alert-container ${notificationAge === 'new' ? "new-notif" : "old-notif"}`}>
+                <IconType/>
+                <div className='notification-message-content'>
                     <div className='notification-alert-picture-div'>
                         <img src={userImage} alt='user' className='notification-alert-picture'/>
                     </div>
-                </div>
-                <div className='notification-text'>
-                    <Link to={`/MemberProfile`} className='notification-user-link'>
-                        {userName}
-                    </Link>
-                    <NotificationType/>
+                    <div className='notification-text'>
+                        <Link to={`/MemberProfile`} className='notification-user-link'>
+                            {userName}
+                        </Link>
+                        <MessageType/>
+                    </div>
                 </div>
                 <small className='notification-date'>
                     {`${newDate.toLocaleDateString('fr-FR', {day: '2-digit', month: 'short', year: 'numeric'})} - ${newDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}`}
