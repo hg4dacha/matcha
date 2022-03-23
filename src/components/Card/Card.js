@@ -25,8 +25,8 @@ const Card = ({ username, age, popularity, location, thumbnail, currentUserLocat
 
 
     return (
-        <Link to="/MemberProfile">
-            <div className={`card-container ${cardZoom ? "zoom" : ""}`} onMouseOver={handleZoom} onMouseOut={handleZoomOut}>
+        <div className={`card-container ${cardZoom ? "zoom" : ""}`} onMouseOver={handleZoom} onMouseOut={handleZoomOut}>
+            <Link to="/MemberProfile">
                 <div className='card-picture-content'>
                     <img src={thumbnail} alt='user' className={`card-picture ${cardZoom ? "zoom" : ""}`}/>
                 </div>
@@ -43,8 +43,8 @@ const Card = ({ username, age, popularity, location, thumbnail, currentUserLocat
                         </span>
                     </div>
                 </div>
-            </div>
-        </Link>
+            </Link>
+        </div>
     )
 }
 

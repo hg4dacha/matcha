@@ -38,11 +38,11 @@ const Navbar$ = () => {
                         Notifications
                         <span className={`nb-notifications ${numberOfNotif > 0 ? "notifs-true" : "notifs-false"}`}>{numberOfNotif}</span>
                     </NavLink>
-                    <NavLink to="/Profile" className='nav-link'>
+                    <NavLink to="/Favorites" className='nav-link'>
                         <RiHeart3Line size={16} className='iconsNavbar'/>
                         Favoris
                     </NavLink>
-                    <NavLink to="/Profile" className='nav-link'>
+                    <NavLink to="/History" className='nav-link'>
                         <RiHistoryFill size={16} className='iconsNavbar'/>
                         Historique
                     </NavLink>
@@ -56,10 +56,8 @@ const Navbar$ = () => {
                     <div className='navbar-popularity-user-div'>
                         <span className='popularity'><AiFillStar className='star'/>1425°</span>
                         <div className='navbar-user-image-name-div'>
-                            <div className='profile-picture-navbar-div-div'>
-                                <div className='profile-picture-navbar-div'>
-                                    <img src={selfie22} alt='user' className='profile-picture-navbar'/>
-                                </div>
+                            <div className='profile-picture-navbar-div'>
+                                <img src={selfie22} alt='user' className='profile-picture-navbar'/>
                             </div>
                             <span className='navbar-username'>username-269428</span>
                         </div>

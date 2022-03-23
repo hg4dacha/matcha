@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import { IoClose } from 'react-icons/io5';
 import { IoMdHeart, IoIosMail, IoMdHeartDislike } from 'react-icons/io';
@@ -15,19 +15,30 @@ const NotificationAlert = ({
     notificationAge, notificationList, setNotificationList }) => {
 
 
+
+
 // _-_-_-_-_-_-_-_-_- HIDE AND DELETE NOTIFICATION -_-_-_-_-_-_-_-_-_
 
 
     const [hideNotif, setHideNotif] = useState(false)
     const [deleteNotif, setDeleteNotif] = useState(false)
 
+
+    let deleteTimeOut = null;
+
     const onHideNotif = () => {
+
         setHideNotif(true)
-        setTimeout( () => {
+
+        deleteTimeOut = setTimeout( () => {
             setDeleteNotif(true);
             setNotificationList( (notificationList.filter( notification => notification.notificationId !== notificationId)) );
-        } , 200)
+        }, 200)
     }
+
+    useEffect( () => {
+        return () => clearTimeout(deleteTimeOut);
+    }, [deleteTimeOut])
 
 
 // _-_-_-_-_-_-_-_-_- NOTIFICATION DATE AND HOUR -_-_-_-_-_-_-_-_-_
@@ -88,7 +99,7 @@ const NotificationAlert = ({
         }
         else if (notificationType === 'match') {
             return <Fragment>
-                        &nbsp;a également aimé votre profil - MATCHA !&nbsp;
+                        &nbsp;a également aimé votre profil&nbsp;
                    </Fragment>
         }
         else if (notificationType === 'dislike') {
@@ -130,5 +141,6 @@ const NotificationAlert = ({
         </div>
     )
 }
+
 
 export default NotificationAlert

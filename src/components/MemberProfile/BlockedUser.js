@@ -18,10 +18,8 @@ const BlockedUser = () => {
     return (
         <div className='blocked-profile-div'>
             <div className='blocked-profile-contain b-user'>
-                <div className='blocked-user-image-div-div'>
-                    <div className='blocked-user-image-div'>
-                        <img src={selfie22} alt='interlocutor' className='blocked-user-image'/>
-                    </div>
+                <div className='blocked-user-image-div'>
+                    <img src={selfie22} alt='interlocutor' className='blocked-user-image'/>
                 </div>
                 <span className='blocked-user-username'>username-269428</span>
                 <div className='info-deblocked'>

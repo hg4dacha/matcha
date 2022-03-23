@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import Navbar from '../NavBar/NavBar';
 import NotificationAlert from './NotificationAlert';
 import { v4 as uuidv4 } from 'uuid';
@@ -146,6 +146,10 @@ const oldNotificationList = [
 
 
 const Notifications = () => {
+
+    useEffect( () => {
+        document.title = 'Notifications - Matcha'
+    }, [])
 
 
     const [newNotifications, setNewNotifications] = useState(newNotificationList)

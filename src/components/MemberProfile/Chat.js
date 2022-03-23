@@ -182,10 +182,8 @@ const Chat = (props) => {
                 <div className='discussionContainer'>
                     <div className='interlocutor'>
                         <div className='interlocutor-left-part'>
-                            <div className='interlocutor-image-div-div'>
-                                <div className='interlocutor-image-div'>
-                                    <img src={selfie22} alt='interlocutor' className='interlocutor-image'/>
-                                </div>
+                            <div className='interlocutor-image-div'>
+                                <img src={selfie22} alt='interlocutor' className='interlocutor-image'/>
                             </div>
                             <span className='interlocutor-name'>username-269428</span>
                         </div>
