@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import Navbar from '../NavBar/NavBar';
 import NotificationAlert from './NotificationAlert';
+import AlertMsg from '../AlertMsg/AlertMsg';
 import { v4 as uuidv4 } from 'uuid';
 import { RiHistoryFill } from 'react-icons/ri';
 import { BiNotification } from 'react-icons/bi';
@@ -158,8 +159,45 @@ const Notifications = () => {
 
 
 
+// _-_-_-_-_-_-_-_-_- ALERT -_-_-_-_-_-_-_-_-_
+
+
+    const [alertMessages, setAlertMessages] = useState([])
+
+
+    const handleNewAlert = (newAlert) => {
+
+        setAlertMessages(prevState => prevState.slice(1));
+        setAlertMessages(prevState => [...prevState, newAlert]);
+    }
+
+    const successAlert = () => {
+        handleNewAlert({id: uuidv4(),
+                        variant: "info",
+                        information: "Supprimée"})
+    }
+
+    const errorAlert = () => {
+        handleNewAlert({id: uuidv4(),
+                        variant: "error",
+                        information: "Oups ! Erreur..."})
+    }
+
+
+
     return (
         <Fragment>
+            {
+                alertMessages.map( alert => {
+                    return (
+                        <AlertMsg
+                            key={alert.id}
+                            variant={alert.variant}
+                            information={alert.information}
+                        />
+                    )
+                })
+            }
             <Navbar />
             <div className='notifications-container'>
                 <div>
@@ -191,6 +229,8 @@ const Notifications = () => {
                                     notificationAge={data.notificationAge}
                                     notificationList={newNotifications}
                                     setNotificationList={setNewNotifications}
+                                    successAlert={successAlert}
+                                    errorAlert={errorAlert}
                                 />
                             )
                         })
@@ -226,6 +266,8 @@ const Notifications = () => {
                                     notificationAge={data.notificationAge}
                                     notificationList={oldNotifications}
                                     setNotificationList={setOldNotifications}
+                                    successAlert={successAlert}
+                                    errorAlert={errorAlert}
                                 />
                                 )
                             })

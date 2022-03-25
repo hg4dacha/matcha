@@ -3719,12 +3719,51 @@ color: #ced6e0;
     border-color: #C9252C;
 }
 
+.alertmsg-logo {
+    margin-right: 0.5rem;
+}
+
+.alertmsg-logo.success {
+    width: 23px;
+    height: 23px;
+}
+
+.alertmsg-logo.info {
+    width: 18px;
+    height: 18px;
+}
+
+.alertmsg-logo.error {
+    width: 21px;
+    height: 21px;
+}
+
+
 @media all and (max-width: 600px)
 {
     .alert-msg {
         font-size: 8px;
         padding: 6px 15px;
 
+    }
+
+    .alertmsg-logo {
+        margin-right: 0.3rem;
+    }
+
+    .alertmsg-logo.success {
+        width: 15px;
+        height: 15px;
+    }
+    
+    .alertmsg-logo.info {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .alertmsg-logo.error {
+        width: 13px;
+        height: 13px;
     }
 }
 

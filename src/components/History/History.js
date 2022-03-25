@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import Navbar from '../NavBar/NavBar';
 import ProfileHistory from './ProfileHistory';
+import AlertMsg from '../AlertMsg/AlertMsg';
 import { RiHistoryFill } from 'react-icons/ri';
 import { GoInfo } from 'react-icons/go';
 
@@ -25,9 +26,46 @@ const History = () => {
 
 
 
+// _-_-_-_-_-_-_-_-_- ALERT -_-_-_-_-_-_-_-_-_
+
+
+    const [alertMessages, setAlertMessages] = useState([])
+
+
+    const handleNewAlert = (newAlert) => {
+
+        setAlertMessages(prevState => prevState.slice(1));
+        setAlertMessages(prevState => [...prevState, newAlert]);
+    }
+
+    const successAlert = (id) => {
+        handleNewAlert({id: id,
+                        variant: "info",
+                        information: "Supprimé"})
+    }
+
+    const errorAlert = (id) => {
+        handleNewAlert({id: id,
+                        variant: "error",
+                        information: "Oups ! Erreur..."})
+    }
+
+
+
 
     return (
         <Fragment>
+            {
+                alertMessages.map( alert => {
+                    return (
+                        <AlertMsg
+                            key={alert.id}
+                            variant={alert.variant}
+                            information={alert.information}
+                        />
+                    )
+                })
+            }
             <Navbar />
             <div className='history-container'>
                 <div className='history-tittle-div'>
@@ -56,6 +94,8 @@ const History = () => {
                             currentUserLocation={currentUserLocation}
                             visitedProfilesHistory={visitedProfilesHistory}
                             setVisitedProfilesHistory={setVisitedProfilesHistory}
+                            successAlert={successAlert}
+                            errorAlert={errorAlert}
                         />
                     )
                 })

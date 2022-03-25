@@ -9,8 +9,8 @@ import { IoMdHeartDislike } from 'react-icons/io';
 
 
 
-const ProfileFavorite = ({ id, username, age, popularity, location, thumbnail,
-                           currentUserLocation, favoriteProfiles, setFavoriteProfiles }) => {
+const ProfileFavorite = ({ id, username, age, popularity, location, thumbnail, currentUserLocation,
+                           favoriteProfiles, setFavoriteProfiles, successAlert, errorAlert }) => {
 
 
 
@@ -28,6 +28,7 @@ const ProfileFavorite = ({ id, username, age, popularity, location, thumbnail,
         deleteTimeOut = setTimeout( () => {
             setDeleteProfile(true);
             setFavoriteProfiles( (favoriteProfiles.filter( profil => profil.id !== currentProfileID)) );
+            successAlert(currentProfileID);
         } , 200)
     }
 

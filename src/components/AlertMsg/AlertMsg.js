@@ -12,13 +12,13 @@ const AlertMsg = ({variant, information}) => {
 
     function Icon() {
         if (variant === 'success') {
-            return <AiFillCheckCircle size='23' className='mr-2' />
+            return <AiFillCheckCircle className='alertmsg-logo success' />
         }
         else if (variant === 'info') {
-            return <BsInfoCircleFill size='19' className='mr-2' />
+            return <BsInfoCircleFill className='alertmsg-logo info' />
         }
         else if (variant === 'error') {
-            return <TiWarning size='21' className='mr-2' />
+            return <TiWarning className='alertmsg-logo error' />
         }
         else
             return null

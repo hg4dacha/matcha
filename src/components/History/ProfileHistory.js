@@ -10,8 +10,8 @@ import { IoClose } from 'react-icons/io5';
 
 
 
-const ProfileHistory = ({ id, username, age, popularity, location, thumbnail,
-                          currentUserLocation, visitedProfilesHistory, setVisitedProfilesHistory }) => {
+const ProfileHistory = ({ id, username, age, popularity, location, thumbnail, currentUserLocation,
+                          visitedProfilesHistory, setVisitedProfilesHistory, successAlert, errorAlert }) => {
 
 
 
@@ -30,6 +30,7 @@ const ProfileHistory = ({ id, username, age, popularity, location, thumbnail,
         deleteTimeOut = setTimeout( () => {
             setDeleteProfile(true);
             setVisitedProfilesHistory( (visitedProfilesHistory.filter(profile => profile.id !== currentProfileID)) );
+            successAlert(currentProfileID);
         } , 200)
     }
 

@@ -12,7 +12,7 @@ import { VscEye } from 'react-icons/vsc';
 
 const NotificationAlert = ({
     notificationId, userImage, userName, notificationDate, notificationType,
-    notificationAge, notificationList, setNotificationList }) => {
+    notificationAge, notificationList, setNotificationList, successAlert, errorAlert }) => {
 
 
 
@@ -33,6 +33,7 @@ const NotificationAlert = ({
         deleteTimeOut = setTimeout( () => {
             setDeleteNotif(true);
             setNotificationList( (notificationList.filter( notification => notification.notificationId !== notificationId)) );
+            successAlert();
         }, 200)
     }
 
