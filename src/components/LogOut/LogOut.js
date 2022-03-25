@@ -16,7 +16,7 @@ const LogOut = () => {
             onClick={handleLogout}
             className='log-out-button'>
                 <BiLogOutCircle className='log-out-logo'/>
-                Déconnexion
+                <span className='logout-text'>Déconnexion</span>
         </button>
     )
 }

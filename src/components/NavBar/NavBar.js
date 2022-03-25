@@ -29,18 +29,27 @@ const Navbar$ = () => {
     const [windowSize, setWindowSize] = useState(window.screen.width)
 
     useEffect( () => {
-        setWindowSize(window.screen.width);
+
+        window.onresize = () => {
+            setWindowSize(window.innerWidth);
+        }
+
+        return () => {
+            window.onresize = () => null
+        }
     })
+
+
 
 
 
     return (
         <Navbar collapseOnSelect bg="white" variant="light" expand={true}>
             <Link to="/Main" className='navbar-brand'><Logo width='150' /></Link>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
+            <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
+            <Navbar.Collapse id="responsive-navbar-nav"  className='navlink-content'>
                 <Nav className="mr-auto">
-                    {windowSize > 600 ?
+                    {windowSize > 950 ?
                     <Fragment>
                         <NavLink to="/Main" className='nav-link'>
                             <CgHome size={14} className='iconsNavbar'/>

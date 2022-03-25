@@ -83,10 +83,10 @@ const AccessProfile = (props) => {
 
     useEffect( () => {
 
-        setPictureSize(document.querySelector('.profile-description').offsetHeight)
+        setPictureSize(document.querySelector('.profile-description').offsetHeight);
 
         window.onresize = () => {
-            setPictureSize(document.querySelector('.profile-description').offsetHeight)
+            setPictureSize(document.querySelector('.profile-description').offsetHeight);
         }
 
         return () => {

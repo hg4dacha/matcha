@@ -540,8 +540,20 @@ color: #ced6e0;
 }
 
 .dropdown-small-width-logo {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    padding: 4px;
+    color: #7f8c8d;
+}
+
+.dropdown-small-width-logo:active {
+    color: #262626;
+}
+
+.dropdown-small-width>.dropdown-toggle {
+    padding: 0 !important;
 }
 
 .dropdown-small-width>.dropdown-toggle::after {
@@ -573,6 +585,167 @@ color: #ced6e0;
 .nav-link-small-width:active {
     color: #95a5a6;
 }
+
+@media all and (max-width: 1030px)
+{
+    .nav-link {
+        padding: 0 10px !important;
+    }
+
+    .navbar-popularity-user-div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10px;
+    }
+
+    .popularity {
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        padding: 0 5px;
+        border: 0;
+    }
+
+    .log-out-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid #dfe6e9;
+        border-left: 1px solid #dfe6e9;
+        padding: 0 6px;
+    }
+}
+
+@media all and (max-width: 950px)
+{
+    .navlink-content {
+        flex-direction: row-reverse;
+        justify-content: space-around;
+    }
+
+    .navbar-popularity-user-div {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+
+    .popularity {
+        font-size: 21px;
+        display: flex;
+        align-items: center;
+        padding: 0 15px 0 7px;
+        border: 0;
+        border-left: 1px solid #dfe6e9;
+    }
+
+    .log-out-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        border: 0;
+        padding: 0 7px;
+    }
+
+    .log-out-logo {
+        width: 20px;
+        height: 20px;
+    }
+
+    .logout-text {
+        font-size: 20px;
+    }
+
+    .navbar-username {
+        font-size: 21px;
+    }
+
+    .dropdown-small-width-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .navbar-nav {
+        margin: 0 !important;
+    }
+}
+
+
+@media all and (max-width: 600px)
+{
+    .dropdown-small-width-logo {
+        width: 35px;
+        height: 35px;
+    }
+
+    .navbar-brand {
+        margin-right: 0;
+        padding-right: 5px;
+    }
+
+    .navlink-content {
+        flex-direction: row-reverse;
+        justify-content: space-around;
+    }
+
+    .popularity {
+        font-size: 9px;
+        display: flex;
+        align-items: center;
+        padding: 0 5px;
+        border: 0;
+    }
+
+    .log-out-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid #dfe6e9;
+        border-left: 1px solid #dfe6e9;
+        padding: 0 6px;
+    }
+
+    .log-out-logo {
+        width: 20px;
+        height: 20px;
+    }
+
+    .logout-text {
+        font-size: 6px;
+    }
+
+    .navbar-popularity-user-div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 12px;
+        margin: 0;
+    }
+
+    .profile-picture-navbar-div {
+        width: 25px;
+        height: 25px;
+        margin-right: 3px;
+    }
+
+    .navbar-username {
+        font-size: 7px;
+    }
+
+    .navbar-nav {
+        margin: 0 !important;
+    }
+}
+
+
+
 
 /*****************************   *****   *****************************/
 
