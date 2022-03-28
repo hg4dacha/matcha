@@ -7,10 +7,10 @@ function db_connex()
     $DB_PASSWORD = 'MAMP93';
     $DB_ERROR_MODE = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
 
-    try{
+    try {
         $dbc = new PDO ($DB_DSN, $DB_USER, $DB_PASSWORD, $DB_ERROR_MODE);
     }
-    catch (Exception $err){
+    catch (Exception $err) {
         die('ERREUR : ' . $err->getMessage());
     }
     return $dbc;
