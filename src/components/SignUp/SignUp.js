@@ -11,6 +11,7 @@ import { BsFillShieldLockFill } from 'react-icons/bs';
 import { FiEdit } from 'react-icons/fi';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import { TiInfoOutline } from 'react-icons/ti';
+import axios from 'axios';
 
 
 const SignUp = () => {
@@ -44,7 +45,6 @@ const SignUp = () => {
 
 
     const handleChange = e => {
-
         setData({...data, [e.target.id]: e.target.value});
     }
 
@@ -57,16 +57,25 @@ const SignUp = () => {
 
         if (lastname !== '' && firstname !== '' && username !== '' && email !== '' && password !== '' && passwordConfirmation !== '') {
 
-            if (EMAIL_REGEX.test(data.email)) {
-    
+            if (EMAIL_REGEX.test(email)) {
+
                 mailInput.classList.contains('mailErrorDisplay') &&
                 mailInput.classList.remove('mailErrorDisplay')
-    
+
                 if (NAMES_REGEX.test(lastname) && NAMES_REGEX.test(firstname) && USERNAME_REGEX.test(username) &&
                     PASSWORD_REGEX.test(password) && password === passwordConfirmation) {
 
                         genErrSmall.classList.contains('generalErrorDisplay') &&
                         genErrSmall.classList.remove('generalErrorDisplay')
+
+                        axios.post('/users', data)
+                        .then( (response) => {
+                            console.log(response);
+                        })
+                        .catch( (error) => {
+                            console.log(error);
+                        })
+
                 }
                 else {
                     genErrSmall.classList.add('generalErrorDisplay')
