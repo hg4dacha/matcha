@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 
 
 
-// axios.defaults.baseURL = "http://localhost:8080/matcha/api/";
+axios.defaults.baseURL = "http://localhost:8080/matcha/api/";
 
 
 
