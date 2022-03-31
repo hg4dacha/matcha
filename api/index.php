@@ -3,7 +3,7 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
-// var_dump(file_get_contents('php://input'));
+var_dump(file_get_contents('php://input'));
 
 
 try {
