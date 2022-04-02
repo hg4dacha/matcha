@@ -1,25 +1,41 @@
 <?php
 
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
-var_dump(file_get_contents('php://input'));
+
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersMethods/addUser.php");
+
+
 
 
 try {
 
-    if(!empty($_SERVER['REQUEST_URI']))
-    {
-        $url_ = explode('/', (filter_var($_SERVER['REQUEST_URI'] , FILTER_SANITIZE_URL)));
-        $url = $url_[3];
+    // REQUEST DATA
+    $url = $_SERVER['REQUEST_URI'];
+    $urlData = explode('/', (filter_var($url , FILTER_SANITIZE_URL)));
+    $request = $urlData[3];
+    $method = $_SERVER['REQUEST_METHOD'];
 
-        switch($url) {
-            case "users":
+
+    // CHECK REQUEST
+    if($request === "users")
+    {
+        switch($method)
+        {
+            case "POST":
+                $userData = json_decode(file_get_contents('php://input'));
+                addUser($userData);
         }
+    }
+    else if ($request === 'likes')
+    {
+
     }
     else
     {
-        throw new Exception ("Error");
+        throw new Exception ("The request is not valid");
     }
 
 }
