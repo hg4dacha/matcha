@@ -5,7 +5,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
 
-require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersMethods/addUser.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/adduser.php");
 
 
 
@@ -27,6 +27,7 @@ try {
             case "POST":
                 $userData = json_decode(file_get_contents('php://input'));
                 addUser($userData);
+                break;
         }
     }
     else if ($request === 'likes')
@@ -41,8 +42,9 @@ try {
 }
 catch(Exception $e) {
 
+    // http_response_code(404);
     $error = [
-        "message" => $e->getMessage(),
+        "error" => $e->getMessage(),
         "code" => $e->getCode()
     ];
     print_r($error);
