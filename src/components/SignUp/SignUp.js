@@ -11,6 +11,8 @@ import { BsFillShieldLockFill } from 'react-icons/bs';
 import { FiEdit } from 'react-icons/fi';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import { TiInfoOutline } from 'react-icons/ti';
+import { IoShieldCheckmarkOutline } from 'react-icons/io5';
+import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 
 
@@ -48,47 +50,78 @@ const SignUp = () => {
         setData({...data, [e.target.id]: e.target.value});
     }
 
+    const [spinner, setSpinner] = useState(false)
+
+
+    const [errorMessage, setErrorMessage] = useState({ display: false, msg: "" })
+    const [successMessage, setSuccessMessage] = useState(false)
 
     const handleSubmit = e => {
         e.preventDefault()
-
-        let mailInput = document.querySelector('#emailError');
-        let genErrSmall = document.querySelector('#generalError');
+        setSuccessMessage(false);
 
         if (lastname !== '' && firstname !== '' && username !== '' && email !== '' && password !== '' && passwordConfirmation !== '') {
 
             if (EMAIL_REGEX.test(email)) {
 
-                mailInput.classList.contains('mailErrorDisplay') &&
-                mailInput.classList.remove('mailErrorDisplay')
+                setErrorMessage({ display: false, msg: "" })
 
                 if (NAMES_REGEX.test(lastname) && NAMES_REGEX.test(firstname) && USERNAME_REGEX.test(username) &&
                     PASSWORD_REGEX.test(password) && password === passwordConfirmation) {
 
-                        genErrSmall.classList.contains('generalErrorDisplay') &&
-                        genErrSmall.classList.remove('generalErrorDisplay')
+                        setErrorMessage({ display: false, msg: "" })
+                        setSpinner(true);
 
                         axios.post('/users', data)
                         .then( (response) => {
-                            console.log(response);
+                            if (response.status === 200)
+                            {
+                                setData({
+                                    lastname: '',
+                                    firstname: '',
+                                    username: '',
+                                    email: '',
+                                    password: '',
+                                    passwordConfirmation: ''
+                                })
+                                setSpinner(false);
+                                setSuccessMessage(true);
+                                setErrorMessage({ display: true, msg: "Un email de confirmation vous a été envoyé" })
+
+                            }
                         })
                         .catch( (error) => {
                             console.log(error);
+                            if (error.request.statusText === 'reserved email')
+                            {
+                                setErrorMessage({ display: true, msg: "Cet email est déjà utilisé" })
+                            }
+                            else if (error.request.statusText === 'reserved username')
+                            {
+                                setErrorMessage({ display: true, msg: "Ce nom d'utilisateur est déjà utilisé" })
+                            }
+                            else
+                            {
+                                setErrorMessage({ display: true, msg: "Certaines de vos entrées ne sont pas valides" })
+                            }
                         })
 
                 }
                 else {
-                    genErrSmall.classList.add('generalErrorDisplay')
+                    setErrorMessage({ display: true, msg: "Certaines de vos entrées ne sont pas valides" })
                 }
             }
             else {
-                mailInput.classList.add('mailErrorDisplay')
+                setErrorMessage({ display: true, msg: "Adresse e-mail non valide" })
             }
         }
         else {
-            genErrSmall.classList.add('generalErrorDisplay')
+            setErrorMessage({ display: true, msg: "Veuillez remplir tout les champs" })
         }
     }
+
+
+
 
     return (
         <Fragment>
@@ -138,7 +171,6 @@ const SignUp = () => {
                                 <MdEmail size='16' className='iconsFormsInputs' />
                                 <Form.Label>Adresse e-mail</Form.Label>
                             </div>
-                            <Form.Text className='mailError' id='emailError'><RiErrorWarningLine style={{marginTop: '-2px', marginRight: '2px'}} />Adresse e-mail non valide</Form.Text>
                         </Form.Group>
 
                         {/* password */}
@@ -161,8 +193,17 @@ const SignUp = () => {
                         </Form.Group>
 
                         <div className='centerElementsInPage' style={{position:'relative', width: '100%'}}>
-                            <Form.Text className='generalError' id='generalError'><RiErrorWarningLine style={{marginTop: '-2px', marginRight: '2px'}} />Certaines de vos entrées ne sont pas valides</Form.Text>
-                            <Button variant="primary" type='submit' className='submitBtnSignUp' disabled={true}>S'inscrire</Button>
+                            <Form.Text className={`signup-message ${errorMessage.display ? "display" : ""}`} style={{color: `${successMessage ? "#198754" : ""}`}}>
+                                {successMessage ?
+                                <IoShieldCheckmarkOutline className='mr-1' /> :
+                                <RiErrorWarningLine />
+                                }
+                                {errorMessage.msg}
+                            </Form.Text>
+                            <Button variant="primary" type='submit' className='submitBtnSignUp' disabled={true}>
+                                {spinner ? <Spinner className='mr-1' as="span" animation="border" size="sm" role="status" aria-hidden="true"/> : null}
+                                S'inscrire
+                            </Button>
                         </div>
 
                     </Form>

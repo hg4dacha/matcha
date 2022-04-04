@@ -36,13 +36,13 @@ try {
     }
     else
     {
-        throw new Exception ("The request is not valid");
+        throw new Exception ("Les données URL sont invalides");
     }
 
 }
 catch(Exception $e) {
 
-    // http_response_code(404);
+    http_response_code(400);
     $error = [
         "error" => $e->getMessage(),
         "code" => $e->getCode()

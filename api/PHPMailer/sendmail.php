@@ -9,7 +9,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/PHPMailer/lib/PHPMailer/src/
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/PHPMailer/lib/PHPMailer/src/SMTP.php");
 
 
-function sendmail($mailadress, $subject, $username)
+function sendmail($mailadress, $subject, $username, $body, $link)
 {
     $mail = new PHPMailer(true);
 
@@ -19,7 +19,7 @@ function sendmail($mailadress, $subject, $username)
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'camagru042@gmail.com';
-        $mail->Password   = '240urgamac';
+        $mail->Password   = '********************';
         $mail->SMTPSecure = 'ssl';
         $mail->Port       = 465;
         $mail->setFrom('ne_pas_repondre@matcha.com', 'Matcha Administrator');
@@ -44,16 +44,14 @@ function sendmail($mailadress, $subject, $username)
                        font-size:17px;
                        border:0;'
             >
-                ".$username.", plus qu'une étape pour finaliser votre inscription !
-                <br>
-                Cliquez sur le lien ci-dessous pour valider votre compte, vous<br>pourrez ensuite y accéder en vous connectant.
+                ".$body."
                 <br>
                 <br>
                 <a 
                     style='color:#0095f6;
                            font-weight:bold;
                            font-size:16px;'
-                    href='http://localhost:8080/camagru/controller/registr_confirm.php?idCTRL=&amp;usn=&amp;keyID='
+                    href=".$link."
                 >
                     >>>>>VALIDER MON COMPTE<<<<<
                 </a>

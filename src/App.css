@@ -178,7 +178,27 @@ a, a:hover{
     border-bottom: 2px solid #a4b0be;
 }
 
-.smallOnFocus, .mailError, .generalError {
+.signup-message {
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+    position: absolute;
+    bottom: 0;
+    color: #EA2027;
+    font-style: italic;
+    -webkit-transition: 0.2s ease-in;
+    -moz-transition: 0.2s ease-in;
+    -o-transition: 0.2s ease-in;
+    transition: 0.2s ease-in;
+}
+
+.signup-message.display {
+    visibility: visible;
+    opacity: 1;
+    bottom: 60px;
+}
+
+.smallOnFocus {
     visibility: hidden;
     position: absolute;
     left: 0;
@@ -190,36 +210,13 @@ a, a:hover{
     transition: 0.2s ease-in;
 }
 
-.mailError, .generalError {
-    color: #EA2027;
-}
-
-.mailError {
-    opacity: 0.7;
-}
-
-.generalError {
-    left: initial;
-    top: initial;
-    bottom: 0;
-}
-
 .smallOnFocus {
     color: #218c74;
 }
 
-.mailErrorDisplay {
-    visibility: visible;
-    top: 35px;
-}
-
-.generalErrorDisplay, .generalErrorDisplay2 {
+.generalErrorDisplay2 {
     visibility: visible;
     opacity: 1;
-}
-
-.generalErrorDisplay {
-    bottom: 60px;
 }
 
 .generalErrorDisplay2 {

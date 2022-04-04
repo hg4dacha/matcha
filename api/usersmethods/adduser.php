@@ -22,13 +22,8 @@ function addUserInDatabase($lastname, $firstname,	$username,	$email,	$passwordUs
     }
     catch(PDOException $e)
     {
-        $error = [
-            "error" => $e->getMessage(),
-            "code" => $e->getCode()
-        ];
-        return ($error);
+        http_response_code(500);
     }
-
 }
 
 function addUser($userData)
@@ -59,23 +54,51 @@ function addUser($userData)
         {
             if ( $password === $passwordConfirmation )
             {
-                if ( checkUsernameExistence(strtolower($username)) == 0 &&
-                     checkEmailExistence(strtolower($email)) == 0
-                   )
+                if ( checkEmailExistence(strtolower($email)) == 0 )
                 {
-                    $lastname = ucfirst(strtolower($lastname));
-                    $firstname = ucfirst(strtolower($firstname));
-                    $email = strtolower($email);
-                    $password = password_hash($password, PASSWORD_BCRYPT);
-                    addUserInDatabase($lastname, $firstname, $username,	$email,	$password);
-                    $subject = "Matcha - Bienvenue !";
-                    sendmail($email, $subject, $username);
+                    if ( checkUsernameExistence(strtolower($username)) == 0 )
+                    {
+
+                        $lastname = ucfirst(strtolower($lastname));
+                        $firstname = ucfirst(strtolower($firstname));
+                        $email = strtolower($email);
+                        $password = password_hash($password, PASSWORD_BCRYPT);
+                        $subject = "Matcha - Bienvenue !";
+                        $body = "".$username.", plus qu'une étape pour finaliser votre inscription !<br>
+                        Cliquez sur le lien ci-dessous pour valider votre compte, vous<br>pourrez ensuite y accéder en vous connectant.";
+                        $key = random_int(9547114, 735620051642661202).uniqid().random_int(635418, 866261402008688409);
+                        $link = "http://localhost:3000/RegistrationConfirmation?username=".$username."&amp;key=".$key."";
+                        
+                        addUserInDatabase($lastname, $firstname, $username,	$email,	$password);
+                        sendmail($email, $subject, $username, $body, $link);
+
+                    }
+                    else
+                    {
+                        header("HTTP/1.1 500 reserved email");
+                    }
+                }
+                else
+                {
+                    header("HTTP/1.1 500 reserved username");
                 }
             }
+            else
+            {
+                http_response_code(500);
+            }
+        }
+        else
+        {
+            http_response_code(500);
         }
         
     }
-    
+    else
+    {
+        http_response_code(500);
+    }
+
 }
 
 
