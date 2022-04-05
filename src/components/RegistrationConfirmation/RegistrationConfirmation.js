@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -9,17 +10,24 @@ import axios from 'axios';
 const RegistrationConfirmation = () => {
 
 
-    // axios.post('/users', data)
-    // .then( (response) => {
-    //     console.log(response);
-    //     if (response.status === 200)
-    //     {
+    const params = useParams();
 
-    //     }
-    // })
-    // .catch( (error) => {
+    
+    useEffect( () => {
 
-    // })
+        axios.post('/users', params)
+        .then( (response) => {
+            console.log(response);
+            if (response.status === 200)
+            {
+                
+            }
+        })
+        .catch( (error) => {
+
+        })
+
+    }, [params])
 
 
     return <Fragment></Fragment>

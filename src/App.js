@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './components/Home/Home';
 import SignIn from './components/SignIn/SignIn';
 import SignUp from './components/SignUp/SignUp';
@@ -23,22 +23,23 @@ function App() {
   return (
     <BrowserRouter>
     
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/SignUp' component={SignUp} />
-        <Route path='/RegistrationConfirmation' component={RegistrationConfirmation} />
-        <Route path='/SignIn' component={SignIn} />
-        <Route path='/ForgotPassword' component={ForgotPassword} />
-        <Route path='/NewPassword' component={NewPassword} />
-        <Route path='/CompleteProfile' component={CompleteProfile} />
-        <Route path='/Main' component={Main} />
-        <Route path='/Profile' component={Profile} />
-        <Route path='/Notifications' component={Notifications} />
-        <Route path='/History' component={History} />
-        <Route path='/Favorites' component={Favorites} />
-        <Route path='/MemberProfile/:id' component={MemberProfile} />
-        <Route component={NotFound} />
-      </Switch>
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='/SignUp' element={<SignUp/>} />
+        <Route path='/RegistrationConfirmation/:username/:key' element={<RegistrationConfirmation/>} />
+        <Route path='/SignIn' element={<SignIn/>} />
+        <Route path='/ForgotPassword' element={<ForgotPassword/>} />
+        <Route path='/NewPassword' element={<NewPassword/>} />
+        <Route path='/CompleteProfile' element={<CompleteProfile/>} />
+        <Route path='/Main' element={<Main/>} />
+        <Route path='/Profile' element={<Profile/>} />
+        <Route path='/Notifications' element={<Notifications/>} />
+        <Route path='/History' element={<History/>} />
+        <Route path='/Favorites' element={<Favorites/>} />
+        <Route path='/MemberProfile/:userID' element={<MemberProfile/>} />
+        <Route path='/NotFound' element={<NotFound/>} />
+        <Route path='*' element={<Navigate replace to='/NotFound'/>} />
+      </Routes>
       
       <Footer/>
     </BrowserRouter>

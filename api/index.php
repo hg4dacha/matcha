@@ -6,6 +6,7 @@ header("Access-Control-Allow-Headers: *");
 
 
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/adduser.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/confirmregistration.php");
 
 
 
@@ -27,7 +28,17 @@ try {
             case "POST":
                 $userData = json_decode(file_get_contents('php://input'));
                 addUser($userData);
-                break;
+            break;
+            case "GET":
+                if (isset($_GET['username']) && isset($_GET['passkey']))
+                {
+                    confirmUserRegistration($_GET['username'], $_GET['passkey']);
+                }
+                else
+                {
+                    throw new Exception ("Les données URL sont invalides");
+                }
+            break;
         }
     }
     else if ($request === 'likes')

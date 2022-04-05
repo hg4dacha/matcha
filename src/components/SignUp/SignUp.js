@@ -100,6 +100,10 @@ const SignUp = () => {
                             {
                                 setErrorMessage({ display: true, msg: "Ce nom d'utilisateur est déjà utilisé" })
                             }
+                            else if (error.request.statusText === 'database')
+                            {
+                                setErrorMessage({ display: true, msg: "Un problème est survenu... réessayez plus tard" })
+                            }
                             else
                             {
                                 setErrorMessage({ display: true, msg: "Certaines de vos entrées ne sont pas valides" })
