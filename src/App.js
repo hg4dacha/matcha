@@ -26,7 +26,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/SignUp' element={<SignUp/>} />
-        <Route path='/RegistrationConfirmation/:username/:key' element={<RegistrationConfirmation/>} />
+        <Route path='/RegistrationConfirmation/:username/:token' element={<RegistrationConfirmation/>} />
         <Route path='/SignIn' element={<SignIn/>} />
         <Route path='/ForgotPassword' element={<ForgotPassword/>} />
         <Route path='/NewPassword' element={<NewPassword/>} />

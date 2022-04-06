@@ -72,8 +72,9 @@ const SignUp = () => {
                         setErrorMessage({ display: false, msg: "" })
                         setSpinner(true);
 
-                        axios.post('/users', data)
+                        axios.post('/users/add', data)
                         .then( (response) => {
+                            console.log(response.data);
                             if (response.status === 200)
                             {
                                 setData({
@@ -197,11 +198,8 @@ const SignUp = () => {
                         </Form.Group>
 
                         <div className='centerElementsInPage' style={{position:'relative', width: '100%'}}>
-                            <Form.Text className={`signup-message ${errorMessage.display ? "display" : ""}`} style={{color: `${successMessage ? "#198754" : ""}`}}>
-                                {successMessage ?
-                                <IoShieldCheckmarkOutline className='mr-1' /> :
-                                <RiErrorWarningLine />
-                                }
+                            <Form.Text className={`signup-message ${successMessage ? "success" : "error"} ${errorMessage.display ? "display" : ""}`}>
+                                {successMessage ? <IoShieldCheckmarkOutline className='mr-1' /> : <RiErrorWarningLine />}
                                 {errorMessage.msg}
                             </Form.Text>
                             <Button variant="primary" type='submit' className='submitBtnSignUp' disabled={true}>

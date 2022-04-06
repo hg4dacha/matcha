@@ -184,12 +184,19 @@ a, a:hover{
     visibility: hidden;
     position: absolute;
     bottom: 0;
-    color: #EA2027;
     font-style: italic;
     -webkit-transition: 0.2s ease-in;
     -moz-transition: 0.2s ease-in;
     -o-transition: 0.2s ease-in;
     transition: 0.2s ease-in;
+}
+
+.signup-message.error {
+    color: #EA2027;
+}
+
+.signup-message.success {
+    color: #198754;
 }
 
 .signup-message.display {
@@ -3907,6 +3914,31 @@ footer {
     footer {
         font-size: 9px;
     }
+}
+
+/*****************************   REGISTRATION CONFIRMATION   *****************************/
+
+.registr-confirm-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.registr-confirm-spinner {
+    height: 4rem;
+    width: 4rem;
+    margin-bottom: 1rem;
+}
+
+.registr-confirm-wait {
+    width: 12rem;
+    height: 9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /*****************************   NOT FOUND   *****************************/

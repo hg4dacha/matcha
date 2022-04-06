@@ -9,9 +9,9 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/configuration/database.php")
 function checkUsernameExistence($username)
 {
     $dbc = db_connex();
-    $reqCheck = $dbc->prepare("SELECT LOWER(username) FROM users WHERE LOWER(username)  = :username");
     try
     {
+        $reqCheck = $dbc->prepare("SELECT LOWER(username) FROM users WHERE LOWER(username)  = :username");
         $reqCheck->bindValue(':username', $username, PDO::PARAM_STR);
         $reqCheck->execute();
         return $reqCheck->rowCount();
@@ -33,9 +33,9 @@ function checkUsernameExistence($username)
 function checkEmailExistence($email)
 {
     $dbc = db_connex();
-    $reqCheck = $dbc->prepare("SELECT email FROM users WHERE email  = :email");
     try
     {
+        $reqCheck = $dbc->prepare("SELECT email FROM users WHERE email  = :email");
         $reqCheck->bindValue(':email', $email, PDO::PARAM_STR);
         $reqCheck->execute();
         return $reqCheck->rowCount();

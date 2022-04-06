@@ -6,7 +6,7 @@ header("Access-Control-Allow-Headers: *");
 
 
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/adduser.php");
-require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/confirmregistration.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/confirmUserRegistration.php");
 
 
 
@@ -26,18 +26,26 @@ try {
         switch($method)
         {
             case "POST":
-                $userData = json_decode(file_get_contents('php://input'));
-                addUser($userData);
+                $data = json_decode(file_get_contents('php://input'));
+                $action = $urlData[4];
+                if ( $action == 'add' )
+                {
+                    addUser($data);
+                }
+                else if ( $action == 'confirm' )
+                {
+                    confirmUserRegistration($data);
+                }
             break;
             case "GET":
-                if (isset($_GET['username']) && isset($_GET['passkey']))
-                {
-                    confirmUserRegistration($_GET['username'], $_GET['passkey']);
-                }
-                else
-                {
-                    throw new Exception ("Les données URL sont invalides");
-                }
+                // if (isset($_GET['username']) && isset($_GET['token']))
+                // {
+                //     confirmUserRegistration($_GET['username'], $_GET['token']);
+                // }
+                // else
+                // {
+                //     throw new Exception ("Les données URL sont invalides");
+                // }
             break;
         }
     }

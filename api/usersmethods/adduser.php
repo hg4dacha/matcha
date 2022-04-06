@@ -6,19 +6,19 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php")
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/PHPMailer/sendmail.php");
 
 
-function addUserInDatabase($lastname, $firstname,	$username,	$email,	$passwordUser, $passkey)
+function addUserInDatabase($lastname, $firstname,	$username,	$email,	$passwordUser, $token)
 {
     $dbc = db_connex();
-    $reqAddUser = $dbc->prepare("INSERT INTO users (lastname, firstname, username, email, passwordUser, passkey)
-                                 VALUES (:lastname, :firstname, :username, :email, :passwordUser, :passkey)");
     try
     {
+        $reqAddUser = $dbc->prepare("INSERT INTO users (lastname, firstname, username, email, passwordUser, token)
+                                     VALUES (:lastname, :firstname, :username, :email, :passwordUser, :token)");
         $reqAddUser->bindValue(':lastname', $lastname, PDO::PARAM_STR);
         $reqAddUser->bindValue(':firstname', $firstname, PDO::PARAM_STR);
         $reqAddUser->bindValue(':username', $username, PDO::PARAM_STR);
         $reqAddUser->bindValue(':email', $email, PDO::PARAM_STR);
         $reqAddUser->bindValue(':passwordUser', $passwordUser, PDO::PARAM_STR);
-        $reqAddUser->bindValue(':passkey', $passkey, PDO::PARAM_STR);
+        $reqAddUser->bindValue(':token', $token, PDO::PARAM_STR);
         $reqAddUser->execute();
     }
     catch(PDOException $e)
@@ -67,12 +67,11 @@ function addUser($userData)
                         $subject = "Matcha - Bienvenue !";
                         $body = "".$username.", plus qu'une étape pour finaliser votre inscription !<br>
                         Cliquez sur le lien ci-dessous pour valider votre compte, vous<br>pourrez ensuite y accéder en vous connectant.";
-                        $passkey = random_int(9547114, 735620051642661202).uniqid().random_int(635418, 866261402008688409);
-                        $link = "http://localhost:8080/matcha/api/users/?username=".$username."&amp;passkey=".$passkey."";
+                        $token = random_int(9547114, 735620051642661202).uniqid().random_int(635418, 866261402008688409);
+                        $link = "http://localhost:3000/RegistrationConfirmation/".$username."/".$token."";
                         
-                        addUserInDatabase($lastname, $firstname, $username,	$email,	$password, $passkey);
+                        addUserInDatabase($lastname, $firstname, $username,	$email,	$password, $token);
                         sendmail($email, $subject, $username, $body, $link);
-
                     }
                     else
                     {
