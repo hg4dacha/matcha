@@ -178,7 +178,7 @@ a, a:hover{
     border-bottom: 2px solid #a4b0be;
 }
 
-.signup-message {
+.signup-message, .signin-message, .forgot-message {
     display: flex;
     align-items: center;
     visibility: hidden;
@@ -191,11 +191,11 @@ a, a:hover{
     transition: 0.2s ease-in;
 }
 
-.signup-message.error {
+.signup-message.error, .signin-message.error, .forgot-message.error {
     color: #EA2027;
 }
 
-.signup-message.success {
+.signup-message.success, .signin-message.success, .forgot-message.success {
     color: #198754;
 }
 
@@ -203,6 +203,18 @@ a, a:hover{
     visibility: visible;
     opacity: 1;
     bottom: 60px;
+}
+
+.signin-message.display {
+    visibility: visible;
+    opacity: 1;
+    bottom: 35px;
+}
+
+.forgot-message.display {
+    visibility: visible;
+    opacity: 1;
+    bottom: -35px;
 }
 
 .smallOnFocus {

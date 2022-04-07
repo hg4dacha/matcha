@@ -1,11 +1,14 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import FormsHeader from '../FormsHeader/FormsHeader';
+import { EMAIL_REGEX } from '../../other/Regex';
 import { Link } from 'react-router-dom'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { MdEmail } from 'react-icons/md';
-import { IoLockClosed } from 'react-icons/io5';
+import { IoLockClosed, IoShieldCheckmarkOutline } from 'react-icons/io5';
 import { RiErrorWarningLine } from 'react-icons/ri';
+import Spinner from 'react-bootstrap/Spinner';
+import axios from 'axios';
 
 
 const ForgotPassword = () => {
@@ -30,27 +33,44 @@ const ForgotPassword = () => {
         btn.removeAttribute('disabled') :
         btn.setAttribute('disabled', 'true') ;
     })
-    
-    
+
+
     const handleChange = e => {
-        
         setData({email: e.target.value});
     }
 
-    let EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})){1,255}$/;
     
+    const [spinner, setSpinner] = useState(false)
+
+
+    const [errorMessage, setErrorMessage] = useState({ display: false, msg: "" })
+    const [successMessage, setSuccessMessage] = useState(false)
+
     const handleSubmit = e => {
         e.preventDefault()
+        setErrorMessage({ display: false, msg: "" })
 
-        let mailInput = document.querySelector('#emailError');
 
-        if (email !== '' && EMAIL_REGEX.test(email)) {
-
-            mailInput.classList.contains('mailErrorDisplay') &&
-            mailInput.classList.remove('mailErrorDisplay')
+        if (email !== '' && EMAIL_REGEX.test(email))
+        {
+            setSpinner(true);
+            axios.post('/users/omission', data)
+            .then( (response) => {
+                if (response.status === 200)
+                {
+                    setData({email: ''})
+                    setSpinner(false);
+                    setSuccessMessage(true);
+                    setErrorMessage({ display: true, msg: "Un e-mail de réinitialisation a été envoyé" });
+                }
+            })
+            .catch( (error) => {
+                console.log(error);
+            })
         }
-        else {
-            mailInput.classList.add('mailErrorDisplay')
+        else
+        {
+            setErrorMessage({ display: true, msg: "Adresse e-mail non valide" })
         }
     }
 
@@ -75,11 +95,18 @@ const ForgotPassword = () => {
                                 <MdEmail size='16' className='iconsFormsInputs' />
                                 <Form.Label>Adresse e-mail</Form.Label>
                             </div>
-                            <Form.Text className='mailError' id='emailError'><RiErrorWarningLine style={{marginTop: '-2px', marginRight: '2px'}} />Adresse e-mail non valide</Form.Text>
+                            <div className='centerElementsInPage' style={{position:'relative', width: '100%'}}>
+                                <Form.Text className={`forgot-message ${successMessage ? "success" : "error"} ${errorMessage.display ? "display" : ""}`}>
+                                    {successMessage ? <IoShieldCheckmarkOutline className='mr-1' /> : <RiErrorWarningLine />}
+                                    {errorMessage.msg}
+                                </Form.Text>
+                            </div>
                         </Form.Group>
-
                         <Link to='/SignIn' className='forgotPassword' >Retour à la connexion</Link>
-                        <Button variant="primary" type='submit' className='submitBtnLarge' disabled={true}>Envoyer le mail de réinitialisation</Button>
+                        <Button variant="primary" type='submit' className='submitBtnLarge' disabled={true}>
+                            {spinner ? <Spinner className='mr-1' as="span" animation="border" size="sm" role="status" aria-hidden="true"/> : null}
+                            Envoyer le mail de réinitialisation
+                        </Button>
 
                     </Form>
                 </div>

@@ -29,7 +29,7 @@ function App() {
         <Route path='/RegistrationConfirmation/:username/:token' element={<RegistrationConfirmation/>} />
         <Route path='/SignIn' element={<SignIn/>} />
         <Route path='/ForgotPassword' element={<ForgotPassword/>} />
-        <Route path='/NewPassword' element={<NewPassword/>} />
+        <Route path='/NewPassword/:userID/:token' element={<NewPassword/>} />
         <Route path='/CompleteProfile' element={<CompleteProfile/>} />
         <Route path='/Main' element={<Main/>} />
         <Route path='/Profile' element={<Profile/>} />

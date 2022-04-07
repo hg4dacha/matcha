@@ -12,7 +12,7 @@ import { FiEdit } from 'react-icons/fi';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import { TiInfoOutline } from 'react-icons/ti';
 import { IoShieldCheckmarkOutline } from 'react-icons/io5';
-import Spinner from 'react-bootstrap/Spinner'
+import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
 
 
@@ -74,7 +74,6 @@ const SignUp = () => {
 
                         axios.post('/users/add', data)
                         .then( (response) => {
-                            console.log(response.data);
                             if (response.status === 200)
                             {
                                 setData({

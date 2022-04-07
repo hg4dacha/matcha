@@ -1,12 +1,21 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useLocation } from 'react-router-dom';
 import FormsHeader from '../FormsHeader/FormsHeader';
 import { Link } from 'react-router-dom'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { EMAIL_REGEX, PASSWORD_REGEX } from '../../other/Regex';
 import { MdEmail } from 'react-icons/md';
 import { BsFillShieldLockFill } from 'react-icons/bs';
 import { BiNetworkChart } from 'react-icons/bi';
 import { RiErrorWarningLine } from 'react-icons/ri';
+import { IoShieldCheckmarkOutline } from 'react-icons/io5';
+
+
+
+
+
+
 
 
 const SignIn = () => {
@@ -14,6 +23,16 @@ const SignIn = () => {
     useEffect( () => {
         document.title = 'Connexion - Matcha'
     }, [])
+
+    const location = useLocation();
+
+    useEffect( () => {
+            if(location.state)
+            {
+                setSuccessMessage(true);
+                setErrorMessage({ display: true, msg: "Felicitations ! Vous pouvez desormais vous connecter" });
+            }
+    }, [location.state])
     
 
     const loginData = {
@@ -35,25 +54,23 @@ const SignIn = () => {
     
     
     const handleChange = e => {
-        
         setData({...data, [e.target.id]: e.target.value});
     }
 
-    let EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})){1,255}$/;
-    let PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,255}$/;
-    
+
+    const [errorMessage, setErrorMessage] = useState({ display: false, msg: "" })
+    const [successMessage, setSuccessMessage] = useState(false)
+
     const handleSubmit = e => {
         e.preventDefault()
 
-        let genErrSmall = document.querySelector('#generalError');
-
-        if (email !== '' && password !== '' && EMAIL_REGEX.test(email) && PASSWORD_REGEX.test(password)) {
-
-            genErrSmall.classList.contains('generalErrorDisplay2') &&
-            genErrSmall.classList.remove('generalErrorDisplay2')
+        if (email !== '' && password !== '' && EMAIL_REGEX.test(email) && PASSWORD_REGEX.test(password))
+        {
+            setErrorMessage({ display: false, msg: "" })
         }
-        else {
-            genErrSmall.classList.add('generalErrorDisplay2')
+        else
+        {
+            setErrorMessage({ display: true, msg: "Vos entrées ne sont pas valides" })
         }
     }
     
@@ -90,7 +107,10 @@ const SignIn = () => {
                         </Form.Group>
 
                         <div className='centerElementsInPage' style={{position:'relative', width: '100%'}}>
-                            <Form.Text className='generalError' id='generalError'><RiErrorWarningLine style={{marginTop: '-2px', marginRight: '2px'}} />Vos entrées ne sont pas valides</Form.Text>
+                            <Form.Text className={`signin-message ${successMessage ? "success" : "error"} ${errorMessage.display ? "display" : ""}`}>
+                                {successMessage ? <IoShieldCheckmarkOutline className='mr-1' /> : <RiErrorWarningLine />}
+                                {errorMessage.msg}
+                            </Form.Text>
                             <Link to='/ForgotPassword' className='forgotPassword' >Mot de passe oubllié?</Link>
                         </div>
                         <Button variant="primary" type='submit' className='submitBtnSmall' disabled={true}>Connexion</Button>

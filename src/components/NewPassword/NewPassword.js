@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import FormsHeader from '../FormsHeader/FormsHeader';
+import { PASSWORD_REGEX } from '../../other/Regex';
 import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -35,24 +36,21 @@ const NewPassword = () => {
     
     
     const handleChange = e => {
-        
         setData({...data, [e.target.id]: e.target.value});
     }
-
-    let PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,255}$/;
     
+
+    const [errorMessage, setErrorMessage] = useState({ display: false, msg: "" })
+
     const handleSubmit = e => {
         e.preventDefault()
 
-        let genErrSmall = document.querySelector('#generalError');
-
         if (password !== '' && passwordConfirmation !== '' && PASSWORD_REGEX.test(password) && password === passwordConfirmation) {
 
-            genErrSmall.classList.contains('generalErrorDisplay2') &&
-            genErrSmall.classList.remove('generalErrorDisplay2')
+            setErrorMessage({ display: false, msg: "" })
         }
         else {
-            genErrSmall.classList.add('generalErrorDisplay2')
+            setErrorMessage({ display: true, msg: "Vos entrées ne sont pas valides" })
         }
     }
 
@@ -90,7 +88,10 @@ const NewPassword = () => {
                         </Form.Group>
 
                         <div className='centerElementsInPage' style={{position:'relative', width: '100%'}}>
-                            <Form.Text className='generalError' id='generalError'><RiErrorWarningLine style={{marginTop: '-2px', marginRight: '2px'}} />Vos entrées ne sont pas valides</Form.Text>
+                            <Form.Text className={`signin-message error ${errorMessage.display ? "display" : ""}`}>
+                                <RiErrorWarningLine />
+                                {errorMessage.msg}
+                            </Form.Text>
                             <Link to='/SignIn' className='forgotPassword' >Annuler</Link>
                         </div>
 
