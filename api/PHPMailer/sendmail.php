@@ -9,7 +9,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/PHPMailer/lib/PHPMailer/src/
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/PHPMailer/lib/PHPMailer/src/SMTP.php");
 
 
-function sendmail($mailadress, $subject, $username, $body, $link)
+function sendmail($mailadress, $subject, $body, $link, $linktext)
 {
     $mail = new PHPMailer(true);
 
@@ -53,7 +53,7 @@ function sendmail($mailadress, $subject, $username, $body, $link)
                            font-size:16px;'
                     href=".$link."
                 >
-                    >>>>>VALIDER MON COMPTE<<<<<
+                    ".$linktext."
                 </a>
             </p>
             <br>

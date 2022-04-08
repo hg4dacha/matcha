@@ -19,7 +19,7 @@ const RegistrationConfirmation = () => {
 
         if( params.username && params.token )
         {
-            axios.post('/users/confirm', params)
+            axios.patch('/users/confirm', params)
             .then( (response) => {
                 if (response.status === 200)
                 {

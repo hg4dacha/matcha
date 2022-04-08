@@ -48,13 +48,14 @@ const ForgotPassword = () => {
 
     const handleSubmit = e => {
         e.preventDefault()
-        setErrorMessage({ display: false, msg: "" })
+        setSuccessMessage(false);
 
 
         if (email !== '' && EMAIL_REGEX.test(email))
         {
+            setErrorMessage({ display: false, msg: "" })
             setSpinner(true);
-            axios.post('/users/omission', data)
+            axios.patch('/users/omission', data)
             .then( (response) => {
                 if (response.status === 200)
                 {
@@ -65,7 +66,11 @@ const ForgotPassword = () => {
                 }
             })
             .catch( (error) => {
-                console.log(error);
+                setSpinner(false);
+                if (error.request.statusText === 'invalid email')
+                {
+                    setErrorMessage({ display: true, msg: "L'adresse e-mail n'est lié à aucun un compte" })
+                }
             })
         }
         else

@@ -69,34 +69,36 @@ function addUser($userData)
                         Cliquez sur le lien ci-dessous pour valider votre compte, vous<br>pourrez ensuite y accéder en vous connectant.";
                         $token = random_int(9547114, 735620051642661202).uniqid().random_int(635418, 866261402008688409);
                         $link = "http://localhost:3000/RegistrationConfirmation/".$username."/".$token."";
+                        $linktext = ">>>>>VALIDER MON COMPTE<<<<<";
                         
                         addUserInDatabase($lastname, $firstname, $username,	$email,	$password, $token);
-                        sendmail($email, $subject, $username, $body, $link);
+                        sendmail($email, $subject, $body, $link, $linktext);
+
                     }
                     else
                     {
-                        header("HTTP/1.1 500 reserved email");
+                        header("HTTP/1.1 409 reserved email");
                     }
                 }
                 else
                 {
-                    header("HTTP/1.1 500 reserved username");
+                    header("HTTP/1.1 409 reserved username");
                 }
             }
             else
             {
-                http_response_code(500);
+                http_response_code(400);
             }
         }
         else
         {
-            http_response_code(500);
+            http_response_code(400);
         }
         
     }
     else
     {
-        http_response_code(500);
+        http_response_code(400);
     }
 
 }

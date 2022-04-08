@@ -3,10 +3,14 @@
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Methods: *");
 
 
+// USERS FUNCTIONS
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/adduser.php");
-require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/confirmUserRegistration.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/validateUser.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/passwordOmission.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/resetPassword.php");
 
 
 
@@ -32,9 +36,33 @@ try {
                 {
                     addUser($data);
                 }
-                else if ( $action == 'confirm' )
+                else if ( $action == 'complete' )
                 {
-                    confirmUserRegistration($data);
+                    // completeUserData();
+                }
+                else
+                {
+                    throw new Exception ("Requête invalide");
+                }
+            break;
+            case "PATCH":
+                $data = json_decode(file_get_contents('php://input'));
+                $action = $urlData[4];
+                if ( $action == 'confirm' )
+                {
+                    validateUser($data);
+                }
+                else if ( $action == 'omission' )
+                {
+                    passwordOmission($data);
+                }
+                else if ( $action == 'reset' )
+                {
+                    resetPassword($data);
+                }
+                else
+                {
+                    throw new Exception ("Requête invalide");
                 }
             break;
             case "GET":
@@ -44,7 +72,7 @@ try {
                 // }
                 // else
                 // {
-                //     throw new Exception ("Les données URL sont invalides");
+                //     throw new Exception ("Requête invalide");
                 // }
             break;
         }
@@ -55,7 +83,7 @@ try {
     }
     else
     {
-        throw new Exception ("Les données URL sont invalides");
+        throw new Exception ("Requête invalide");
     }
 
 }

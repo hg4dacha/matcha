@@ -8,6 +8,12 @@ import { BsFillShieldLockFill } from 'react-icons/bs';
 import { IoLockOpen } from 'react-icons/io5';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import { TiInfoOutline } from 'react-icons/ti'
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Spinner from 'react-bootstrap/Spinner';
+
+
+
 
 
 const NewPassword = () => {
@@ -15,6 +21,9 @@ const NewPassword = () => {
     useEffect( () => {
         document.title = 'Nouveau mot de passe - Matcha'
     }, [])
+
+    const params = useParams();
+    const navigate = useNavigate();
 
     
     const loginData = {
@@ -39,15 +48,42 @@ const NewPassword = () => {
         setData({...data, [e.target.id]: e.target.value});
     }
     
+    const [spinner, setSpinner] = useState(false)
 
     const [errorMessage, setErrorMessage] = useState({ display: false, msg: "" })
 
+    
     const handleSubmit = e => {
         e.preventDefault()
+        setErrorMessage({ display: false, msg: "" })
 
-        if (password !== '' && passwordConfirmation !== '' && PASSWORD_REGEX.test(password) && password === passwordConfirmation) {
-
-            setErrorMessage({ display: false, msg: "" })
+        if (password !== '' && passwordConfirmation !== '' && PASSWORD_REGEX.test(password) && password === passwordConfirmation)
+        {
+            setSpinner(true);
+            const newPasswordData = {
+                userID: params.userID,
+                token: params.token,
+                newPassword: password,
+                newPasswordConfirm: passwordConfirmation
+            } 
+            // axios
+            axios.patch('/users/reset', newPasswordData)
+            .then( (response) => {
+                if (response.status === 200)
+                {
+                    console.log(response)
+                    navigate("/SignIn", {state: true});
+                }
+            })
+            .catch( (error) => {
+                if (error.request.statusText === 'error password')
+                {
+                    setErrorMessage({ display: true, msg: "Vos entrées ne sont pas valides" })
+                }
+                else {
+                    navigate("/NotFound");
+                }
+            })
         }
         else {
             setErrorMessage({ display: true, msg: "Vos entrées ne sont pas valides" })
@@ -95,7 +131,10 @@ const NewPassword = () => {
                             <Link to='/SignIn' className='forgotPassword' >Annuler</Link>
                         </div>
 
-                        <Button variant="primary" type='submit' className='submitBtnLarge' disabled={true}>Réinitialiser le mot de passe</Button>
+                        <Button variant="primary" type='submit' className='submitBtnLarge' disabled={true}>
+                            {spinner ? <Spinner className='mr-1' as="span" animation="border" size="sm" role="status" aria-hidden="true"/> : null}
+                            Réinitialiser le mot de passe
+                        </Button>
 
                     </Form>
                 </div>

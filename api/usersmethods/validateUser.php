@@ -6,7 +6,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php")
 
 
 
-function getTokenFromDatabase($username)
+function getTokenByUsername($username)
 {
     $dbc = db_connex();
     try {
@@ -37,7 +37,7 @@ function confirmRegistration($username, $newtoken)
 }
 	
 
-function confirmUserRegistration($data)
+function validateUser($data)
 {
     if ( (isset($data->username) && !empty($data->username)) &&
          (isset($data->token) && !empty($data->token))
@@ -48,7 +48,7 @@ function confirmUserRegistration($data)
 
         if ( checkUsernameExistence($username) == 1 )
         {
-            $tokenFromdatabse = getTokenFromDatabase($username);
+            $tokenFromdatabse = getTokenByUsername($username);
             if ( $tokenFromdatabse[0] == $token)
             {
                 $newtoken = uniqid().random_int(583483, 962379835641329875);
@@ -56,17 +56,17 @@ function confirmUserRegistration($data)
             }
             else
             {
-                header("HTTP/1.1 500 error data");
+                header("HTTP/1.1 409 error data");
             }
         }
         else
         {
-            header("HTTP/1.1 500 error data");
+            header("HTTP/1.1 409 error data");
         }
     }
     else
     {
-        http_response_code(500);
+        http_response_code(400);
     }
 }
 

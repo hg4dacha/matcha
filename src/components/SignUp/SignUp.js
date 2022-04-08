@@ -91,7 +91,7 @@ const SignUp = () => {
                             }
                         })
                         .catch( (error) => {
-                            console.log(error);
+                            setSpinner(false);
                             if (error.request.statusText === 'reserved email')
                             {
                                 setErrorMessage({ display: true, msg: "Cet email est déjà utilisé" })
