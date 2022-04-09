@@ -27,10 +27,15 @@ const SignIn = () => {
     const location = useLocation();
 
     useEffect( () => {
-            if(location.state)
+            if(location.state === 'confirm')
             {
                 setSuccessMessage(true);
                 setErrorMessage({ display: true, msg: "Felicitations ! Vous pouvez desormais vous connecter" });
+            }
+            else if(location.state === 'password')
+            {
+                setSuccessMessage(true);
+                setErrorMessage({ display: true, msg: "Le mot de passe a été modifié" });
             }
     }, [location.state])
     
@@ -84,7 +89,11 @@ const SignIn = () => {
                         <BiNetworkChart size='28' className='iconsFormsTittles' />
                         <span className='FormsTittle'>Connexion</span>
                     </div>
-                    <span className='center paragrInfo'>Pas encore de compte?<Link to='/SignUp' style={{fontStyle: 'initial'}}> Inscrivez-vous</Link></span>
+                    <span className='center paragrInfo'>Pas encore de compte?
+                        <Link to='/SignUp' style={{fontStyle: 'initial', marginLeft: '8px'}}>
+                            Inscrivez-vous
+                        </Link>
+                    </span>
                     
                     <Form className='forms' autoComplete="off" onSubmit={handleSubmit} >
 

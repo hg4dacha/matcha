@@ -77,12 +77,12 @@ function addUser($userData)
                     }
                     else
                     {
-                        header("HTTP/1.1 409 reserved email");
+                        header("HTTP/1.1 409 reserved username");
                     }
                 }
                 else
                 {
-                    header("HTTP/1.1 409 reserved username");
+                    header("HTTP/1.1 409 reserved email");
                 }
             }
             else

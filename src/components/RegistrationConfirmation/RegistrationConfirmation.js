@@ -23,7 +23,7 @@ const RegistrationConfirmation = () => {
             .then( (response) => {
                 if (response.status === 200)
                 {
-                    navigate("/SignIn", {state: true});
+                    navigate("/SignIn", {state: 'confirm'});
                 }
             })
             .catch( () => {

@@ -65,14 +65,12 @@ const NewPassword = () => {
                 token: params.token,
                 newPassword: password,
                 newPasswordConfirm: passwordConfirmation
-            } 
-            // axios
+            }
             axios.patch('/users/reset', newPasswordData)
             .then( (response) => {
                 if (response.status === 200)
                 {
-                    console.log(response)
-                    navigate("/SignIn", {state: true});
+                    navigate("/SignIn", {state: 'password'});
                 }
             })
             .catch( (error) => {
