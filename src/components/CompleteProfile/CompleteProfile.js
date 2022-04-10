@@ -552,7 +552,7 @@ const CompleteProfile = () => {
             <header>
                 <Alert variant='warning' className='complete-profile-alert'>
                     <TiInfo className='mr-2 complete-info-alert-logo' />
-                    Veuillez compléter votre profil afin d'accéder aux autres services
+                    Veuillez compléter votre profil pour accéder aux autres services
                 </Alert>
             </header>
             <div className='big-info-container centerElementsInPage'>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import FormsHeader from '../FormsHeader/FormsHeader';
 import { Link } from 'react-router-dom'
 import Form from 'react-bootstrap/Form';
@@ -10,7 +10,8 @@ import { BsFillShieldLockFill } from 'react-icons/bs';
 import { BiNetworkChart } from 'react-icons/bi';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import { IoShieldCheckmarkOutline } from 'react-icons/io5';
-
+import Spinner from 'react-bootstrap/Spinner';
+import axios from 'axios';
 
 
 
@@ -25,6 +26,7 @@ const SignIn = () => {
     }, [])
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect( () => {
             if(location.state === 'confirm')
@@ -63,15 +65,42 @@ const SignIn = () => {
     }
 
 
+    const [spinner, setSpinner] = useState(false)
+
     const [errorMessage, setErrorMessage] = useState({ display: false, msg: "" })
     const [successMessage, setSuccessMessage] = useState(false)
 
     const handleSubmit = e => {
         e.preventDefault()
+        setSuccessMessage(false);
 
         if (email !== '' && password !== '' && EMAIL_REGEX.test(email) && PASSWORD_REGEX.test(password))
         {
             setErrorMessage({ display: false, msg: "" })
+            setSpinner(true);
+
+            axios.post('/users/identification', data)
+            .then( (response) => {
+                console.log(response);
+                setData({
+                    email: '',
+                    password: ''
+                })
+                setSpinner(false);
+                if (response.status === 200)
+                {
+                    navigate("/Main");
+                }
+                else if (response.status === 206)
+                {
+                    navigate("/CompleteProfile");
+                }
+            })
+            .catch( () => {
+                setSpinner(false);
+                setErrorMessage({ display: true, msg: "Certaines de vos entrées ne sont pas valides" })
+            })
+
         }
         else
         {
@@ -122,7 +151,10 @@ const SignIn = () => {
                             </Form.Text>
                             <Link to='/ForgotPassword' className='forgotPassword' >Mot de passe oubllié?</Link>
                         </div>
-                        <Button variant="primary" type='submit' className='submitBtnSmall' disabled={true}>Connexion</Button>
+                        <Button variant="primary" type='submit' className='submitBtnSmall' disabled={true}>
+                            {spinner ? <Spinner className='mr-1' as="span" animation="border" size="sm" role="status" aria-hidden="true"/> : null}
+                            Connexion
+                        </Button>
 
                     </Form>
                 </div>

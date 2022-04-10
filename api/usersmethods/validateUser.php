@@ -48,8 +48,8 @@ function validateUser($data)
 
         if ( checkUsernameExistence($username) == 1 )
         {
-            $tokenFromdatabse = getTokenByUsername($username);
-            if ( $tokenFromdatabse[0] == $token)
+            $tokenDatabase = getTokenByUsername($username);
+            if ( $tokenDatabase[0] == $token)
             {
                 $newtoken = uniqid().random_int(583483, 962379835641329875);
                 confirmRegistration($username, $newtoken);

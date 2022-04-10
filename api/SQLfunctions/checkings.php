@@ -51,4 +51,28 @@ function checkEmailExistence($email)
 }
 
 
+
+
+// CHECK COMPLETED PROFILE
+function completedProfile($id)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqCheck = $dbc->prepare("SELECT profileCompleted FROM users WHERE id  = :id");
+        $reqCheck->bindValue(':id', $id, PDO::PARAM_STR);
+        $reqCheck->execute();
+        return $reqCheck->fetch();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
 ?>
