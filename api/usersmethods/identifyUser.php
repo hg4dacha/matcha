@@ -4,6 +4,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/configuration/database.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/updates.php");
 
 
 
@@ -58,7 +59,7 @@ function identifyUser($data)
                 
                 if ( $completedProfile[0] )
                 {
-                    http_response_code(200);
+                    updateUserConnection(TRUE, date(DATE_ATOM),$userID);
                 }
                 else
                 {

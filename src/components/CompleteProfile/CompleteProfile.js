@@ -24,6 +24,7 @@ import { FaSearchLocation, FaSlackHash } from "react-icons/fa";
 import { BsInfoCircle, BsPersonCheck } from "react-icons/bs";
 import { BiCalendarAlt } from "react-icons/bi";
 import { MdPhotoFilter } from "react-icons/md";
+import axios from 'axios';
 
 
 
@@ -423,8 +424,20 @@ const CompleteProfile = () => {
              descriptionInvalid === false && userTagsInvalid === false &&
              userLocationInvalid === false )
         {
-                console.log('SUCCESS')
-                // userPictures
+            if ( profilePicture.profilePicture )
+            {
+                // axios.post('/users/complement', data)
+                // .then( (response) => {
+                //     console.log(response);
+                // })
+                // .catch( (error) => {
+                // })
+            }
+            else
+            {
+                updateErrorAlert();
+                setProfilePictureDataError({ error: true, msg: 'Une photo de profil est obligatoire'});
+            }
         }
         else
         {

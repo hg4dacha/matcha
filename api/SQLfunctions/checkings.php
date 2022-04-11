@@ -60,7 +60,7 @@ function completedProfile($id)
     try
     {
         $reqCheck = $dbc->prepare("SELECT profileCompleted FROM users WHERE id  = :id");
-        $reqCheck->bindValue(':id', $id, PDO::PARAM_STR);
+        $reqCheck->bindValue(':id', $id, PDO::PARAM_INT);
         $reqCheck->execute();
         return $reqCheck->fetch();
     }
