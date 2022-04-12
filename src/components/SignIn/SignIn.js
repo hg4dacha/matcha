@@ -81,7 +81,6 @@ const SignIn = () => {
 
             axios.post('/users/identification', data)
             .then( (response) => {
-                console.log(response);
                 setData({
                     email: '',
                     password: ''
@@ -96,9 +95,16 @@ const SignIn = () => {
                     navigate("/CompleteProfile");
                 }
             })
-            .catch( () => {
+            .catch( (error) => {
                 setSpinner(false);
-                setErrorMessage({ display: true, msg: "Certaines de vos entrées ne sont pas valides" })
+                if (error.request.statusText === 'registration invalidated')
+                {
+                    setErrorMessage({ display: true, msg: "Votre inscription n'as pas été validé par email" })
+                }
+                else
+                {
+                    setErrorMessage({ display: true, msg: "Certaines de vos entrées ne sont pas valides" })
+                }
             })
 
         }

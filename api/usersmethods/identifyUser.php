@@ -55,15 +55,24 @@ function identifyUser($data)
             if ( password_verify($password, $passwordDatabase[0]) )
             {
                 $userID = getIdByEmail($email);
-                $completedProfile = completedProfile($userID[0]);
-                
-                if ( $completedProfile[0] )
+                $registrationValidated = registrationValidatedCheck($userID[0]);
+
+                if ( $registrationValidated[0] == TRUE )
                 {
-                    updateUserConnection(TRUE, date(DATE_ATOM),$userID);
+                    $completedProfile = completedProfileCheck($userID[0]);
+                    
+                    if ( $completedProfile[0] == TRUE )
+                    {
+                        updateUserConnection(TRUE, date(DATE_ATOM), $userID[0]);
+                    }
+                    else if ( $completedProfile[0] == FALSE )
+                    {
+                        http_response_code(206);
+                    }
                 }
                 else
                 {
-                    http_response_code(206);
+                    header("HTTP/1.1 400 registration invalidated");
                 }
             }
             else
