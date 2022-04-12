@@ -189,9 +189,8 @@ const CompleteProfile = () => {
 
         if (dateSelected)
         {
-            if ( (dateSelected instanceof Date) &&
-                    (Object.prototype.toString.call(dateSelected)) &&
-                    !(isNaN(dateSelected)) )
+            if ( (dateSelected instanceof Date) && (Object.prototype.toString.call(dateSelected)) &&
+                 !(isNaN(dateSelected)) )
             {
                 if ( (differenceInYears(new Date(), dateSelected)) > 18 &&
                     (differenceInYears(new Date(), dateSelected)) <= 130 )
@@ -386,7 +385,7 @@ const CompleteProfile = () => {
 
         if ( !isNaN(userLocation.lat) && !isNaN(userLocation.lng) )
         {
-            if (userLocation.country === 'France')
+            if (userLocation.country === 'Tunisie')
             {
                 setUserLocationDataError({ error: false, msg: '' });
                 return (false);
@@ -411,8 +410,11 @@ const CompleteProfile = () => {
 // _-_-_-_-_-_-_-_-_- SUBMIT COMPLEMENTARY INFORMATION -_-_-_-_-_-_-_-_-_
 
 
+    const[dataValidationWaiting, setDataValidationWaiting] = useState(false)
+
     const handleSubmitComplementaryInformation = e => {
         e.preventDefault();
+        setProfilePictureDataError({ error: false, msg: ''});
 
         const userAgeInvalid = userAgeChecking();
         const genderAndOrientationInvalid = genderAndOrientationChecking();
@@ -426,12 +428,25 @@ const CompleteProfile = () => {
         {
             if ( profilePicture.profilePicture )
             {
-                // axios.post('/users/complement', data)
-                // .then( (response) => {
-                //     console.log(response);
-                // })
-                // .catch( (error) => {
-                // })
+                setDataValidationWaiting(true);
+                axios.post('/users/conclude', {
+                    profilePicture: profilePicture,
+                    userPictures: userPictures,
+                    dateSelected: dateSelected,
+                    genderChecked: genderChecked,
+                    orientationChecked: orientationChecked,
+                    description: description,
+                    userTags: userTags,
+                    userLocation: userLocation
+                })
+                .then( (response) => {
+                    console.log(response.data);
+                    setDataValidationWaiting(false);
+                })
+                .catch( (error) => {
+                    console.log(error);
+                    setDataValidationWaiting(false);
+                })
             }
             else
             {
@@ -653,6 +668,7 @@ const CompleteProfile = () => {
                                         onChange={handleDateSelectedChange}
                                         locale={fr}
                                         dateFormat="dd/MM/yyyy"
+                                        maxDate={new Date()}
                                         closeOnScroll={true}
                                         isClearable={true}
                                         fixedHeight
@@ -807,7 +823,9 @@ const CompleteProfile = () => {
                     </div>
                     <hr className='hr-profile'/>
                     <button className='complete-profile-button' type='submit'>
-                        <RiSaveFill className='mr-1' />
+                        {dataValidationWaiting ?
+                        <Spinner className='mr-1' as="span" animation="border" size="sm" role="status" aria-hidden="true"/> :
+                        <RiSaveFill className='mr-1' />}
                         Enregistrer mes informations
                     </button>
                 </Form>

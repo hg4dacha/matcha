@@ -12,6 +12,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/validateUser.ph
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/passwordOmission.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/resetPassword.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/identifyUser.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/completeUserData.php");
 
 
 
@@ -37,9 +38,9 @@ try {
                 {
                     addUser($data);
                 }
-                else if ( $action == 'complete' )
+                else if ( $action == 'conclude' )
                 {
-                    // completeUserData($data);
+                    completeUserData($data);
                 }
                 else if ( $action == 'identification' )
                 {
