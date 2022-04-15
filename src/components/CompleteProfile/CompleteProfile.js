@@ -100,10 +100,10 @@ const CompleteProfile = () => {
 
     // USER PICTURES ↓↓↓
     const _userPictures = {
-        secondPicture: null,
-        thirdPicture: null,
-        fourthPicture: null,
-        fifthPicture: null
+        secondPicture: false,
+        thirdPicture: false,
+        fourthPicture: false,
+        fifthPicture: false
     }
     
     const [userPictures, setUserPictures] = useState(_userPictures)
@@ -157,7 +157,7 @@ const CompleteProfile = () => {
     // DELETE PICTURE ↓↓↓
     const handleDeletePicture = (e) => {
 
-        setUserPictures({...userPictures, [e.currentTarget.name]: null});
+        setUserPictures({...userPictures, [e.currentTarget.name]: false});
 
     }
 

@@ -188,7 +188,7 @@ const Profile = () => {
     const handleDeletePicture = (e) => {
 
         prevUserPicturesRef.current = userPictures;
-        setUserPictures({...userPictures, [e.currentTarget.name]: null});
+        setUserPictures({...userPictures, [e.currentTarget.name]: false});
 
     }
 

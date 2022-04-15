@@ -106,13 +106,14 @@ setGeolocationActivated, setUserLocationDataError, updateErrorAlert, zoom }) => 
             }
             else if (items)
             {
-                if (items.address.city && items.address.state && items.address.country)
+                if ( (items.address.city || items.address.city_district || items.address.town) &&
+                      items.address.state && items.address.country )
                 {
                     // TOTAL SUCCESS ↓↓↓
                     setUserLocation({
                         lat: temporaryCoordinates.lat,
                         lng: temporaryCoordinates.lng,
-                        city: items.address.city,
+                        city: items.address.city || items.address.city_district || items.address.town,
                         state: items.address.state,
                         country: items.address.country
                     });

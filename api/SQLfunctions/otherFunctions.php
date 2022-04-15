@@ -29,6 +29,45 @@ function checkProfilePicture($profilePicture)
 
 
 
+// CHECK USER PICTURES
+function checkUserPictures($userPictures)
+{
+    if ( isset($userPictures->secondPicture) &&
+         isset($userPictures->thirdPicture) &&
+         isset($userPictures->fourthPicture) &&
+         isset($userPictures->fifthPicture)
+       )
+    {
+        $secondPicture = htmlspecialchars($userPictures->secondPicture);
+        $thirdPicture = htmlspecialchars($userPictures->thirdPicture);
+        $fourthPicture = htmlspecialchars($userPictures->fourthPicture);
+        $fifthPicture = htmlspecialchars($userPictures->fifthPicture);
+
+        if ( ((base64_decode($secondPicture, true) === false) || $secondPicture == FALSE) &&
+             ((base64_decode($thirdPicture, true) === false) || $thirdPicture == FALSE) &&
+             ((base64_decode($fourthPicture, true) === false) || $fourthPicture == FALSE) &&
+             ((base64_decode($fifthPicture, true) === false) || $fifthPicture == FALSE)
+           )
+        {
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
+    else
+    {
+        return TRUE;
+    }
+}
+
+
+
+
+
+
+
 // CHECK DATE FORMAT
 function validateDate($date, $format)
 {

@@ -35,7 +35,7 @@ const tags = [
 
 const AccessProfile = (props) => {
 
-    const UserPhotos = [selfie22, selfie, jeanma1, jeanma2, jeanma3]
+    const userPhotos = [selfie22, selfie, jeanma1, jeanma2, jeanma3]
 
 
 
@@ -156,7 +156,7 @@ const AccessProfile = (props) => {
             <div className='profile-description'>
                 <div className='photos-part'>
                     <div className='photos-list'>
-                        <Carousel UserPhotos={UserPhotos} forPictureSize={pictureSize} />
+                        <Carousel userPhotos={userPhotos} forPictureSize={pictureSize} />
                     </div>
                 </div>
                 <div className='infos-part'>
