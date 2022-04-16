@@ -10,7 +10,8 @@ function checkProfilePicture($profilePicture)
         $profilePicture = htmlspecialchars($profilePicture->profilePicture);
         if (base64_decode($profilePicture, true) === false)
         {
-            return TRUE;
+            // return TRUE;
+            echo (gettype($profilePicture));
         }
         else
         {
@@ -75,16 +76,16 @@ function validateDate($date, $format)
     return $d && $d->format($format) == $date;
 }
 
-function checkDate($dateSelected)
+function checkAge($dateSelected)
 {
     $dateSelected = date(DATE_ATOM, strtotime($dateSelected));
     if (validateDate($dateSelected, DateTime::ATOM))
     {
-        $dateSelectedError = FALSE;
+        return FALSE;
     }
     else
     {
-        $dateSelectedError = TRUE;
+        return TRUE;
     }
 }
 
@@ -97,23 +98,14 @@ function checkDate($dateSelected)
 // CHECK GENDER
 function checkGender($genderChecked)
 {
-    if ( (isset($genderChecked->maleGender) && !empty($genderChecked->maleGender)) &&
-         (isset($genderChecked->femaleGender) && !empty($genderChecked->femaleGender))
-       )
+    if ( isset($genderChecked->maleGender) && isset($genderChecked->femaleGender) )
     {
-        $maleGender = htmlspecialchars($genderChecked->maleGender);
-        $femaleGender = htmlspecialchars($genderChecked->femaleGender);
+        $maleGender = filter_var(htmlspecialchars($genderChecked->maleGender), FILTER_VALIDATE_BOOLEAN);
+        $femaleGender = filter_var(htmlspecialchars($genderChecked->femaleGender), FILTER_VALIDATE_BOOLEAN);
 
-        if ( is_bool($maleGender) && is_bool($femaleGender) )
+        if ( $maleGender != $femaleGender )
         {
-            if ( $maleGender != $femaleGender )
-            {
-                return FALSE;
-            }
-            else
-            {
-                return TRUE;
-            }
+            return FALSE;
         }
         else
         {
@@ -135,23 +127,14 @@ function checkGender($genderChecked)
 // CHECK ORIENTATION
 function checkOrientation($orientationChecked)
 {
-    if ( (isset($orientationChecked->maleOrientation) && !empty($orientationChecked->maleOrientation)) &&
-         (isset($orientationChecked->femaleOrientation) && !empty($orientationChecked->femaleOrientation))
-       )
+    if ( isset($orientationChecked->maleOrientation) && isset($orientationChecked->femaleOrientation) )
     {
-        $maleOrientation = htmlspecialchars($orientationChecked->maleOrientation);
-        $femaleOrientation = htmlspecialchars($orientationChecked->femaleOrientation);
+        $maleOrientation = filter_var(htmlspecialchars($orientationChecked->maleOrientation), FILTER_VALIDATE_BOOLEAN);
+        $femaleOrientation = filter_var(htmlspecialchars($orientationChecked->femaleOrientation), FILTER_VALIDATE_BOOLEAN);
 
-        if ( is_bool($maleOrientation) && is_bool($femaleOrientation) )
+        if ( $maleOrientation == TRUE || $femaleOrientation == TRUE )
         {
-            if ( $maleOrientation == TRUE || $femaleOrientation == TRUE )
-            {
-                return FALSE;
-            }
-            else
-            {
-                return TRUE;
-            }
+            return FALSE;
         }
         else
         {
@@ -175,11 +158,11 @@ function checkDescription($description)
 {
     if ($description != '' && strlen($description) <= 650)
     {
-        $descriptionError = FALSE;
+        return FALSE;
     }
     else
     {
-        $descriptionError = TRUE;
+        return TRUE;
     }
 }
 
@@ -189,21 +172,20 @@ function checkDescription($description)
 
 
 
-// TAGS DATA
-$tagsData = [
-    "food", "science", "intello", "coding", "dodo", "bio", "geek", "vegan",
-    "artiste", "meditation", "paresse", "fitness", "aventure", "timide", "marketing",
-    "fastfood", "intelligence", "humour", "cool", "highTech", "globetrotting", "histoire",
-    "shopping", "nature", "sport", "football", "literature", "math", "action", "faitsDivers",
-    "decouverte", "cinema", "musique", "actualite", "politique", "social", "etudes",
-    "cuisine", "humanitaire", "animaux", "environnement", "jeuxVideo", "peinture", "dessin",
-    "ecriture", "lecture", "photographie", "chasse", "randonnee", "marche", "plage", "detente",
-    "automobile", "couture", "innovation", "terroir", "informatique", "marathon", "blogging"
-];
-
 // CHECK USER TAGS
 function checkUserTags($userTags)
 {
+    $tagsData = [
+        "food", "science", "intello", "coding", "dodo", "bio", "geek", "vegan",
+        "artiste", "meditation", "paresse", "fitness", "aventure", "timide", "marketing",
+        "fastfood", "intelligence", "humour", "cool", "highTech", "globetrotting", "histoire",
+        "shopping", "nature", "sport", "football", "literature", "math", "action", "faitsDivers",
+        "decouverte", "cinema", "musique", "actualite", "politique", "social", "etudes",
+        "cuisine", "humanitaire", "animaux", "environnement", "jeuxVideo", "peinture", "dessin",
+        "ecriture", "lecture", "photographie", "chasse", "randonnee", "marche", "plage", "detente",
+        "automobile", "couture", "innovation", "terroir", "informatique", "marathon", "blogging"
+    ];
+
     if ( count($userTags) == 5 )
     {
         $tag1 = htmlspecialchars($userTags[0]);
@@ -277,7 +259,7 @@ function checkLocation($userLocation)
 
             if ( ($city == $reqCity) && ($state == $reqState) && ($country == $reqCountry) )
             {
-                if ( $city == "France" )
+                if ( $country == "Tunisie" )
                 {
                     return FALSE;
                 }

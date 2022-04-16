@@ -31,7 +31,7 @@ function completeUserData($data)
     
         // CHECK DATE
         $dateSelected = htmlspecialchars($data->dateSelected);
-        $dateSelectedError = checkDate($dateSelected);
+        $dateSelectedError = checkAge($dateSelected);
 
 
         // CHECK GENDER
@@ -57,20 +57,20 @@ function completeUserData($data)
         // CHECK USER LOCATION
         $userLocation = $data->userLocation;
         $userLocationError = checkLocation($userLocation);
+// var_dump($profilePictureError);
 
+        // if ( $profilePictureError == FALSE && $userPicturesError == FALSE &&
+        //      $dateSelectedError == FALSE && $genderCheckedError == FALSE &&
+        //      $orientationCheckedError == FALSE && $descriptionError == FALSE &&
+        //      $userTagsError == FALSE && $userLocationError == FALSE
+        //    )
+        // {
 
-        if ( $profilePictureError == FALSE && $userPicturesError == FALSE &&
-             $dateSelectedError == FALSE && $genderCheckedError == FALSE &&
-             $orientationCheckedError == FALSE && $descriptionError == FALSE &&
-             $userTagsError == FALSE && $userLocationError == FALSE
-           )
-        {
-
-        }
-        else
-        {
-            http_response_code(400);
-        }
+        // }
+        // else
+        // {
+        //     http_response_code(400);
+        // }
     }
     else
     {
