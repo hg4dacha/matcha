@@ -57,20 +57,20 @@ function completeUserData($data)
         // CHECK USER LOCATION
         $userLocation = $data->userLocation;
         $userLocationError = checkLocation($userLocation);
-// var_dump($profilePictureError);
 
-        // if ( $profilePictureError == FALSE && $userPicturesError == FALSE &&
-        //      $dateSelectedError == FALSE && $genderCheckedError == FALSE &&
-        //      $orientationCheckedError == FALSE && $descriptionError == FALSE &&
-        //      $userTagsError == FALSE && $userLocationError == FALSE
-        //    )
-        // {
 
-        // }
-        // else
-        // {
-        //     http_response_code(400);
-        // }
+        if ( $profilePictureError == FALSE && $userPicturesError == FALSE &&
+             $dateSelectedError == FALSE && $genderCheckedError == FALSE &&
+             $orientationCheckedError == FALSE && $descriptionError == FALSE &&
+             $userTagsError == FALSE && $userLocationError == FALSE
+           )
+        {
+            echo "TOUT EST OK";
+        }
+        else
+        {
+            http_response_code(400);
+        }
     }
     else
     {

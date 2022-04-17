@@ -8,10 +8,27 @@ function checkProfilePicture($profilePicture)
     if ( isset($profilePicture->profilePicture) && !empty($profilePicture->profilePicture) )
     {
         $profilePicture = htmlspecialchars($profilePicture->profilePicture);
-        if (base64_decode($profilePicture, true) === false)
+
+        if ( strpos($profilePicture, "data:image/png;base64,") !== false )
         {
-            // return TRUE;
-            echo (gettype($profilePicture));
+            $picture_base64 = str_replace('data:image/png;base64,', '', $profilePicture);
+        }
+        else if ( strpos($profilePicture, "data:image/jpeg;base64,") !== false )
+        {
+            $picture_base64 = str_replace('data:image/jpeg;base64,', '', $profilePicture);
+        }
+        else if ( strpos($profilePicture, "data:image/jpg;base64,") !== false )
+        {
+            $picture_base64 = str_replace('data:image/jpg;base64,', '', $profilePicture);
+        }
+        else
+        {
+            return TRUE;
+        }
+
+        if (base64_decode($picture_base64, true) === false)
+        {
+            return TRUE;
         }
         else
         {
@@ -44,17 +61,79 @@ function checkUserPictures($userPictures)
         $fourthPicture = htmlspecialchars($userPictures->fourthPicture);
         $fifthPicture = htmlspecialchars($userPictures->fifthPicture);
 
-        if ( ((base64_decode($secondPicture, true) === false) || $secondPicture == FALSE) &&
-             ((base64_decode($thirdPicture, true) === false) || $thirdPicture == FALSE) &&
-             ((base64_decode($fourthPicture, true) === false) || $fourthPicture == FALSE) &&
-             ((base64_decode($fifthPicture, true) === false) || $fifthPicture == FALSE)
+
+        $secondPicture_base64 = null;
+        if ( ($secondPicture !== false) && (strpos($secondPicture, "data:image/png;base64,") !== false) )
+        {
+            $secondPicture_base64 = str_replace('data:image/png;base64,', '', $secondPicture);
+        }
+        else if ( ($secondPicture !== false) && (strpos($secondPicture, "data:image/jpeg;base64,") !== false) )
+        {
+            $secondPicture_base64 = str_replace('data:image/jpeg;base64,', '', $secondPicture);
+        }
+        else if ( ($secondPicture !== false) && (strpos($secondPicture, "data:image/jpg;base64,") !== false) )
+        {
+            $secondPicture_base64 = str_replace('data:image/jpg;base64,', '', $secondPicture);
+        }
+
+
+        $thirdPicture_base64 = null;
+        if ( ($thirdPicture !== false) && (strpos($thirdPicture, "data:image/png;base64,") !== false) )
+        {
+            $thirdPicture_base64 = str_replace('data:image/png;base64,', '', $thirdPicture);
+        }
+        else if ( ($thirdPicture !== false) && (strpos($thirdPicture, "data:image/jpeg;base64,") !== false) )
+        {
+            $thirdPicture_base64 = str_replace('data:image/jpeg;base64,', '', $thirdPicture);
+        }
+        else if ( ($thirdPicture !== false) && (strpos($thirdPicture, "data:image/jpg;base64,") !== false) )
+        {
+            $thirdPicture_base64 = str_replace('data:image/jpg;base64,', '', $thirdPicture);
+        }
+
+
+        $fourthPicture_base64 = null;
+        if ( ($fourthPicture !== false) && (strpos($fourthPicture, "data:image/png;base64,") !== false) )
+        {
+            $fourthPicture_base64 = str_replace('data:image/png;base64,', '', $fourthPicture);
+        }
+        else if ( ($fourthPicture !== false) && (strpos($fourthPicture, "data:image/jpeg;base64,") !== false) )
+        {
+            $fourthPicture_base64 = str_replace('data:image/jpeg;base64,', '', $fourthPicture);
+        }
+        else if ( ($fourthPicture !== false) && (strpos($fourthPicture, "data:image/jpg;base64,") !== false) )
+        {
+            $fourthPicture_base64 = str_replace('data:image/jpg;base64,', '', $fourthPicture);
+        }
+
+
+        $fifthPicture_base64 = null;
+        if ( ($fifthPicture !== false) && (strpos($fifthPicture, "data:image/png;base64,") !== false) )
+        {
+            $fifthPicture_base64 = str_replace('data:image/png;base64,', '', $fifthPicture);
+        }
+        else if ( ($fifthPicture !== false) && (strpos($fifthPicture, "data:image/jpeg;base64,") !== false) )
+        {
+            $fifthPicture_base64 = str_replace('data:image/jpeg;base64,', '', $fifthPicture);
+        }
+        else if ( ($fifthPicture !== false) && (strpos($fifthPicture, "data:image/jpg;base64,") !== false) )
+        {
+            $fifthPicture_base64 = str_replace('data:image/jpg;base64,', '', $fifthPicture);
+        }
+
+
+
+        if ( ((base64_decode($secondPicture_base64, true) === false) && $secondPicture !== FALSE) &&
+             ((base64_decode($thirdPicture_base64, true) === false) && $thirdPicture !== FALSE) &&
+             ((base64_decode($fourthPicture_base64, true) === false) && $fourthPicture !== FALSE) &&
+             ((base64_decode($fifthPicture_base64, true) === false) && $fifthPicture !== FALSE)
            )
         {
-            return FALSE;
+            return TRUE;
         }
         else
         {
-            return TRUE;
+            return FALSE;
         }
     }
     else
