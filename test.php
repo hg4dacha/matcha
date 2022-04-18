@@ -13,8 +13,10 @@
 //     echo "HELLO WORLD!";
 // }
 
-$string = "SALUT COMMMENT CA VA TOI ET VMDF:MVDFMVF:MVDFLMVDFNM:KLSBN: EPPPEPEPP DPFEFEWP PFEWKK EKWPFK KFP WEKFPK FKWEPFKP WKPFWPEFKPWE KEKPFW EFKWP";
-var_dump(strpos($string, "VMDF:MVDFMVF:VDFLMVDFNM:KLSBN:"));
+$userID = 93;
+$pictureID = $userID.uniqid();
+
+echo $pictureID;
 
 
 ?>

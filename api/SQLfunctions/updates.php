@@ -28,4 +28,53 @@ function updateUserConnection($connectionStatue, $lastConnection, $userID)
 }
 
 
+// INSERT PROFILE PICTURE
+function insertProfilePicture($userID, $picturePath)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqInsert = $dbc->prepare("INSERT INTO pictures (userID, profilePicture)
+                                    VALUES (:userID, :picturePath)");
+        $reqInsert->bindValue(':picturePath', $picturePath, PDO::PARAM_STR);
+        $reqInsert->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqInsert->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+// INSERT USER PICTURES
+function insertUserPictures($secondPicture, $thirdPicture, $fourthPicture, $fifthPicture)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqInsert = $dbc->prepare("INSERT INTO pictures (secondPicture, thirdPicture, fourthPicture, fifthPicture)
+                                    VALUES (:secondPicture, :thirdPicture, :fourthPicture, :fifthPicture)");
+        $reqInsert->bindValue(':secondPicture', $secondPicture, PDO::PARAM_STR);
+        $reqInsert->bindValue(':thirdPicture', $thirdPicture, PDO::PARAM_STR);
+        $reqInsert->bindValue(':fourthPicture', $fourthPicture, PDO::PARAM_STR);
+        $reqInsert->bindValue(':fifthPicture', $fifthPicture, PDO::PARAM_STR);
+        $reqInsert->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
 ?>

@@ -2,7 +2,9 @@
 
 
 
-require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/otherFunctions.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/functions/checkCompleteProfileData.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/functions/formattedCompleteProfileData.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php");
 
 
 
@@ -59,13 +61,22 @@ function completeUserData($data)
         $userLocationError = checkLocation($userLocation);
 
 
-        if ( $profilePictureError == FALSE && $userPicturesError == FALSE &&
-             $dateSelectedError == FALSE && $genderCheckedError == FALSE &&
-             $orientationCheckedError == FALSE && $descriptionError == FALSE &&
-             $userTagsError == FALSE && $userLocationError == FALSE
+        if ( $profilePictureError === FALSE && $userPicturesError === FALSE &&
+             $dateSelectedError === FALSE && $genderCheckedError === FALSE &&
+             $orientationCheckedError === FALSE && $descriptionError === FALSE &&
+             $userTagsError === FALSE && $userLocationError === FALSE
            )
         {
-            echo "TOUT EST OK";
+            $registrationValidated = registrationValidatedCheck(62);
+
+            if ( $registrationValidated[0] == TRUE )
+            {
+                formattedProfilePicture($profilePicture);
+            }
+            else
+            {
+                http_response_code(400);
+            }
         }
         else
         {
