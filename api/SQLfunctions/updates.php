@@ -53,18 +53,39 @@ function insertProfilePicture($userID, $picturePath)
 
 
 // INSERT USER PICTURES
-function insertUserPictures($secondPicture, $thirdPicture, $fourthPicture, $fifthPicture)
+function insertUserPictures($userID, $pictureNumber, $picturePath)
 {
     $dbc = db_connex();
     try
     {
-        $reqInsert = $dbc->prepare("INSERT INTO pictures (secondPicture, thirdPicture, fourthPicture, fifthPicture)
-                                    VALUES (:secondPicture, :thirdPicture, :fourthPicture, :fifthPicture)");
-        $reqInsert->bindValue(':secondPicture', $secondPicture, PDO::PARAM_STR);
-        $reqInsert->bindValue(':thirdPicture', $thirdPicture, PDO::PARAM_STR);
-        $reqInsert->bindValue(':fourthPicture', $fourthPicture, PDO::PARAM_STR);
-        $reqInsert->bindValue(':fifthPicture', $fifthPicture, PDO::PARAM_STR);
-        $reqInsert->execute();
+        $reqUpdate = $dbc->prepare("UPDATE pictures SET ".$pictureNumber." = :picturePath WHERE userID = :userID");
+        $reqUpdate->bindValue(':picturePath', $picturePath, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+// PICTURE NULL
+function updatePictureNull($userID, $pictureNumber)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE pictures SET ".$pictureNumber." = NULL WHERE userID = :userID");
+        // $reqUpdate->bindValue(':pictureNumber', $pictureNumber, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate->execute();
     }
     catch(PDOException $e)
     {

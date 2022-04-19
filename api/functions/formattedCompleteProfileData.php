@@ -30,22 +30,94 @@ function formattedProfilePicture($profilePicture)
 
         if ( $mime_type == 'image/jpeg' )
         {
-            $picturePath = '/opt/lampp/htdocs/matcha/api/userImages/'.$pictureID.'.jpeg';
+            $picturePath = 'http://localhost:8080/matcha/api/pictures/'.$pictureID.'.jpeg';
             $newPicture = imagecreatefromstring($profilePicture);
-            imagejpeg($newPicture, $picturePath);
+            imagejpeg($newPicture, '/opt/lampp/htdocs/matcha/api/pictures/'.$pictureID.'.jpeg');
             imagedestroy($newPicture);
-            chmod('/opt/lampp/htdocs/matcha/api/userImages/'.$pictureID.'.jpeg', 0777);
+            chmod('/opt/lampp/htdocs/matcha/api/pictures/'.$pictureID.'.jpeg', 0777);
         }
         else
         {
-            $picturePath = '/opt/lampp/htdocs/matcha/api/userImages/'.$pictureID.'.png';
+            $picturePath = 'http://localhost:8080/matcha/api/pictures/'.$pictureID.'.png';
             $newPicture = imagecreatefromstring($profilePicture);
-            imagepng($newPicture, $picturePath);
+            imagepng($newPicture, '/opt/lampp/htdocs/matcha/api/pictures/'.$pictureID.'.png');
             imagedestroy($newPicture);
-            chmod('/opt/lampp/htdocs/matcha/api/userImages/'.$pictureID.'.png', 0777);
+            chmod('/opt/lampp/htdocs/matcha/api/pictures/'.$pictureID.'.png', 0777);
         }
 
         insertProfilePicture($userID, $picturePath);
+    }
+}
+
+
+
+
+
+
+function formattedPicture($userID, $picture, $pictureNumber)
+{
+    if ( $picture == FALSE )
+    {
+        updatePictureNull($userID, $pictureNumber);
+        return;
+    }
+    else
+    {
+        $picture = htmlspecialchars($picture);
+        
+        if ( strpos($picture, "data:image/png;base64,") !== false ) {
+            $picture = str_replace('data:image/png;base64,', '', $picture);
+        } else if ( strpos($picture, "data:image/jpeg;base64,") !== false ) {
+            $picture = str_replace('data:image/jpeg;base64,', '', $picture);
+        } else if ( strpos($picture, "data:image/jpg;base64,") !== false ) {
+            $picture = str_replace('data:image/jpg;base64,', '', $picture);
+        }
+
+        $picture = base64_decode($picture);
+        $f = finfo_open();
+        $mime_type = finfo_buffer($f, $picture, FILEINFO_MIME_TYPE);
+        $pictureID = $userID.uniqid();
+
+        if ( $mime_type == 'image/jpeg' )
+        {
+            $picturePath = 'http://localhost:8080/matcha/api/pictures/'.$pictureID.'.jpeg';
+            $newPicture = imagecreatefromstring($picture);
+            imagejpeg($newPicture, '/opt/lampp/htdocs/matcha/api/pictures/'.$pictureID.'.jpeg');
+            imagedestroy($newPicture);
+            chmod('/opt/lampp/htdocs/matcha/api/pictures/'.$pictureID.'.jpeg', 0777);
+        }
+        else
+        {
+            $picturePath = 'http://localhost:8080/matcha/api/pictures/'.$pictureID.'.png';
+            $newPicture = imagecreatefromstring($picture);
+            imagepng($newPicture, '/opt/lampp/htdocs/matcha/api/pictures/'.$pictureID.'.png');
+            imagedestroy($newPicture);
+            chmod('/opt/lampp/htdocs/matcha/api/pictures/'.$pictureID.'.png', 0777);
+        }
+
+        insertUserPictures($userID, $pictureNumber, $picturePath);
+    }
+}
+
+function userPicturesTraitement($userPictures)
+{
+    if ( isset($userPictures->secondPicture) &&
+         isset($userPictures->thirdPicture) &&
+         isset($userPictures->fourthPicture) &&
+         isset($userPictures->fifthPicture)
+       )
+    {
+        $secondPicture = htmlspecialchars($userPictures->secondPicture);
+        $thirdPicture = htmlspecialchars($userPictures->thirdPicture);
+        $fourthPicture = htmlspecialchars($userPictures->fourthPicture);
+        $fifthPicture = htmlspecialchars($userPictures->fifthPicture);
+
+        $userID = 63;
+
+        formattedPicture($userID, $secondPicture, "secondPicture");
+        formattedPicture($userID, $thirdPicture, "thirdPicture");
+        formattedPicture($userID, $fourthPicture, "fourthPicture");
+        formattedPicture($userID, $fifthPicture, "fifthPicture");
     }
 }
 
