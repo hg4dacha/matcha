@@ -70,32 +70,38 @@ const CompleteProfile = () => {
         .then( (response) => {
             if (response.status === 200)
             {
-                console.log(response.data)
-                // setInfoData([
-                //     {
-                //         label: 'Nom',
-                //         info: ""
-                //     },
-                //     {
-                //         label: 'Prénom',
-                //         info: ""
-                //     },
-                //     {
-                //         label: 'Nom d\'utilisateur',
-                //         info: ""
-                //     },
-                //     {
-                //         label: 'E-mail',
-                //         info: ""
-                //     }
-                // ])
+                setInfoData([
+                    {
+                        label: 'Nom',
+                        info: response.data.lastname
+                    },
+                    {
+                        label: 'Prénom',
+                        info: response.data.firstname
+                    },
+                    {
+                        label: 'Nom d\'utilisateur',
+                        info: response.data.username
+                    },
+                    {
+                        label: 'E-mail',
+                        info: response.data.email
+                    }
+                ])
             }
         })
         .catch( (error) => {
-            navigate("/Main");
+            if (error.request.statusText === 'registration invalidated')
+            {
+                navigate("/SignIn")
+            }
+            else
+            {
+                navigate("/NotFound");
+            }
         })
 
-    }, [])
+    }, [navigate])
     
 
 // _-_-_-_-_-_-_-_-_- PROFILE PICTURE SECTION -_-_-_-_-_-_-_-_-_

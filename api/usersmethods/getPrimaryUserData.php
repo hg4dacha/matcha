@@ -7,6 +7,28 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php")
 
 
 
+function primaryUserData($userID)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare("SELECT lastname, firstname, username, email FROM users WHERE id  = :userID");
+        $reqSelect->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->fetch();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
 function getPrimaryUserData($userID)
 {
     if ( isset($userID) && !empty($userID) )
@@ -15,11 +37,13 @@ function getPrimaryUserData($userID)
         {
             if ( checkIDExistence($userID) == 1 )
             {
-                if ( registrationValidatedCheck($userID) == TRUE )
+                $registrationValidated = registrationValidatedCheck($userID);
+                if ( $registrationValidated[0] == TRUE )
                 {
-                    if ( completedProfileCheck($userID) == FALSE )
+                    $completedProfile = completedProfileCheck($userID);
+                    if ( $completedProfile[0] == FALSE )
                     {
-                        
+                        echo(json_encode(primaryUserData($userID)));
                     }
                     else
                     {
@@ -28,7 +52,7 @@ function getPrimaryUserData($userID)
                 }
                 else
                 {
-                    header("HTTP/1.1 400 registration not valid");
+                    header("HTTP/1.1 400 registration invalidated");
                 }
             }
             else

@@ -13,6 +13,8 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/passwordOmissio
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/resetPassword.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/identifyUser.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/completeUserData.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getPrimaryUserData.php");
+
 
 
 
