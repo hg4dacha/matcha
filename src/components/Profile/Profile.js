@@ -100,6 +100,10 @@ const Profile = () => {
                 setProfilePictureLoading({ profilePicture: false});
             }
         }
+        else
+        {
+            setProfilePictureLoading({ profilePicture: false });
+        }
 
     }
 
@@ -180,6 +184,10 @@ const Profile = () => {
                 setPictureDataError({ error: true, msg: " Seul les fichiers 'jpeg', 'jpg' et 'png' sont acceptés"});
                 setPictureLoading({...pictureLoading, [e.target.id]: false});
             }
+        }
+        else
+        {
+            setPictureLoading({...pictureLoading, [e.target.id]: false});
         }
 
     }

@@ -340,7 +340,7 @@ function checkLocation($userLocation)
 
             if ( ($city == $reqCity) && ($state == $reqState) && ($country == $reqCountry) )
             {
-                if ( $country == "Tunisie" )
+                if ( $country == "France" )
                 {
                     return FALSE;
                 }

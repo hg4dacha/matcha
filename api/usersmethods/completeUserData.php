@@ -5,6 +5,29 @@
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/functions/checkCompleteProfileData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/functions/formattedCompleteProfileData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/updates.php");
+
+
+
+
+function profileCompletedValidate($userID)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET profileCompleted = TRUE WHERE id = :userID");
+        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
 
 
 
@@ -16,9 +39,9 @@ function completeUserData($data)
          (isset($data->dateSelected) && !empty($data->dateSelected)) &&
          (isset($data->genderChecked) && !empty($data->genderChecked)) &&
          (isset($data->orientationChecked) && !empty($data->orientationChecked)) &&
-         (isset($data->description) && !empty($data->description)) &&
+         (isset($data->userLocation) && !empty($data->userLocation)) &&
          (isset($data->userTags) && !empty($data->userTags)) &&
-         (isset($data->userLocation) && !empty($data->userLocation))
+         (isset($data->description) && !empty($data->description))
        )
     {
         // CHECK PROFILE PICTURE
@@ -44,11 +67,11 @@ function completeUserData($data)
         // CHECK ORIENTATION
         $orientationChecked = $data->orientationChecked;
         $orientationCheckedError = checkOrientation($orientationChecked);
+        
 
-
-        // CHECK DESCRIPTION
-        $description = htmlspecialchars($data->description);
-        $descriptionError = checkDescription($description);
+        // CHECK USER LOCATION
+        $userLocation = $data->userLocation;
+        $userLocationError = checkLocation($userLocation);
 
 
         // CHECK USER TAGS
@@ -56,15 +79,15 @@ function completeUserData($data)
         $userTagsError = checkUserTags($userTags);
 
 
-        // CHECK USER LOCATION
-        $userLocation = $data->userLocation;
-        $userLocationError = checkLocation($userLocation);
+        // CHECK DESCRIPTION
+        $description = htmlspecialchars($data->description);
+        $descriptionError = checkDescription($description);
 
 
         if ( $profilePictureError === FALSE && $userPicturesError === FALSE &&
              $dateSelectedError === FALSE && $genderCheckedError === FALSE &&
-             $orientationCheckedError === FALSE && $descriptionError === FALSE &&
-             $userTagsError === FALSE && $userLocationError === FALSE
+             $orientationCheckedError === FALSE && $userLocationError === FALSE &&
+             $userTagsError === FALSE && $descriptionError === FALSE
            )
         {
             $registrationValidated = registrationValidatedCheck(62);
@@ -72,6 +95,15 @@ function completeUserData($data)
             if ( $registrationValidated[0] == TRUE )
             {
                 formattedProfilePicture($profilePicture);
+                userPicturesTreatment($userPictures);
+                userBirthdateTreatment($dateSelected);
+                userGenderTreatment($genderChecked);
+                userOrientationTreatment($orientationChecked);
+                userLocationTreatment($userLocation);
+                userTagsTreatment($userTags);
+                userDescriptionTreatment($description);
+                profileCompletedValidate(63);
+                updateUserConnection(TRUE, date(DATE_ATOM), 63);
             }
             else
             {

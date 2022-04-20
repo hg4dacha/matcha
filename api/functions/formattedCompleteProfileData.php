@@ -99,7 +99,7 @@ function formattedPicture($userID, $picture, $pictureNumber)
     }
 }
 
-function userPicturesTraitement($userPictures)
+function userPicturesTreatment($userPictures)
 {
     if ( isset($userPictures->secondPicture) &&
          isset($userPictures->thirdPicture) &&
@@ -119,6 +119,93 @@ function userPicturesTraitement($userPictures)
         formattedPicture($userID, $fourthPicture, "fourthPicture");
         formattedPicture($userID, $fifthPicture, "fifthPicture");
     }
+}
+
+
+
+
+
+
+
+function userBirthdateTreatment($dateSelected)
+{
+    $dateSelected = date(DATE_ATOM, strtotime($dateSelected));
+    $userID = 63;
+    updateUserBirthdate($userID, $dateSelected);
+}
+
+
+
+
+
+function userGenderTreatment($genderChecked)
+{
+    if ( isset($genderChecked->maleGender) && isset($genderChecked->femaleGender) )
+    {
+        $maleGender = filter_var(htmlspecialchars($genderChecked->maleGender), FILTER_VALIDATE_BOOLEAN);
+        $femaleGender = filter_var(htmlspecialchars($genderChecked->femaleGender), FILTER_VALIDATE_BOOLEAN);
+        $userID = 63;
+
+        if ( $maleGender == TRUE )
+        {
+            updateUserGender($userID, "MALE");
+        }
+        else if ( $femaleGender == TRUE )
+        {
+            updateUserGender($userID, "FEMALE");
+        }
+    }
+}
+
+
+
+
+
+function userOrientationTreatment($orientationChecked)
+{
+    if ( isset($orientationChecked->maleOrientation) && isset($orientationChecked->femaleOrientation) )
+    {
+        $maleOrientation = filter_var(htmlspecialchars($orientationChecked->maleOrientation), FILTER_VALIDATE_BOOLEAN);
+        $femaleOrientation = filter_var(htmlspecialchars($orientationChecked->femaleOrientation), FILTER_VALIDATE_BOOLEAN);
+        $userID = 63;
+
+        if ( $maleOrientation == TRUE || $femaleOrientation == TRUE )
+        {
+            updateUserOrientation($userID, $maleOrientation, $femaleOrientation);
+        }
+    }
+}
+
+
+
+
+
+function userLocationTreatment($userLocation)
+{
+        $userID = 63;
+        $userLocation = json_encode($userLocation);
+        updateUserLocation($userID, $userLocation);
+}
+
+
+
+
+
+function userTagsTreatment($userTags)
+{
+        $userID = 63;
+        $userTags = json_encode($userTags);
+        updateUserTags($userID, $userTags);
+}
+
+
+
+
+
+function userDescriptionTreatment($description)
+{
+        $userID = 63;
+        updateUserDescription($userID, $description);
 }
 
 

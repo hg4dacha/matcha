@@ -24,6 +24,7 @@ import { FaSearchLocation, FaSlackHash } from "react-icons/fa";
 import { BsInfoCircle, BsPersonCheck } from "react-icons/bs";
 import { BiCalendarAlt } from "react-icons/bi";
 import { MdPhotoFilter } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -37,8 +38,65 @@ const CompleteProfile = () => {
     }, [])
 
 
+    const navigate = useNavigate();
 
 
+    // INFORMATION DATA ↓↓↓
+    const infoData_ = [
+        {
+            label: 'Nom',
+            info: ""
+        },
+        {
+            label: 'Prénom',
+            info: ""
+        },
+        {
+            label: 'Nom d\'utilisateur',
+            info: ""
+        },
+        {
+            label: 'E-mail',
+            info: ""
+        }
+    ]
+
+    const [infoData, setInfoData] = useState(infoData_)
+
+
+    useEffect( () => {
+
+        axios.get('/users/conclude/63', )
+        .then( (response) => {
+            if (response.status === 200)
+            {
+                console.log(response.data)
+                // setInfoData([
+                //     {
+                //         label: 'Nom',
+                //         info: ""
+                //     },
+                //     {
+                //         label: 'Prénom',
+                //         info: ""
+                //     },
+                //     {
+                //         label: 'Nom d\'utilisateur',
+                //         info: ""
+                //     },
+                //     {
+                //         label: 'E-mail',
+                //         info: ""
+                //     }
+                // ])
+            }
+        })
+        .catch( (error) => {
+            navigate("/Main");
+        })
+
+    }, [])
+    
 
 // _-_-_-_-_-_-_-_-_- PROFILE PICTURE SECTION -_-_-_-_-_-_-_-_-_
 
@@ -87,6 +145,10 @@ const CompleteProfile = () => {
                 setProfilePictureDataError({ error: true, msg: " Seul les fichiers 'jpeg', 'jpg' et 'png' sont acceptés"});
                 setProfilePictureLoading({ profilePicture: false});
             }
+        }
+        else
+        {
+            setProfilePictureLoading({ profilePicture: false });
         }
 
     }
@@ -150,6 +212,10 @@ const CompleteProfile = () => {
                 setPictureDataError({ error: true, msg: " Seul les fichiers 'jpeg', 'jpg' et 'png' sont acceptés"});
                 setPictureLoading({...pictureLoading, [e.target.id]: false});
             }
+        }
+        else
+        {
+            setPictureLoading({...pictureLoading, [e.target.id]: false});
         }
 
     }
@@ -385,10 +451,14 @@ const CompleteProfile = () => {
 
         if ( !isNaN(userLocation.lat) && !isNaN(userLocation.lng) )
         {
-            if (userLocation.country === 'Tunisie')
+            if (userLocation.country === 'France')
             {
                 setUserLocationDataError({ error: false, msg: '' });
                 return (false);
+            }
+            else if (userLocation.country === '')
+            {
+                setUserLocationDataError({ error: true, msg: 'Veuillez vous géolocaliser' });
             }
             else
             {
@@ -435,17 +505,20 @@ const CompleteProfile = () => {
                     dateSelected: dateSelected,
                     genderChecked: genderChecked,
                     orientationChecked: orientationChecked,
-                    description: description,
+                    userLocation: userLocation,
                     userTags: userTags,
-                    userLocation: userLocation
+                    description: description
                 })
                 .then( (response) => {
-                    console.log(response.data);
-                    setDataValidationWaiting(false);
+                    if (response.status === 200)
+                    {
+                        setDataValidationWaiting(false);
+                        navigate("/Main");
+                    }
                 })
-                .catch( (error) => {
-                    console.log(error);
+                .catch( () => {
                     setDataValidationWaiting(false);
+                    updateErrorAlert();
                 })
             }
             else
@@ -500,27 +573,6 @@ const CompleteProfile = () => {
             handleDeletePicture: handleDeletePicture,
             handlePictureChange: handlePictureChange,
             pictureLoading: pictureLoading.fifthPicture
-        }
-    ]
-
-
-    // INFORMATION DATA ↓↓↓
-    const infoData = [
-        {
-            label: 'Nom',
-            info: "Le pen"
-        },
-        {
-            label: 'Prénom',
-            info: "Jean-marie"
-        },
-        {
-            label: 'Nom d\'utilisateur',
-            info: "Hitler"
-        },
-        {
-            label: 'E-mail',
-            info: "test@gmail.com"
         }
     ]
 

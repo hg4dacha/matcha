@@ -5,6 +5,30 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/configuration/database.php")
 
 
 
+// CHECK ID EXISTENCE
+function checkIDExistence($id)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqCheck = $dbc->prepare("SELECT id FROM users WHERE id  = :id");
+        $reqCheck->bindValue(':id', $id, PDO::PARAM_INT);
+        $reqCheck->execute();
+        return $reqCheck->rowCount();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
 // CHECK USERNAME EXISTENCE
 function checkUsernameExistence($username)
 {
@@ -52,7 +76,7 @@ function checkEmailExistence($email)
 
 
 
-// CHECK COMPLETED PROFILE
+// CHECK REGISTRATION VALIDATED
 function registrationValidatedCheck($id)
 {
     $dbc = db_connex();

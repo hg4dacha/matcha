@@ -72,14 +72,15 @@ try {
                 }
             break;
             case "GET":
-                // if (isset($_GET['username']) && isset($_GET['token']))
-                // {
-                //     confirmUserRegistration($_GET['username'], $_GET['token']);
-                // }
-                // else
-                // {
-                //     throw new Exception ("Requête invalide");
-                // }
+                $action = $urlData[4];
+                if ( $action == 'conclude' )
+                {
+                    getPrimaryUserData($urlData[5]);
+                }
+                else
+                {
+                    throw new Exception ("Requête invalide");
+                }
             break;
         }
     }

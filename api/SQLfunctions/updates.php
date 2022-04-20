@@ -28,6 +28,9 @@ function updateUserConnection($connectionStatue, $lastConnection, $userID)
 }
 
 
+
+
+
 // INSERT PROFILE PICTURE
 function insertProfilePicture($userID, $picturePath)
 {
@@ -52,6 +55,8 @@ function insertProfilePicture($userID, $picturePath)
 
 
 
+
+
 // INSERT USER PICTURES
 function insertUserPictures($userID, $pictureNumber, $picturePath)
 {
@@ -73,9 +78,6 @@ function insertUserPictures($userID, $pictureNumber, $picturePath)
     }
 }
 
-
-
-
 // PICTURE NULL
 function updatePictureNull($userID, $pictureNumber)
 {
@@ -83,7 +85,6 @@ function updatePictureNull($userID, $pictureNumber)
     try
     {
         $reqUpdate = $dbc->prepare("UPDATE pictures SET ".$pictureNumber." = NULL WHERE userID = :userID");
-        // $reqUpdate->bindValue(':pictureNumber', $pictureNumber, PDO::PARAM_STR);
         $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
         $reqUpdate->execute();
     }
@@ -96,6 +97,158 @@ function updatePictureNull($userID, $pictureNumber)
         return ($error);
     }
 }
+
+
+
+
+
+// UPDATE USER BIRTHDATE
+function updateUserBirthdate($userID, $birthdate)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET birthdate = :birthdate WHERE id = :userID");
+        $reqUpdate->bindValue(':birthdate', $birthdate, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// UPDATE USER GENDER
+function updateUserGender($userID, $gender)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET gender = :gender WHERE id = :userID");
+        $reqUpdate->bindValue(':gender', $gender, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// UPDATE USER ORIENTATION
+function updateUserOrientation($userID, $maleOrientation, $femaleOrientation)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET maleOrientation = :maleOrientation, femaleOrientation = :femaleOrientation WHERE id = :userID");
+        $reqUpdate->bindValue(':maleOrientation', $maleOrientation, PDO::PARAM_BOOL);
+        $reqUpdate->bindValue(':femaleOrientation', $femaleOrientation, PDO::PARAM_BOOL);
+        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// UPDATE USER LOCATION
+function updateUserLocation($userID, $userLocation)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET locationUser = :userLocation WHERE id = :userID");
+        $reqUpdate->bindValue(':userLocation', $userLocation, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// UPDATE USER TAGS
+function updateUserTags($userID, $userTags)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET tags = :userTags WHERE id = :userID");
+        $reqUpdate->bindValue(':userTags', $userTags, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// UPDATE USER DESCRIPTION
+function updateUserDescription($userID, $descriptionUser)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET descriptionUser = :descriptionUser WHERE id = :userID");
+        $reqUpdate->bindValue(':descriptionUser', $descriptionUser, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
 
 
 ?>
