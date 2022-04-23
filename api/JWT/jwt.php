@@ -10,7 +10,9 @@ class JWT
     {
         if ( $validity > 0 ) {
             $now = new DateTime();
-            $expiry = $now->getTimestamp();
+            $expiry = $now->getTimestamp() + $validity;
+            $payload['iat'] = $now->getTimestamp();
+            $payload['exp'] = $expiry;
         }
 
         // VALUES ENCODING
@@ -36,24 +38,33 @@ class JWT
 
         return $jwt;
     }
+
+    public function check(string $token, string $secret = SECRET)
+    {
+        $header = $this->getHeader($token);
+        $payload = $this->getPayload($token);
+
+        $tokenVerif = $this->generate($header, $payload, SECRET, 0);
+
+        return $token === $tokenVerif;
+    }
+
+    public function getHeader(string $token)
+    {
+        $array = explode('.', $token);
+        $header = json_decode(base64_decode($array[0]), true);
+
+        return $header;
+    }
+
+    public function getPayload(string $token)
+    {
+        $array = explode('.', $token);
+        $payload = json_decode(base64_decode($array[1]), true);
+
+        return $payload;
+    }
 }
-
-// HEADER CREATION
-$header = [
-    "alg" => "HS256",
-    "typ" => "JWT"
-];
-
-// CONTENT CREATION (PAYLOAD)
-$payload = [
-    "user_id" => 63
-];
-
-$test = new JWT();
-$token = $test->generate($header, $payload);
-echo $token;
-
-
 
 
 
