@@ -10,13 +10,13 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/updates.php");
 
 
 
-function profileCompletedValidate($userID)
+function profileCompletedValidate($userid)
 {
     $dbc = db_connex();
     try
     {
-        $reqUpdate = $dbc->prepare("UPDATE users SET profileCompleted = TRUE WHERE id = :userID");
-        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqUpdate = $dbc->prepare("UPDATE users SET profileCompleted = TRUE WHERE id = :userid");
+        $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_INT);
         $reqUpdate->execute();
     }
     catch(PDOException $e)
@@ -31,7 +31,7 @@ function profileCompletedValidate($userID)
 
 
 
-function completeUserData($data)
+function completeUserData($data, $userid)
 {
 
     if ( (isset($data->profilePicture) && !empty($data->profilePicture)) &&
@@ -94,16 +94,17 @@ function completeUserData($data)
 
             if ( $registrationValidated[0] == TRUE )
             {
-                formattedProfilePicture($profilePicture);
-                userPicturesTreatment($userPictures);
-                userBirthdateTreatment($dateSelected);
-                userGenderTreatment($genderChecked);
-                userOrientationTreatment($orientationChecked);
-                userLocationTreatment($userLocation);
-                userTagsTreatment($userTags);
-                userDescriptionTreatment($description);
-                profileCompletedValidate(63);
-                updateUserConnection(TRUE, date(DATE_ATOM), 63);
+                formattedProfilePicture($profilePicture, $userid);
+                userPicturesTreatment($userPictures, $userid);
+                userBirthdateTreatment($dateSelected, $userid);
+                userGenderTreatment($genderChecked, $userid);
+                userOrientationTreatment($orientationChecked, $userid);
+                userLocationTreatment($userLocation, $userid);
+                userTagsTreatment($userTags, $userid);
+                userDescriptionTreatment($description, $userid);
+                profileCompletedValidate($userid);
+                updateUserConnection(TRUE, date(DATE_ATOM), $userid);
+                http_response_code(200);
             }
             else
             {

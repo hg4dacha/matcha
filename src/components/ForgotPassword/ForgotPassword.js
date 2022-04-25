@@ -107,7 +107,7 @@ const ForgotPassword = () => {
                                 </Form.Text>
                             </div>
                         </Form.Group>
-                        <Link to='/SignIn' className='forgotPassword' >Retour à la connexion</Link>
+                        <Link to='/signin' className='forgotPassword' >Retour à la connexion</Link>
                         <Button variant="primary" type='submit' className='submitBtnLarge' disabled={true}>
                             {spinner ? <Spinner className='mr-1' as="span" animation="border" size="sm" role="status" aria-hidden="true"/> : null}
                             Envoyer le mail de réinitialisation

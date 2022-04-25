@@ -1,7 +1,7 @@
 <?php
 
 
-require_once "includes/config.php";
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/JWT/includes/config.php");
 
 
 class JWT
@@ -39,7 +39,7 @@ class JWT
         return $jwt;
     }
 
-    public function check(string $token, string $secret = SECRET)
+    public function check(string $token, string $secret = SECRET): bool
     {
         $header = $this->getHeader($token);
         $payload = $this->getPayload($token);
@@ -47,6 +47,22 @@ class JWT
         $tokenVerif = $this->generate($header, $payload, SECRET, 0);
 
         return $token === $tokenVerif;
+    }
+
+    public function expired(string $token): bool
+    {
+        $payload = $this->getPayload($token);
+        $now = new DateTime();
+
+        return $payload['exp'] < $now->getTimestamp();
+    }
+
+    public function validSyntax(string $token): bool
+    {
+        return preg_match(
+            "/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/",
+            $token
+        ) === 1;
     }
 
     public function getHeader(string $token)

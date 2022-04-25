@@ -86,13 +86,14 @@ const SignIn = () => {
                     password: ''
                 })
                 setSpinner(false);
+                localStorage.setItem("token", response.data);
                 if (response.status === 200)
                 {
-                    navigate("/Main");
+                    navigate("/users");
                 }
                 else if (response.status === 206)
                 {
-                    navigate("/CompleteProfile");
+                    navigate("/completeprofile");
                 }
             })
             .catch( (error) => {
@@ -125,7 +126,7 @@ const SignIn = () => {
                         <span className='FormsTittle'>Connexion</span>
                     </div>
                     <span className='center paragrInfo'>Pas encore de compte?
-                        <Link to='/SignUp' style={{fontStyle: 'initial', marginLeft: '8px'}}>
+                        <Link to='/signup' style={{fontStyle: 'initial', marginLeft: '8px'}}>
                             Inscrivez-vous
                         </Link>
                     </span>
@@ -155,7 +156,7 @@ const SignIn = () => {
                                 {successMessage ? <IoShieldCheckmarkOutline className='mr-1' /> : <RiErrorWarningLine />}
                                 {errorMessage.msg}
                             </Form.Text>
-                            <Link to='/ForgotPassword' className='forgotPassword' >Mot de passe oubllié?</Link>
+                            <Link to='/forgotpassword' className='forgotPassword' >Mot de passe oubllié?</Link>
                         </div>
                         <Button variant="primary" type='submit' className='submitBtnSmall' disabled={true}>
                             {spinner ? <Spinner className='mr-1' as="span" animation="border" size="sm" role="status" aria-hidden="true"/> : null}

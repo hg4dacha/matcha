@@ -87,7 +87,6 @@ const SignUp = () => {
                                 setSpinner(false);
                                 setSuccessMessage(true);
                                 setErrorMessage({ display: true, msg: "Un email de confirmation vous a été envoyé" })
-
                             }
                         })
                         .catch( (error) => {
@@ -137,7 +136,7 @@ const SignUp = () => {
                         <span className='FormsTittle'>Inscription</span>
                     </div>
                     <span className='center paragrInfoSignUp'>Vous avez déjà un compte?
-                        <Link to='/SignIn' style={{fontStyle: 'initial', marginLeft: '8px'}}>
+                        <Link to='/signin' style={{fontStyle: 'initial', marginLeft: '8px'}}>
                             Connectez-vous
                         </Link>
                     </span>

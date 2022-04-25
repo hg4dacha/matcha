@@ -2,6 +2,7 @@
 
 
 
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/JWT/jwt.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/configuration/database.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/updates.php");
@@ -54,20 +55,36 @@ function identifyUser($data)
 
             if ( password_verify($password, $passwordDatabase[0]) )
             {
-                $userID = getIdByEmail($email);
-                $registrationValidated = registrationValidatedCheck($userID[0]);
+                $userid = getIdByEmail($email);
+                $registrationValidated = registrationValidatedCheck($userid[0]);
 
                 if ( $registrationValidated[0] == TRUE )
                 {
-                    $completedProfile = completedProfileCheck($userID[0]);
+                    // JWT CREATION
+                    $header = [
+                        "alg" => "HS256",
+                        "typ" => "JWT"
+                    ];
+
+                    $payload = [
+                        "user_id" => $userid[0]
+                    ];
+
+                    $jwtInstance = new JWT();
+                    $jwt = $jwtInstance->generate($header, $payload);
+                    //_________________________
+
+                    $completedProfile = completedProfileCheck($userid[0]);
                     
                     if ( $completedProfile[0] == TRUE )
                     {
-                        updateUserConnection(TRUE, date(DATE_ATOM), $userID[0]);
+                        updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
+                        echo $jwt;
                     }
                     else if ( $completedProfile[0] == FALSE )
                     {
                         http_response_code(206);
+                        echo $jwt;
                     }
                 }
                 else

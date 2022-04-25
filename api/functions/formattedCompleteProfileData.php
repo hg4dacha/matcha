@@ -8,7 +8,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/updates.php");
 
 
 
-function formattedProfilePicture($profilePicture)
+function formattedProfilePicture($profilePicture, $userID)
 {
     if ( isset($profilePicture->profilePicture) && !empty($profilePicture->profilePicture) )
     {
@@ -25,7 +25,6 @@ function formattedProfilePicture($profilePicture)
         $profilePicture = base64_decode($profilePicture);
         $f = finfo_open();
         $mime_type = finfo_buffer($f, $profilePicture, FILEINFO_MIME_TYPE);
-        $userID = 63;
         $pictureID = $userID.uniqid();
 
         if ( $mime_type == 'image/jpeg' )
@@ -99,7 +98,7 @@ function formattedPicture($userID, $picture, $pictureNumber)
     }
 }
 
-function userPicturesTreatment($userPictures)
+function userPicturesTreatment($userPictures, $userID)
 {
     if ( isset($userPictures->secondPicture) &&
          isset($userPictures->thirdPicture) &&
@@ -112,7 +111,6 @@ function userPicturesTreatment($userPictures)
         $fourthPicture = htmlspecialchars($userPictures->fourthPicture);
         $fifthPicture = htmlspecialchars($userPictures->fifthPicture);
 
-        $userID = 63;
 
         formattedPicture($userID, $secondPicture, "secondPicture");
         formattedPicture($userID, $thirdPicture, "thirdPicture");
@@ -127,10 +125,9 @@ function userPicturesTreatment($userPictures)
 
 
 
-function userBirthdateTreatment($dateSelected)
+function userBirthdateTreatment($dateSelected, $userID)
 {
     $dateSelected = date(DATE_ATOM, strtotime($dateSelected));
-    $userID = 63;
     updateUserBirthdate($userID, $dateSelected);
 }
 
@@ -138,13 +135,12 @@ function userBirthdateTreatment($dateSelected)
 
 
 
-function userGenderTreatment($genderChecked)
+function userGenderTreatment($genderChecked, $userID)
 {
     if ( isset($genderChecked->maleGender) && isset($genderChecked->femaleGender) )
     {
         $maleGender = filter_var(htmlspecialchars($genderChecked->maleGender), FILTER_VALIDATE_BOOLEAN);
         $femaleGender = filter_var(htmlspecialchars($genderChecked->femaleGender), FILTER_VALIDATE_BOOLEAN);
-        $userID = 63;
 
         if ( $maleGender == TRUE )
         {
@@ -161,13 +157,12 @@ function userGenderTreatment($genderChecked)
 
 
 
-function userOrientationTreatment($orientationChecked)
+function userOrientationTreatment($orientationChecked, $userID)
 {
     if ( isset($orientationChecked->maleOrientation) && isset($orientationChecked->femaleOrientation) )
     {
         $maleOrientation = filter_var(htmlspecialchars($orientationChecked->maleOrientation), FILTER_VALIDATE_BOOLEAN);
         $femaleOrientation = filter_var(htmlspecialchars($orientationChecked->femaleOrientation), FILTER_VALIDATE_BOOLEAN);
-        $userID = 63;
 
         if ( $maleOrientation == TRUE || $femaleOrientation == TRUE )
         {
@@ -180,9 +175,8 @@ function userOrientationTreatment($orientationChecked)
 
 
 
-function userLocationTreatment($userLocation)
+function userLocationTreatment($userLocation, $userID)
 {
-        $userID = 63;
         $userLocation = json_encode($userLocation);
         updateUserLocation($userID, $userLocation);
 }
@@ -191,9 +185,8 @@ function userLocationTreatment($userLocation)
 
 
 
-function userTagsTreatment($userTags)
+function userTagsTreatment($userTags, $userID)
 {
-        $userID = 63;
         $userTags = json_encode($userTags);
         updateUserTags($userID, $userTags);
 }
@@ -202,9 +195,8 @@ function userTagsTreatment($userTags)
 
 
 
-function userDescriptionTreatment($description)
+function userDescriptionTreatment($description, $userID)
 {
-        $userID = 63;
         updateUserDescription($userID, $description);
 }
 

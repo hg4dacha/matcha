@@ -43,6 +43,7 @@ const ProfileFavorite = ({ id, username, age, popularity, location, thumbnail, c
                 <IoMdHeartDislike className='favorites-dislike-logo' />
             </button>
             <Card
+                userid={`/users/${id}`}
                 username={username}
                 age={age}
                 popularity={popularity}

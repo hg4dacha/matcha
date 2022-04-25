@@ -39,7 +39,7 @@ function passwordOmission($data)
                 $email = strtolower($email);
 
                 $idAndToken = getIdAndToken($email);
-                $userID = $idAndToken[0];
+                $userid = $idAndToken[0];
                 $token = $idAndToken[1];
 
                 $subject = "Matcha - Nouveau mot de passe !";
@@ -52,7 +52,7 @@ function passwordOmission($data)
                             (Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail)
                         </span>";
                 
-                $link = "http://localhost:3000/NewPassword/".$userID."/".$token."";
+                $link = "http://localhost:3000/newpassword/".$userid."/".$token."";
                 $linktext = ">>>>>RÉINITIALISER MOT DE PASSE<<<<<";
 
                 sendmail($email, $subject, $body, $link, $linktext);

@@ -122,4 +122,30 @@ function completedProfileCheck($id)
 }
 
 
+
+
+
+// CHECK USER CONNECTION STATUE
+function connectionStatueCheck($id)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqCheck = $dbc->prepare("SELECT connectionStatue FROM users WHERE id  = :id");
+        $reqCheck->bindValue(':id', $id, PDO::PARAM_INT);
+        $reqCheck->execute();
+        return $reqCheck->fetch();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
 ?>

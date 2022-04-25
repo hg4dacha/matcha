@@ -12,7 +12,7 @@ import { MdLocationOn } from 'react-icons/md';
 
 
 
-const Card = ({ username, age, popularity, location, thumbnail, currentUserLocation }) => {
+const Card = ({ userid, username, age, popularity, location, thumbnail, currentUserLocation }) => {
 
 
 
@@ -26,7 +26,7 @@ const Card = ({ username, age, popularity, location, thumbnail, currentUserLocat
 
     return (
         <div className={`card-container ${cardZoom ? "zoom" : ""}`} onMouseOver={handleZoom} onMouseOut={handleZoomOut}>
-            <Link to="/MemberProfile">
+            <Link to={userid}>
                 <div className='card-picture-content'>
                     <img src={thumbnail} alt='user' className={`card-picture ${cardZoom ? "zoom" : ""}`}/>
                 </div>

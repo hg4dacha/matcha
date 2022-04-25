@@ -68,7 +68,7 @@ function addUser($userData)
                         $body = "".$username.", plus qu'une étape pour finaliser votre inscription !<br>
                         Cliquez sur le lien ci-dessous pour valider votre compte, vous<br>pourrez ensuite y accéder en vous connectant.";
                         $token = random_int(9547114, 735620051642661202).uniqid().random_int(635418, 866261402008688409);
-                        $link = "http://localhost:3000/RegistrationConfirmation/".$username."/".$token."";
+                        $link = "http://localhost:3000/confirmregistration/".$username."/".$token."";
                         $linktext = ">>>>>VALIDER MON COMPTE<<<<<";
                         
                         addUserInDatabase($lastname, $firstname, $username,	$email,	$password, $token);

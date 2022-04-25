@@ -25,19 +25,19 @@ function App() {
     
       <Routes>
         <Route path='/' element={<Home/>} />
-        <Route path='/SignUp' element={<SignUp/>} />
-        <Route path='/RegistrationConfirmation/:username/:token' element={<RegistrationConfirmation/>} />
-        <Route path='/SignIn' element={<SignIn/>} />
-        <Route path='/ForgotPassword' element={<ForgotPassword/>} />
-        <Route path='/NewPassword/:userID/:token' element={<NewPassword/>} />
-        <Route path='/CompleteProfile' element={<CompleteProfile/>} />
-        <Route path='/Main' element={<Main/>} />
-        <Route path='/Profile' element={<Profile/>} />
-        <Route path='/Notifications' element={<Notifications/>} />
-        <Route path='/History' element={<History/>} />
-        <Route path='/Favorites' element={<Favorites/>} />
-        <Route path='/MemberProfile/:userID' element={<MemberProfile/>} />
-        <Route path='/NotFound' element={<NotFound/>} />
+        <Route path='/signup' element={<SignUp/>} />
+        <Route path='/confirmregistration/:username/:token' element={<RegistrationConfirmation/>} />
+        <Route path='/signin' element={<SignIn/>} />
+        <Route path='/forgotpassword' element={<ForgotPassword/>} />
+        <Route path='/newpassword/:userid/:token' element={<NewPassword/>} />
+        <Route path='/completeprofile' element={<CompleteProfile/>} />
+        <Route path='/users' element={<Main/>} />
+        <Route path='/users/:userid' element={<MemberProfile/>} />
+        <Route path='/profile' element={<Profile/>} />
+        <Route path='/notifications' element={<Notifications/>} />
+        <Route path='/favorites' element={<Favorites/>} />
+        <Route path='/history' element={<History/>} />
+        <Route path='/notfound' element={<NotFound/>} />
         <Route path='*' element={<Navigate replace to='/NotFound'/>} />
       </Routes>
       

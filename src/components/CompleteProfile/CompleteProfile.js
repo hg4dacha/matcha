@@ -66,10 +66,10 @@ const CompleteProfile = () => {
 
     useEffect( () => {
 
-        axios.get('/users/conclude/63', )
+        axios.get('/users/conclude', )
         .then( (response) => {
             if (response.status === 200)
-            {
+            {console.log(response.data);
                 setInfoData([
                     {
                         label: 'Nom',
@@ -91,13 +91,17 @@ const CompleteProfile = () => {
             }
         })
         .catch( (error) => {
-            if (error.request.statusText === 'registration invalidated')
+            if (error.request.statusText === 'registration invalidated' || error.request.statusText === 'not connected')
             {
-                navigate("/SignIn")
+                navigate("/signin");
+            }
+            else if (error.request.statusText === 'completed profile')
+            {
+                navigate("/users");
             }
             else
             {
-                navigate("/NotFound");
+                navigate("/notfound");
             }
         })
 
@@ -519,7 +523,7 @@ const CompleteProfile = () => {
                     if (response.status === 200)
                     {
                         setDataValidationWaiting(false);
-                        navigate("/Main");
+                        navigate("/users");
                     }
                 })
                 .catch( () => {

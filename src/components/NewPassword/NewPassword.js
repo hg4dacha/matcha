@@ -61,7 +61,7 @@ const NewPassword = () => {
         {
             setSpinner(true);
             const newPasswordData = {
-                userID: params.userID,
+                userid: params.userid,
                 token: params.token,
                 newPassword: password,
                 newPasswordConfirm: passwordConfirmation
@@ -70,7 +70,7 @@ const NewPassword = () => {
             .then( (response) => {
                 if (response.status === 200)
                 {
-                    navigate("/SignIn", {state: 'password'});
+                    navigate("/signin", {state: 'password'});
                 }
             })
             .catch( (error) => {
@@ -79,7 +79,7 @@ const NewPassword = () => {
                     setErrorMessage({ display: true, msg: "Vos entrées ne sont pas valides" })
                 }
                 else {
-                    navigate("/NotFound");
+                    navigate("/notfound");
                 }
             })
         }
@@ -126,7 +126,7 @@ const NewPassword = () => {
                                 <RiErrorWarningLine />
                                 {errorMessage.msg}
                             </Form.Text>
-                            <Link to='/SignIn' className='forgotPassword' >Annuler</Link>
+                            <Link to='/signin' className='forgotPassword' >Annuler</Link>
                         </div>
 
                         <Button variant="primary" type='submit' className='submitBtnLarge' disabled={true}>

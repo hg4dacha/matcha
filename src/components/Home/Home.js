@@ -14,8 +14,8 @@ const Home = () => {
                 <header className='home-header'>
                     <LogoBis width='150' />
                     <div className='signup-signin-buttons'>
-                        <Link to="/SignUp" className="btn btn-outline-light signup-button" role="button">S'inscrire</Link>
-                        <Link to="/SignIn" className="btn btn-light signin-button" role="button">Se connecter</Link>
+                        <Link to="/signup" className="btn btn-outline-light signup-button" role="button">S'inscrire</Link>
+                        <Link to="/signin" className="btn btn-light signin-button" role="button">Se connecter</Link>
                     </div>
                 </header>
             </div>

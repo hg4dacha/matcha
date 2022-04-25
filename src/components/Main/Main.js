@@ -151,6 +151,7 @@ const Main = () => {
                         return (
                             <Card
                                 key={data.id}
+                                userid={data.id}
                                 username={data.username}
                                 age={data.age}
                                 popularity={data.popularity}

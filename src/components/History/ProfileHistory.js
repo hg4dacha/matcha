@@ -50,7 +50,7 @@ const ProfileHistory = ({ id, username, age, popularity, location, thumbnail, cu
                 </button>
             </div>
             <Card
-                id={id}
+                userid={`/users/${id}`}
                 username={username}
                 age={age}
                 popularity={popularity}

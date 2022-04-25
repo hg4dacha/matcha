@@ -23,12 +23,12 @@ function getTokenByID($id)
     }
 }
 
-function changePassword($userID, $newPassword)
+function changePassword($userid, $newPassword)
 {
     $dbc = db_connex();
     try {
-        $reqUpdate = $dbc->prepare("UPDATE users SET passwordUSer = :newPassword WHERE id = :userID");
-        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_STR);
+        $reqUpdate = $dbc->prepare("UPDATE users SET passwordUSer = :newPassword WHERE id = :userid");
+        $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_STR);
         $reqUpdate->bindValue(':newPassword', $newPassword, PDO::PARAM_STR);
         $reqUpdate->execute();
     }
@@ -38,12 +38,12 @@ function changePassword($userID, $newPassword)
     }
 }
 
-function updateToken($userID, $token)
+function updateToken($userid, $token)
 {
     $dbc = db_connex();
     try {
-        $reqUpdate = $dbc->prepare("UPDATE users SET token = :token WHERE id = :userID");
-        $reqUpdate->bindValue(':userID', $userID, PDO::PARAM_STR);
+        $reqUpdate = $dbc->prepare("UPDATE users SET token = :token WHERE id = :userid");
+        $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_STR);
         $reqUpdate->bindValue(':token', $token, PDO::PARAM_STR);
         $reqUpdate->execute();
     }
@@ -57,21 +57,21 @@ function updateToken($userID, $token)
 
 function resetPassword($data)
 {
-    if ( (isset($data->userID) && !empty($data->userID)) &&
+    if ( (isset($data->userid) && !empty($data->userid)) &&
          (isset($data->token) && !empty($data->token)) &&
          (isset($data->newPassword) && !empty($data->newPassword)) &&
          (isset($data->newPasswordConfirm) && !empty($data->newPasswordConfirm))
        )
     {
 
-        $userID = htmlspecialchars($data->userID);
+        $userid = htmlspecialchars($data->userid);
         $token = htmlspecialchars($data->token);
         $newPassword = htmlspecialchars($data->newPassword);
         $newPasswordConfirm = htmlspecialchars($data->newPasswordConfirm);
 
-        if ( is_numeric($userID) )
+        if ( is_numeric($userid) )
         {
-            $tokenFromdatabse = getTokenByID($userID);
+            $tokenFromdatabse = getTokenByID($userid);
 
             if ( $tokenFromdatabse[0] == $token)
             {
@@ -81,8 +81,8 @@ function resetPassword($data)
                     $password = password_hash($newPassword, PASSWORD_BCRYPT);
                     $newToken = random_int(9547114, 735620051642661202).uniqid().random_int(635418, 866261402008688409);
 
-                    changePassword($userID, $password);
-                    updateToken($userID, $newToken);
+                    changePassword($userid, $password);
+                    updateToken($userid, $newToken);
 
                 }
                 else

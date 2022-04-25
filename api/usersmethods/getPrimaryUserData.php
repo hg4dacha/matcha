@@ -7,13 +7,13 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php")
 
 
 
-function primaryUserData($userID)
+function primaryUserData($userid)
 {
     $dbc = db_connex();
     try
     {
-        $reqSelect = $dbc->prepare("SELECT lastname, firstname, username, email FROM users WHERE id  = :userID");
-        $reqSelect->bindValue(':userID', $userID, PDO::PARAM_INT);
+        $reqSelect = $dbc->prepare("SELECT lastname, firstname, username, email FROM users WHERE id  = :userid");
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
         $reqSelect->execute();
         return $reqSelect->fetch();
     }
@@ -29,25 +29,33 @@ function primaryUserData($userID)
 
 
 
-function getPrimaryUserData($userID)
+function getPrimaryUserData($userid)
 {
-    if ( isset($userID) && !empty($userID) )
+    if ( isset($userid) && !empty($userid) )
     {
-        if ( is_numeric($userID) )
+        if ( is_numeric($userid) )
         {
-            if ( checkIDExistence($userID) == 1 )
+            if ( checkIDExistence($userid) == 1 )
             {
-                $registrationValidated = registrationValidatedCheck($userID);
+                $registrationValidated = registrationValidatedCheck($userid);
                 if ( $registrationValidated[0] == TRUE )
                 {
-                    $completedProfile = completedProfileCheck($userID);
-                    if ( $completedProfile[0] == FALSE )
+                    $connectionStatue = connectionStatueCheck($userid);
+                    if ( connectionStatue[0] == TRUE )
                     {
-                        echo(json_encode(primaryUserData($userID)));
+                        $completedProfile = completedProfileCheck($userid);
+                        if ( $completedProfile[0] == FALSE )
+                        {
+                            echo(json_encode(primaryUserData($userid)));
+                        }
+                        else
+                        {
+                            header("HTTP/1.1 400 completed profile");
+                        }
                     }
                     else
                     {
-                        header("HTTP/1.1 400 completed profile");
+                        header("HTTP/1.1 400 not connected");
                     }
                 }
                 else
