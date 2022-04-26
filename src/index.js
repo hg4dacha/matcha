@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 
 
 axios.defaults.baseURL = "http://localhost:8080/matcha/api/";
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : '';
+
 
 
 

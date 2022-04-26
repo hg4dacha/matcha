@@ -52,7 +52,7 @@ function passwordOmission($data)
                             (Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail)
                         </span>";
                 
-                $link = "http://localhost:3000/newpassword/".$userid."/".$token."";
+                $link = "http://localhost:3000/new-password/".$userid."/".$token."";
                 $linktext = ">>>>>RÉINITIALISER MOT DE PASSE<<<<<";
 
                 sendmail($email, $subject, $body, $link, $linktext);

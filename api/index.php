@@ -17,6 +17,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/resetPassword.p
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/identifyUser.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/completeUserData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getPrimaryUserData.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/logoutUser.php");
 
 
 
@@ -124,7 +125,7 @@ try {
 
             // CHECK TOKEN EXPIRATION
             if ($jwt->expired($token)) {
-                http_response_code(401);
+                header("HTTP/1.1 401 expired token");
                 $error = [
                     "error" => "Vous ne disposez pas des autorisations requises => Token expiré",
                     "code" => 401
@@ -158,6 +159,10 @@ try {
                         if ( $action == 'conclude' )
                         {
                             completeUserData($data, $userid);
+                        }
+                        elseif ( $action == 'logout' )
+                        {
+                            logoutUser($userid);
                         }
                         else
                         {

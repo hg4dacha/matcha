@@ -40,22 +40,14 @@ function getPrimaryUserData($userid)
                 $registrationValidated = registrationValidatedCheck($userid);
                 if ( $registrationValidated[0] == TRUE )
                 {
-                    $connectionStatue = connectionStatueCheck($userid);
-                    if ( connectionStatue[0] == TRUE )
+                    $completedProfile = completedProfileCheck($userid);
+                    if ( $completedProfile[0] == FALSE )
                     {
-                        $completedProfile = completedProfileCheck($userid);
-                        if ( $completedProfile[0] == FALSE )
-                        {
-                            echo(json_encode(primaryUserData($userid)));
-                        }
-                        else
-                        {
-                            header("HTTP/1.1 400 completed profile");
-                        }
+                        echo(json_encode(primaryUserData($userid)));
                     }
                     else
                     {
-                        header("HTTP/1.1 400 not connected");
+                        header("HTTP/1.1 400 completed profile");
                     }
                 }
                 else

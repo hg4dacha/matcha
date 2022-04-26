@@ -26,6 +26,7 @@ import { BiCalendarAlt } from "react-icons/bi";
 import { MdPhotoFilter } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LogOut from '../LogOut/LogOut';
 
 
 
@@ -69,7 +70,7 @@ const CompleteProfile = () => {
         axios.get('/users/conclude', )
         .then( (response) => {
             if (response.status === 200)
-            {console.log(response.data);
+            {
                 setInfoData([
                     {
                         label: 'Nom',
@@ -91,7 +92,7 @@ const CompleteProfile = () => {
             }
         })
         .catch( (error) => {
-            if (error.request.statusText === 'registration invalidated' || error.request.statusText === 'not connected')
+            if (error.request.statusText === 'registration invalidated' || error.request.status === 401)
             {
                 navigate("/signin");
             }
@@ -643,6 +644,9 @@ const CompleteProfile = () => {
                 <Alert variant='warning' className='complete-profile-alert'>
                     <TiInfo className='mr-2 complete-info-alert-logo' />
                     Veuillez compléter votre profil pour accéder aux autres services
+                    <div className='complete-profile-logout'>
+                        <LogOut />
+                    </div>
                 </Alert>
             </header>
             <div className='big-info-container centerElementsInPage'>

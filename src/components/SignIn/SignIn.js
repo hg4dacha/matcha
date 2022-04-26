@@ -1,9 +1,11 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { createBrowserHistory } from "history";
 import FormsHeader from '../FormsHeader/FormsHeader';
 import { Link } from 'react-router-dom'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import AlertMsg from '../AlertMsg/AlertMsg';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../other/Regex';
 import { MdEmail } from 'react-icons/md';
 import { BsFillShieldLockFill } from 'react-icons/bs';
@@ -27,8 +29,10 @@ const SignIn = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
+    const history = createBrowserHistory();
 
     useEffect( () => {
+        console.log(document.cookie)
             if(location.state === 'confirm')
             {
                 setSuccessMessage(true);
@@ -39,7 +43,14 @@ const SignIn = () => {
                 setSuccessMessage(true);
                 setErrorMessage({ display: true, msg: "Le mot de passe a été modifié" });
             }
-    }, [location.state])
+            else if(location.state === 'logout')
+            {
+                handleNewAlert({id: Math.random(), variant: "info", information: "Déconnexion"});
+            }
+            history.replace({...history.location, state: null })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     
 
     const loginData = {
@@ -87,13 +98,14 @@ const SignIn = () => {
                 })
                 setSpinner(false);
                 localStorage.setItem("token", response.data);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
                 if (response.status === 200)
                 {
                     navigate("/users");
                 }
                 else if (response.status === 206)
                 {
-                    navigate("/completeprofile");
+                    navigate("/complete-profile");
                 }
             })
             .catch( (error) => {
@@ -114,10 +126,27 @@ const SignIn = () => {
             setErrorMessage({ display: true, msg: "Vos entrées ne sont pas valides" })
         }
     }
+
+    // ALERT ↓↓↓
+    const [alertMessages, setAlertMessages] = useState([])
+    const handleNewAlert = (newAlert) => {
+
+        setAlertMessages(prevState => prevState.slice(1));
+        setAlertMessages(prevState => [...prevState, newAlert]);
+    }
     
 
     return (
         <Fragment>
+            {alertMessages.map( alert => {
+                return (
+                    <AlertMsg
+                        key={alert.id}
+                        variant={alert.variant}
+                        information={alert.information}
+                    />
+                )
+            })}
             <FormsHeader />
             <section className='centerElementsInPage FormsSection'>
                 <div className='centerElementsInPage formContent sectionContentSize'>
@@ -156,7 +185,7 @@ const SignIn = () => {
                                 {successMessage ? <IoShieldCheckmarkOutline className='mr-1' /> : <RiErrorWarningLine />}
                                 {errorMessage.msg}
                             </Form.Text>
-                            <Link to='/forgotpassword' className='forgotPassword' >Mot de passe oubllié?</Link>
+                            <Link to='/forgot-password' className='forgotPassword' >Mot de passe oubllié?</Link>
                         </div>
                         <Button variant="primary" type='submit' className='submitBtnSmall' disabled={true}>
                             {spinner ? <Spinner className='mr-1' as="span" animation="border" size="sm" role="status" aria-hidden="true"/> : null}

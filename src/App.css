@@ -120,6 +120,8 @@ a, a:hover{
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    z-index: 100;
+    position: inherit;
 }
 
 .FormsSection, .FormsSectionSignUp {
@@ -2363,6 +2365,11 @@ color: #ced6e0;
     color: #485460;
     top: 0;
     left: 0;
+}
+
+.complete-profile-logout {
+    position: absolute;
+    right: 0;
 }
 
 .complete-profile-logo {
