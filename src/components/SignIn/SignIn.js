@@ -32,7 +32,6 @@ const SignIn = () => {
     const history = createBrowserHistory();
 
     useEffect( () => {
-        console.log(document.cookie)
             if(location.state === 'confirm')
             {
                 setSuccessMessage(true);
