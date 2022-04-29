@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { createBrowserHistory } from "history";
 import FormsHeader from '../FormsHeader/FormsHeader';
@@ -13,6 +13,7 @@ import { BiNetworkChart } from 'react-icons/bi';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import { IoShieldCheckmarkOutline } from 'react-icons/io5';
 import Spinner from 'react-bootstrap/Spinner';
+import { UserContext } from '../UserContext/UserContext';
 import axios from 'axios';
 
 
@@ -23,30 +24,44 @@ import axios from 'axios';
 
 const SignIn = () => {
 
-    useEffect( () => {
-        document.title = 'Connexion - Matcha'
-    }, [])
+
+    const {user, setUser} = useContext(UserContext);
 
     const location = useLocation();
     const navigate = useNavigate();
     const history = createBrowserHistory();
 
+
     useEffect( () => {
-            if(location.state === 'confirm')
-            {
-                setSuccessMessage(true);
-                setErrorMessage({ display: true, msg: "Felicitations ! Vous pouvez desormais vous connecter" });
-            }
-            else if(location.state === 'password')
-            {
-                setSuccessMessage(true);
-                setErrorMessage({ display: true, msg: "Le mot de passe a été modifié" });
-            }
-            else if(location.state === 'logout')
-            {
-                handleNewAlert({id: Math.random(), variant: "info", information: "Déconnexion"});
-            }
-            history.replace({...history.location, state: null })
+    localStorage.clear();
+        if(user) {
+            navigate("/users");
+        }
+        else {
+            document.title = 'Connexion - Matcha'
+        }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
+
+    useEffect( () => {
+        if(location.state === 'confirm')
+        {
+            setSuccessMessage(true);
+            setErrorMessage({ display: true, msg: "Felicitations ! Vous pouvez desormais vous connecter" });
+        }
+        else if(location.state === 'password')
+        {
+            setSuccessMessage(true);
+            setErrorMessage({ display: true, msg: "Le mot de passe a été modifié" });
+        }
+        else if(location.state === 'logout')
+        {
+            handleNewAlert({id: Math.random(), variant: "info", information: "Déconnexion"});
+        }
+        history.replace({...history.location, state: null })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -80,6 +95,7 @@ const SignIn = () => {
     const [errorMessage, setErrorMessage] = useState({ display: false, msg: "" })
     const [successMessage, setSuccessMessage] = useState(false)
 
+
     const handleSubmit = e => {
         e.preventDefault()
         setSuccessMessage(false);
@@ -96,8 +112,7 @@ const SignIn = () => {
                     password: ''
                 })
                 setSpinner(false);
-                localStorage.setItem("token", response.data);
-                axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+                setUser(response.data);
                 if (response.status === 200)
                 {
                     navigate("/users");
@@ -109,7 +124,7 @@ const SignIn = () => {
             })
             .catch( (error) => {
                 setSpinner(false);
-                if (error.request.statusText === 'registration invalidated')
+                if (error.request.statusText && error.request.statusText === 'registration invalidated')
                 {
                     setErrorMessage({ display: true, msg: "Votre inscription n'as pas été validé par email" })
                 }

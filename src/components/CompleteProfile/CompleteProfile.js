@@ -1,7 +1,8 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useContext } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import ProfilePictureSection from '../Profile/ProfilePictureSection';
 import UserPhotosSection from '../Profile/UserPhotosSection';
+import LogOut from '../LogOut/LogOut';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
@@ -14,6 +15,7 @@ import GenderAndOrientation from '../Profile/GenderAndOrientation'
 import TagsBadge from '../MemberProfile/TagsBadge';
 import Location from '../Profile/Location'
 import AlertMsg from '../AlertMsg/AlertMsg';
+import { UserContext } from '../UserContext/UserContext';
 import { v4 as uuidv4 } from 'uuid';
 import { RiErrorWarningLine, RiSaveFill } from 'react-icons/ri';
 import { CgCardHearts } from 'react-icons/cg';
@@ -26,7 +28,6 @@ import { BiCalendarAlt } from "react-icons/bi";
 import { MdPhotoFilter } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import LogOut from '../LogOut/LogOut';
 
 
 
@@ -34,12 +35,16 @@ import LogOut from '../LogOut/LogOut';
 
 const CompleteProfile = () => {
 
-    useEffect( () => {
-        document.title = 'Compléter profil - Matcha'
-    }, [])
-
 
     const navigate = useNavigate();
+
+    const {user, setUser} = useContext(UserContext);
+
+
+    useEffect( () => {
+        console.log(user);
+        document.title = 'Compléter profil - Matcha'
+    }, [])
 
 
     // INFORMATION DATA ↓↓↓
@@ -67,7 +72,7 @@ const CompleteProfile = () => {
 
     useEffect( () => {
 
-        axios.get('/users/conclude', )
+        axios.get('/users/conclude')
         .then( (response) => {
             if (response.status === 200)
             {

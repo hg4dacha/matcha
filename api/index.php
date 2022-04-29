@@ -18,6 +18,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/identifyUser.ph
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/completeUserData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getPrimaryUserData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/logoutUser.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getNewToken.php");
 
 
 
@@ -68,6 +69,18 @@ try {
             break;
         }
     }
+     // ***REQUEST NEW TOKEN*** //
+    elseif($request === "users" && $action === "token" && $method === "POST")
+    {
+        var_dump($_COOKIE);
+        if(isset($_COOKIE['refresh_token']) && !empty($_COOKIE['refresh_token'])) {
+            getNewToken($_COOKIE['refresh_token']);
+        }
+        else {
+            http_response_code(200);
+            exit;
+        }
+    }
     // ***SECURE REQUESTS WITH A JWT*** //
     else
     {
@@ -85,7 +98,7 @@ try {
             }
         }
 
-        if($method === "POST" || $method === "GET" || $method === 'PATCH' || $method === 'DELETE')
+        if($method === "POST" || $method === "GET" || $method === 'PATCH' || $method === 'DELETE') // FOR AVOID CORS ERRORS /!\
         {
             if (!isset($token) || !preg_match('/Bearer\s(\S+)/', $token, $matches))
             {
@@ -146,9 +159,10 @@ try {
                 exit;
             }
 
-            $userid = $payload['user_id'];
 
+            $userid = $payload['user_id'];
             
+
             // CHECK REQUEST
             if($request === "users")
             {
