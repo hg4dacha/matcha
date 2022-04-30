@@ -124,13 +124,13 @@ function identifyUser($data)
                     if ( $completedProfile[0] == TRUE )
                     {
                         updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
-                        setcookie('refresh_token', $refresh_token_cookie, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
+                        setcookie('refresh_token', $refresh_token_cookie, time() + 60 * 60 * 24 * 30, '/', "http://localhost:3000/", false, true);
                         echo json_encode($userData);
                         http_response_code(200);
                     }
                     else if ( $completedProfile[0] == FALSE )
                     {
-                        setcookie('refresh_token', $refresh_token_cookie, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
+                        setcookie('refresh_token', $refresh_token_cookie, time() + 60 * 60 * 24 * 30, '/', "http://localhost:3000/", false, true);
                         echo json_encode($userData);
                         http_response_code(206);
                     }

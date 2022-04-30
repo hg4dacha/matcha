@@ -9,7 +9,8 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/JWT/includes/config.php");
 
 function getNewToken($refresh_token_cookie)
 {
-    http_response_code(200);
+    var_dump($refresh_token_cookie);
+    // http_response_code(200);
 }
 
 

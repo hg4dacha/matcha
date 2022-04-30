@@ -97,18 +97,18 @@ const CompleteProfile = () => {
             }
         })
         .catch( (error) => {
-            if (error.request.statusText === 'registration invalidated' || error.request.status === 401)
-            {
-                navigate("/signin");
-            }
-            else if (error.request.statusText === 'completed profile')
-            {
-                navigate("/users");
-            }
-            else
-            {
-                navigate("/notfound");
-            }
+            // if (error.request.statusText === 'registration invalidated' || error.request.status === 401)
+            // {
+            //     navigate("/signin");
+            // }
+            // else if (error.request.statusText === 'completed profile')
+            // {
+            //     navigate("/users");
+            // }
+            // else
+            // {
+            //     navigate("/notfound");
+            // }
         })
 
     }, [navigate])
