@@ -82,7 +82,7 @@ function identifyUser($data)
                     ];
 
                     $tokenInstance = new JWT();
-                    $refresh_token_cookie = $tokenInstance->generate($header_, $payload_, COOKIE_TOKEN_SECRET, 86400 * 30);
+                    $REFRESH_TOKEN = $tokenInstance->generate($header_, $payload_, COOKIE_TOKEN_SECRET, 86400 * 30);
                     //_________________________
 
 
@@ -109,12 +109,15 @@ function identifyUser($data)
 
                     // USER DATA
                     $userData = [
-                        "user_id" => $userid[0],
-                        "lastname" => $primaryUserData['lastname'],
-                        "firstname" => $primaryUserData['firstname'],
-                        "username" => $primaryUserData['username'],
-                        "email" => $primaryUserData['email'],
-                        "jwt" => $jwt
+                        "user" => [
+                            "user_id" => $userid[0],
+                            "lastname" => $primaryUserData['lastname'],
+                            "firstname" => $primaryUserData['firstname'],
+                            "username" => $primaryUserData['username'],
+                            "email" => $primaryUserData['email']
+                        ],
+                        "EXPIRE_IN" => 3600,
+                        "AUTH_TOKEN" => $jwt
                     ];
                     //_________________________
 
@@ -124,14 +127,14 @@ function identifyUser($data)
                     if ( $completedProfile[0] == TRUE )
                     {
                         updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
-                        setcookie('refresh_token', $refresh_token_cookie, time() + 60 * 60 * 24 * 30, '/', "http://localhost:3000/", false, true);
                         echo json_encode($userData);
+                        setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
                         http_response_code(200);
                     }
                     else if ( $completedProfile[0] == FALSE )
                     {
-                        setcookie('refresh_token', $refresh_token_cookie, time() + 60 * 60 * 24 * 30, '/', "http://localhost:3000/", false, true);
                         echo json_encode($userData);
+                        setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
                         http_response_code(206);
                     }
                 }

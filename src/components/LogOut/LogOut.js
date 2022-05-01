@@ -8,7 +8,9 @@ import axios from 'axios';
 
 const LogOut = () => {
 
-    const {user, setUser} = useContext(UserContext);
+    const { value } = useContext(UserContext);
+
+    const setUser = value[1];
 
     const navigate = useNavigate();
 

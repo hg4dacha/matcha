@@ -27,15 +27,20 @@ function App() {
 
 
   const[user, setUser] = useState(null);
-
   const value = useMemo( () => ({user, setUser}), [user, setUser]);
+
+  const[loading, setLoading] = useState(true);
+  const load = useMemo( () => ({loading, setLoading}), [loading, setLoading]);
   
 
   axios.defaults.baseURL = "http://localhost:8080/matcha/api/";
+  axios.defaults.withCredentials = true;
 
   useEffect( () => {
 
-    if(user) { axios.defaults.headers.common['Authorization'] = `Bearer ${value.user.jwt}`; }
+    if(user) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${value.user.AUTH_TOKEN}`;
+    }
 
   }, [user, value.user])
 
@@ -45,12 +50,19 @@ function App() {
 
     axios.post('/users/token')
     .then( (response) => {
-      console.log(response);
+      if(response.status === 200) {
+        value.setUser(response.data);
+        load.setLoading(false);
+      }
+      else if(response.status === 206) {
+        load.setLoading(false);
+      }
     })
-    .catch( (error) => {
-      console.log(error);
+    .catch( () => {
+      load.setLoading(false);
     })
-  }, [])
+
+  }, [load, value])
   
 
 
@@ -58,7 +70,7 @@ function App() {
   return (
     <BrowserRouter>
     
-      <UserContext.Provider value={value}>
+      <UserContext.Provider value={{ value: [value.user, value.setUser], load: [load.loading, load.setLoading] }}>
         <Routes>
           <Route path='/' element={<Home/>} />
           <Route path='/signup' element={<SignUp/>} />

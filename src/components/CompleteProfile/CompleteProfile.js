@@ -36,13 +36,16 @@ import axios from 'axios';
 const CompleteProfile = () => {
 
 
-    const navigate = useNavigate();
+    
+    const { value, load } = useContext(UserContext);
 
-    const {user, setUser} = useContext(UserContext);
+    const[user, setUser] = value;
+    const[loading, setLoading] = load;
+
+    const navigate = useNavigate();
 
 
     useEffect( () => {
-        console.log(user);
         document.title = 'Compléter profil - Matcha'
     }, [])
 
@@ -71,47 +74,48 @@ const CompleteProfile = () => {
 
 
     useEffect( () => {
+        if(!loading) {
+            axios.get('/users/conclude')
+            .then( (response) => {
+                if (response.status === 200)
+                {
+                    setInfoData([
+                        {
+                            label: 'Nom',
+                            info: response.data.lastname
+                        },
+                        {
+                            label: 'Prénom',
+                            info: response.data.firstname
+                        },
+                        {
+                            label: 'Nom d\'utilisateur',
+                            info: response.data.username
+                        },
+                        {
+                            label: 'E-mail',
+                            info: response.data.email
+                        }
+                    ])
+                }
+            })
+            .catch( (error) => {
+                if (error.request.statusText === 'registration invalidated' || error.request.status === 401)
+                {
+                    navigate("/signin");
+                }
+                else if (error.request.statusText === 'completed profile')
+                {
+                    navigate("/users");
+                }
+                else
+                {
+                    navigate("/notfound");
+                }
+            })
+        }
 
-        axios.get('/users/conclude')
-        .then( (response) => {
-            if (response.status === 200)
-            {
-                setInfoData([
-                    {
-                        label: 'Nom',
-                        info: response.data.lastname
-                    },
-                    {
-                        label: 'Prénom',
-                        info: response.data.firstname
-                    },
-                    {
-                        label: 'Nom d\'utilisateur',
-                        info: response.data.username
-                    },
-                    {
-                        label: 'E-mail',
-                        info: response.data.email
-                    }
-                ])
-            }
-        })
-        .catch( (error) => {
-            // if (error.request.statusText === 'registration invalidated' || error.request.status === 401)
-            // {
-            //     navigate("/signin");
-            // }
-            // else if (error.request.statusText === 'completed profile')
-            // {
-            //     navigate("/users");
-            // }
-            // else
-            // {
-            //     navigate("/notfound");
-            // }
-        })
-
-    }, [navigate])
+    }, [navigate, loading])
     
 
 // _-_-_-_-_-_-_-_-_- PROFILE PICTURE SECTION -_-_-_-_-_-_-_-_-_

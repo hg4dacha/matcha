@@ -25,7 +25,9 @@ import axios from 'axios';
 const SignIn = () => {
 
 
-    const {user, setUser} = useContext(UserContext);
+    const { value } = useContext(UserContext);
+
+    const[user, setUser] = value;
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -33,38 +35,34 @@ const SignIn = () => {
 
 
     useEffect( () => {
-    localStorage.clear();
-        if(user) {
+
+        if(user !== null) {
             navigate("/users");
         }
         else {
-            document.title = 'Connexion - Matcha'
+            document.title = 'Connexion - Matcha';
+
+            if(location.state === 'confirm')
+            {
+                setSuccessMessage(true);
+                setErrorMessage({ display: true, msg: "Felicitations ! Vous pouvez desormais vous connecter" });
+            }
+            else if(location.state === 'password')
+            {
+                setSuccessMessage(true);
+                setErrorMessage({ display: true, msg: "Le mot de passe a été modifié" });
+            }
+            else if(location.state === 'logout')
+            {
+                handleNewAlert({id: Math.random(), variant: "info", information: "Déconnexion"});
+            }
+            history.replace({...history.location, state: null })
         }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
-
-    useEffect( () => {
-        if(location.state === 'confirm')
-        {
-            setSuccessMessage(true);
-            setErrorMessage({ display: true, msg: "Felicitations ! Vous pouvez desormais vous connecter" });
-        }
-        else if(location.state === 'password')
-        {
-            setSuccessMessage(true);
-            setErrorMessage({ display: true, msg: "Le mot de passe a été modifié" });
-        }
-        else if(location.state === 'logout')
-        {
-            handleNewAlert({id: Math.random(), variant: "info", information: "Déconnexion"});
-        }
-        history.replace({...history.location, state: null })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
     
 
     const loginData = {

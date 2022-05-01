@@ -6,7 +6,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/JWT/includes/config.php");
 
 class JWT
 {
-    public function generate(array $header, array $payload, string $secret = SECRET, int $validity = 86400): string
+    public function generate(array $header, array $payload, string $secret = SECRET, int $validity = 3600): string
     {
         if ( $validity > 0 ) {
             $now = new DateTime();
@@ -44,7 +44,7 @@ class JWT
         $header = $this->getHeader($token);
         $payload = $this->getPayload($token);
 
-        $tokenVerif = $this->generate($header, $payload, SECRET, 0);
+        $tokenVerif = $this->generate($header, $payload, $secret, 0);
 
         return $token === $tokenVerif;
     }

@@ -1,9 +1,10 @@
 <?php
 
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: *");
-header("Access-Control-Allow-Methods: *");
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, X-PINGOTHER");
+header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS");
+header("Access-Control-Allow-Credentials: true");
 
 
 // JWT
@@ -30,7 +31,9 @@ try {
     $urlData = explode('/', (filter_var($url , FILTER_SANITIZE_URL)));
     $request = $urlData[3];
     $method = $_SERVER['REQUEST_METHOD'];
-    $action = $urlData[4];
+    if(isset($urlData[4]) && !empty($urlData[4])) {
+        $action = $urlData[4];
+    }
 
 
     // ***REQUESTS WITHOUT JWT*** //
@@ -72,12 +75,11 @@ try {
      // ***REQUEST NEW TOKEN*** //
     elseif($request === "users" && $action === "token" && $method === "POST")
     {
-        var_dump($_COOKIE);
-        if(isset($_COOKIE['refresh_token']) && !empty($_COOKIE['refresh_token'])) {
-            getNewToken($_COOKIE['refresh_token']);
+        if(isset($_COOKIE['REFRESH_TOKEN']) && !empty($_COOKIE['REFRESH_TOKEN'])) {
+            getNewToken($_COOKIE['REFRESH_TOKEN']);
         }
         else {
-            http_response_code(200);
+            http_response_code(206);
             exit;
         }
     }
@@ -148,7 +150,7 @@ try {
             }
 
             $payload = $jwt->getPayload($token);
-            
+
             if (!isset($payload['user_id']) || empty($payload['user_id']) || !is_numeric($payload['user_id'])) {
                 http_response_code(401);
                 $error = [
