@@ -15,7 +15,7 @@ function updateUserData($data, $userid, $object)
             if(isset($data->profilePicture) && !empty($data->profilePicture)) {
                 $profilePicture = $data->profilePicture;
                 if(checkProfilePicture($profilePicture) === FALSE) {
-                    formattedProfilePicture($profilePicture, $userid);
+                    formattedProfilePicture($profilePicture, $userid, 'update');
                     http_response_code(200);
                 } else { http_response_code(400); }
             } else { http_response_code(400); }

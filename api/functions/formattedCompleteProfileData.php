@@ -8,7 +8,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/updates.php");
 
 
 
-function formattedProfilePicture($profilePicture, $userID)
+function formattedProfilePicture($profilePicture, $userID, $action)
 {
     if ( isset($profilePicture->profilePicture) && !empty($profilePicture->profilePicture) )
     {
@@ -44,7 +44,8 @@ function formattedProfilePicture($profilePicture, $userID)
             chmod('/opt/lampp/htdocs/matcha/api/pictures/'.$pictureID.'.png', 0777);
         }
 
-        insertProfilePicture($userID, $picturePath);
+        if ( $action === 'insert' ) { insertProfilePicture($userID, $picturePath); }
+        elseif ( $action === 'update' ) { updateProfilePicture($userID, $picturePath); }
     }
 }
 

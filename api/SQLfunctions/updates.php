@@ -57,6 +57,31 @@ function insertProfilePicture($userid, $picturePath)
 
 
 
+// UPDATE PROFILE PICTURE
+function updateProfilePicture($userid, $picturePath)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE pictures SET profilePicture = :picturePath WHERE userid = :userid");
+        $reqUpdate->bindValue(':picturePath', $picturePath, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
 // INSERT USER PICTURES
 function insertUserPictures($userid, $pictureNumber, $picturePath)
 {

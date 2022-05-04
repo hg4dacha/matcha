@@ -94,7 +94,7 @@ function completeUserData($data, $userid)
 
             if ( $registrationValidated[0] == TRUE )
             {
-                formattedProfilePicture($profilePicture, $userid);
+                formattedProfilePicture($profilePicture, $userid, 'insert');
                 userPicturesTreatment($userPictures, $userid);
                 userBirthdateTreatment($dateSelected, $userid);
                 userGenderTreatment($genderChecked, $userid);
