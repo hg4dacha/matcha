@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { UserContext } from './components/UserContext/UserContext';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './components/Home/Home';
@@ -46,13 +46,20 @@ function App() {
 
 
 
-  useEffect( () => {
 
+  let refreshTokenTimeOut = useRef();
+
+  const refreshToken = useCallback( () => {
     axios.post('/users/token')
     .then( (response) => {
       if(response.status === 200) {
+
         value.setUser(response.data);
+        refreshTokenTimeOut.current = setTimeout( () => {
+          refreshToken();
+        }, (response.data.EXPIRE_IN * 1000) - 1000);
         load.setLoading(false);
+
       }
       else if(response.status === 206) {
         load.setLoading(false);
@@ -61,8 +68,16 @@ function App() {
     .catch( () => {
       load.setLoading(false);
     })
+  }, [load, value, refreshTokenTimeOut])
 
-  }, [load, value])
+
+  useEffect( () => {
+
+    refreshToken();
+
+    return () => clearTimeout(refreshTokenTimeOut);
+
+  }, [refreshTokenTimeOut, refreshToken])
   
 
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react';
+import React, { useState, useEffect, Fragment, useRef, useContext } from 'react';
 import Navbar from '../NavBar/NavBar';
 import ProfilePictureSection from './ProfilePictureSection';
 import UserPhotosSection from './UserPhotosSection';
@@ -9,6 +9,7 @@ import PasswordChangeSection from './PasswordChangeSection';
 import Location from './Location';
 import AlertMsg from '../AlertMsg/AlertMsg';
 import ConfirmWindow from '../ConfirmWindow/ConfirmWindow';
+import { UserContext } from '../UserContext/UserContext';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
@@ -26,21 +27,74 @@ import { BsShieldLockFill } from 'react-icons/bs';
 import { TiLocation } from 'react-icons/ti';
 import { IoPinSharp } from 'react-icons/io5';
 import { BiCalendarAlt } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
-import selfie22 from '../../images/selfie22.jpg'
-import selfie from '../../images/selfie.jpg'
-import jeanma1 from '../../images/jeanma1.jpg'
-import jeanma2 from '../../images/jeanma2.jpg'
 
 
 
 
 const Profile = () => {
 
+    
+    const { load } = useContext(UserContext);
+
+    const loading = load[0];
+
+    const navigate = useNavigate();
+
+
     useEffect( () => {
-        document.title = 'Profil - Matcha'
-    }, [])
+
+        if(!loading) {
+            axios.get('/users/profile')
+            .then( (response) => {
+                if (response.status === 200)
+                {
+                    document.title = 'Profil - Matcha';
+
+                    setProfilePicture({ profilePicture: response.data.profilePicture });
+                    setUserPictures({
+                        secondPicture: response.data.secondPicture,
+                        thirdPicture: response.data.thirdPicture,
+                        fourthPicture: response.data.fourthPicture,
+                        fifthPicture: response.data.fifthPicture
+                    });
+                    setUsersPersonalInformation({
+                        lastname: response.data.lastname,
+                        firstname: response.data.firstname,
+                        username: response.data.username,
+                        email: response.data.email
+                    });
+                    setDateSelected(new Date(response.data.birthdate));
+                    setUserAge(differenceInYears(new Date(), new Date(response.data.birthdate)));
+                    setGenderChecked({
+                        maleGender: response.data.gender === 'MALE' ? true : false,
+                        femaleGender: response.data.gender === 'FEMALE' ? true : false
+                    });
+                    setOrientationChecked({
+                        maleOrientation: response.data.maleOrientation === '1' ? true : false,
+                        femaleOrientation: response.data.femaleOrientation === '1' ? true : false
+                    });
+                    setDescription(response.data.descriptionUser);
+                    setUserTags(JSON.parse(response.data.tags));
+                    setUserLocation(JSON.parse(response.data.locationUser));
+                }
+            })
+            .catch( (error) => {
+                if (error.request.statusText && error.request.statusText === 'incomplete profile')
+                {
+                    navigate("/complete-profile");
+                }
+                else
+                {
+                    navigate("/signin");
+                }
+            })
+        }
+
+    }, [navigate, loading])
 
 
 
@@ -49,12 +103,8 @@ const Profile = () => {
 // _-_-_-_-_-_-_-_-_- PROFILE PICTURE SECTION -_-_-_-_-_-_-_-_-_
 
 
-    // PROFILE PICTURE ↓↓↓
-    const _profilePicture = {
-        profilePicture: selfie22,
-    }
-    
-    const [profilePicture, setProfilePicture] = useState(_profilePicture)
+    // PROFILE PICTURE ↓↓↓    
+    const [profilePicture, setProfilePicture] = useState({ profilePicture: null })
 
 
     // PICTURE LOADING ↓↓↓
@@ -115,7 +165,18 @@ const Profile = () => {
         if (prevProfilePicture && prevProfilePicture !== profilePicture)
         {
             prevProfilePictureRef.current = profilePicture;
-            updateSuccessAlert();
+
+            axios.patch('/users/profile/picture', { profilePicture })
+            .then( (response) => {
+                console.log(response.data);
+                if(response.status === 200)
+                {
+                    updateSuccessAlert();
+                }
+            })
+            .catch( () => {
+                updateErrorAlert();
+            })
         }
     }
 
@@ -126,15 +187,13 @@ const Profile = () => {
 // _-_-_-_-_-_-_-_-_- USER PICTURES SECTION -_-_-_-_-_-_-_-_-_
 
 
-    // USER PICTURES ↓↓↓
-    const _userPictures = {
-        secondPicture: selfie22,
-        thirdPicture: selfie,
-        fourthPicture: jeanma1,
-        fifthPicture: jeanma2
-    }
-    
-    const [userPictures, setUserPictures] = useState(_userPictures)
+    // USER PICTURES ↓↓↓   
+    const [userPictures, setUserPictures] = useState({
+        secondPicture: null,
+        thirdPicture: null,
+        fourthPicture: null,
+        fifthPicture: null
+    })
 
 
     // PICTURE LOADING ↓↓↓
@@ -220,14 +279,12 @@ const Profile = () => {
 
 
     // USER'S PERSONAL INFORMATION ↓↓↓
-    const _usersPersonalInformation = {
-        lastname: 'Gadacha',
-        firstname: 'Honsse',
-        username: 'Username93',
-        email: 'test@gmail.com'
-    }
-
-    const [usersPersonalInformation, setUsersPersonalInformation] = useState(_usersPersonalInformation);
+    const [usersPersonalInformation, setUsersPersonalInformation] = useState({
+        lastname: '',
+        firstname: '',
+        username: '',
+        email: ''
+    });
 
     const handlePersonalInformationChange = e => {
         setUsersPersonalInformation({...usersPersonalInformation, [e.target.id]: e.target.value});
@@ -289,11 +346,9 @@ const Profile = () => {
 
 
     // USER AGE ↓↓↓
-    const _dateSelected = new Date('1992-06-01T08:59:24.000Z');
-    const [dateSelected, setDateSelected] = useState(_dateSelected)
+    const [dateSelected, setDateSelected] = useState(null)
 
-    const _userAge = '30';
-    const [userAge, setUserAge] = useState(_userAge)
+    const [userAge, setUserAge] = useState('')
 
     const handleDateSelectedChange = (e) => {
 
@@ -348,18 +403,16 @@ const Profile = () => {
 
 
     // GENDER (RADIO) ↓↓↓
-    const _genderChecked = {
-        maleGender: true,
-        femaleGender: false
-    }
-    const [genderChecked, setGenderChecked] = useState(_genderChecked)
+    const [genderChecked, setGenderChecked] = useState({
+        maleGender: null,
+        femaleGender: null
+    })
 
     // ORIENTATION (CHECKBOX) ↓↓↓
-    const _orientationChecked = {
-        maleOrientation: false,
-        femaleOrientation: true
-    }
-    const [orientationChecked, setOrientationChecked] = useState(_orientationChecked)
+    const [orientationChecked, setOrientationChecked] = useState({
+        maleOrientation: null,
+        femaleOrientation: null
+    })
 
 
     // INCORRECT DATA ↓↓↓
@@ -416,9 +469,8 @@ const Profile = () => {
 // _-_-_-_-_-_-_-_-_- PROFILE DESCRIPTION SECTION -_-_-_-_-_-_-_-_-_
 
 
-    const _description = "Je ne suis à la recherche, ni d'une relation éphémère, ni d'amies, ni d'échanges pour combler une solitude. Ma vie est saine, équilibrée, et je souhaite simplement vous rencontrer pour une relation durable, sereine, apaisante, et harmonieuse. Dans laquelle chacun apportera sa joie de vivre, sa « vraie valeur ajoutée » ! Saurai-je être l'épice de votre vie ? Celle qui donnera de la saveur à votre quotidien, fera briller vos yeux, et adoucira vos vieux jours ? Bon, j'arrête là mon délire aromatique, faute de quoi, je vais passer pour un poète illuminé, bercé par les vapeurs d'absinthe !"
-
-    const [description, setDescription] = useState(_description)
+    // DESCRIPTION ↓↓↓
+    const [description, setDescription] = useState('')
 
     const handleDescriptionChange = e => {
         setDescription(e.target.value)
@@ -472,15 +524,13 @@ const Profile = () => {
     
     
     // USER TAGS ↓↓↓
-    const _userTags = [
-        "actualite",
-        "politique",
-        "fitness",
-        "aventure",
-        "geek"
-    ]
-    
-    const [userTags, setUserTags] = useState(_userTags)
+    const [userTags, setUserTags] = useState([
+        "",
+        "",
+        "",
+        "",
+        ""
+    ])
 
 
     const handleAddTag = (e) => {
@@ -541,14 +591,13 @@ const Profile = () => {
 
 
     // USER LOCATION ↓↓↓
-    const _userLocation = {
-        lat: 48.862725,
-        lng: 2.287592,
-        city: 'Paris',
-        state: 'Ile-de-France',
-        country: 'France'
-    }
-    const [userLocation, setUserLocation] = useState(_userLocation)
+    const [userLocation, setUserLocation] = useState({
+        lat: 47.0814396,
+        lng: 2.3986275,
+        city: '',
+        state: '',
+        country: ''
+    })
 
 
     // ACTIVATION OF GEOLOCATION ↓↓↓
@@ -1140,7 +1189,7 @@ const Profile = () => {
                             setGeolocationActivated={setGeolocationActivated}
                             setUserLocationDataError={setUserLocationDataError}
                             updateErrorAlert={updateErrorAlert}
-                            zoom={9}
+                            zoom={5}
                         />
                         <button type='submit' disabled={geolocationActivated ? true : false} className='buttons-form-profile'>
                             Enregistrer

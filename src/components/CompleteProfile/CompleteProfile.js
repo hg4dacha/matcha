@@ -37,10 +37,9 @@ const CompleteProfile = () => {
 
 
     
-    const { value, load } = useContext(UserContext);
+    const { load } = useContext(UserContext);
 
-    const[user, setUser] = value;
-    const[loading, setLoading] = load;
+    const loading = load[0];
 
     const navigate = useNavigate();
 
@@ -100,17 +99,13 @@ const CompleteProfile = () => {
                 }
             })
             .catch( (error) => {
-                if (error.request.statusText === 'registration invalidated' || error.request.status === 401)
-                {
-                    navigate("/signin");
-                }
-                else if (error.request.statusText === 'completed profile')
+                if (error.request.statusText && error.request.statusText === 'completed profile')
                 {
                     navigate("/users");
                 }
                 else
                 {
-                    navigate("/notfound");
+                    navigate("/signin");
                 }
             })
         }

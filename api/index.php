@@ -20,6 +20,8 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/completeUserDat
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getPrimaryUserData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/logoutUser.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getNewToken.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getProfileData.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/updateUserData.php");
 
 
 
@@ -34,12 +36,17 @@ try {
     if(isset($urlData[4]) && !empty($urlData[4])) {
         $action = $urlData[4];
     }
-
+    if(isset($urlData[5]) && !empty($urlData[5])) {
+        $object = $urlData[5];
+    }
+    
 
     // ***REQUESTS WITHOUT JWT*** //
     if( $request === "users" &&
-        (($method === "POST" && ($action === "add" || $action === "identification")) ||
-        ($method === "PATCH" && ($action === "confirm" || $action === "omission" || $action === "reset")))
+        ( ($method === "POST" && ($action === "add" || $action === "identification")) ||
+          ($method === "PATCH" && ($action === "confirm" || $action === "omission" || $action === "reset")) ||
+          ($method === "GET" && $action === "checking")
+        )
       )
     {
         $data = json_decode(file_get_contents('php://input'));
@@ -68,6 +75,19 @@ try {
                 else if ( $action == 'reset' )
                 {
                     resetPassword($data);
+                }
+            break;
+            case "GET":
+                if ( $action == 'checking' )
+                {
+                    if(isset($_COOKIE['REFRESH_TOKEN']) && !empty($_COOKIE['REFRESH_TOKEN']))
+                    {
+                        http_response_code(400);
+                    }
+                    else
+                    {
+                        http_response_code(200);
+                    }
                 }
             break;
         }
@@ -186,20 +206,34 @@ try {
                         }
                     break;
                     case "PATCH":
-                        // $data = json_decode(file_get_contents('php://input'));
-                        // if ()
-                        // {
-
-                        // }
-                        // else
-                        // {
-                        //     throw new Exception ("Requête invalide");
-                        // }
+                        $data = json_decode(file_get_contents('php://input'));
+                        if ( $action == 'profile' )
+                        {
+                            updateUserData($data, $userid, $object);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
                     break;
                     case "GET":
                         if ( $action == 'conclude' )
                         {
                             getPrimaryUserData($userid);
+                        }
+                        elseif ( $action == 'profile' )
+                        {
+                            getProfileData($userid);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                    case "DELETE":
+                        if ( $action == 'profile' )
+                        {
+                            updateUserData($data, $userid, $object);
                         }
                         else
                         {
