@@ -56,10 +56,10 @@ const Profile = () => {
 
                     setProfilePicture({ profilePicture: response.data.profilePicture });
                     setUserPictures({
-                        secondPicture: response.data.secondPicture,
-                        thirdPicture: response.data.thirdPicture,
-                        fourthPicture: response.data.fourthPicture,
-                        fifthPicture: response.data.fifthPicture
+                        secondPicture: response.data.secondPicture === null ? false : response.data.secondPicture,
+                        thirdPicture: response.data.thirdPicture === null ? false : response.data.thirdPicture,
+                        fourthPicture: response.data.fourthPicture === null ? false : response.data.fourthPicture,
+                        fifthPicture: response.data.fifthPicture === null ? false : response.data.fifthPicture
                     });
                     setUsersPersonalInformation({
                         lastname: response.data.lastname,
@@ -104,7 +104,7 @@ const Profile = () => {
 
 
     // PROFILE PICTURE ↓↓↓    
-    const [profilePicture, setProfilePicture] = useState({ profilePicture: null })
+    const [profilePicture, setProfilePicture] = useState({ profilePicture: false })
 
 
     // PICTURE LOADING ↓↓↓
@@ -168,7 +168,6 @@ const Profile = () => {
 
             axios.patch('/users/profile/picture', { profilePicture })
             .then( (response) => {
-                console.log(response.data);
                 if(response.status === 200)
                 {
                     updateSuccessAlert();
@@ -189,10 +188,10 @@ const Profile = () => {
 
     // USER PICTURES ↓↓↓   
     const [userPictures, setUserPictures] = useState({
-        secondPicture: null,
-        thirdPicture: null,
-        fourthPicture: null,
-        fifthPicture: null
+        secondPicture: false,
+        thirdPicture: false,
+        fourthPicture: false,
+        fifthPicture: false
     })
 
 
@@ -267,7 +266,17 @@ const Profile = () => {
         if (prevUserPictures && prevUserPictures !== userPictures)
         {
             prevUserPicturesRef.current = userPictures;
-            updateSuccessAlert();
+
+            axios.patch('/users/profile/pictures', { userPictures })
+            .then( (response) => {
+                if(response.status === 200)
+                {
+                    updateSuccessAlert();
+                }
+            })
+            .catch( () => {
+                updateErrorAlert();
+            })
         }
     }
 
@@ -287,21 +296,21 @@ const Profile = () => {
     });
 
     const handlePersonalInformationChange = e => {
+
+        prevUsersPersonalInformationRef.current = usersPersonalInformation;
         setUsersPersonalInformation({...usersPersonalInformation, [e.target.id]: e.target.value});
     }
 
 
     // INCORRECT DATA ↓↓↓
-    const [infoDataError, setInfoDataError] = useState(false)
+    const [infoDataError, setInfoDataError] = useState({
+        display: false,
+        msg: "" 
+    })
 
 
     // PREVIOUS VALUE ↓↓↓
     const prevUsersPersonalInformationRef = useRef();
-
-    useEffect( () => {
-        prevUsersPersonalInformationRef.current = usersPersonalInformation;
-    }, [usersPersonalInformation]);
-    
     const prevUsersPersonalInformation = prevUsersPersonalInformationRef.current;
     
 
@@ -320,19 +329,38 @@ const Profile = () => {
                     if ( NAMES_REGEX.test(usersPersonalInformation.lastname) && NAMES_REGEX.test(usersPersonalInformation.firstname) &&
                         USERNAME_REGEX.test(usersPersonalInformation.username) && EMAIL_REGEX.test(usersPersonalInformation.email) )
                     {
-                        setInfoDataError(false);
-                        updateSuccessAlert();
+                        prevUsersPersonalInformationRef.current = usersPersonalInformation;
+
+                        axios.patch('/users/profile/primary', { usersPersonalInformation })
+                        .then( (response) => {
+                            if(response.status === 200)
+                            {
+                                setInfoDataError({ display: false, msg: "" });
+                                updateSuccessAlert();
+                            }
+                        })
+                        .catch( (error) => {
+                            if (error.request.statusText === 'reserved email')
+                            {
+                                setInfoDataError({ display: true, msg: "Cet email est déjà utilisé" });
+                            }
+                            else if (error.request.statusText === 'reserved username')
+                            {
+                                setInfoDataError({ display: true, msg: "Ce nom d'utilisateur est déjà utilisé" });
+                            }
+                            updateErrorAlert();
+                        })
                     }
                     else
                     {
                         updateErrorAlert();
-                        setInfoDataError(true);
+                        setInfoDataError({ display: true, msg: "Vos entrées ne sont pas valide" });
                     }
                 }
                 else
                 {
                     updateErrorAlert();
-                    setInfoDataError(true);
+                    setInfoDataError({ display: true, msg: "Vos entrées ne sont pas valide" });
                 }
             }
         }
@@ -352,6 +380,7 @@ const Profile = () => {
 
     const handleDateSelectedChange = (e) => {
 
+        prevDateSelectedRef.current = dateSelected;
         setDateSelected(e);
         (e !== null) &&
         setUserAge(differenceInYears(new Date(), e));
@@ -359,12 +388,7 @@ const Profile = () => {
 
 
     // PREVIOUS VALUE ↓↓↓
-    const prevDateSelectedRef = useRef();
-
-    useEffect( () => {
-        prevDateSelectedRef.current = dateSelected;
-    }, [dateSelected]);
-    
+    const prevDateSelectedRef = useRef();    
     const prevDateSelected = prevDateSelectedRef.current;
 
 
@@ -383,11 +407,23 @@ const Profile = () => {
                  (Object.prototype.toString.call(dateSelected)) &&
                  !(isNaN(dateSelected)) )
             {
-                if ( (differenceInYears(new Date(), dateSelected)) > 18 &&
+                if ( (differenceInYears(new Date(), dateSelected)) >= 18 &&
                      (differenceInYears(new Date(), dateSelected)) <= 130 )
                 {
-                    updateSuccessAlert();
-                    setDateDataError(false);
+                    prevDateSelectedRef.current = dateSelected;
+                    
+                    axios.patch('/users/profile/birthdate', { dateSelected })
+                    .then( (response) => {
+                        console.log(response.data);
+                        if(response.status === 200)
+                        {
+                            updateSuccessAlert();
+                            setDateDataError(false);
+                        }
+                    })
+                    .catch( (error) => {
+                        updateErrorAlert();
+                    })
                 }
                 else
                 {
@@ -1018,11 +1054,11 @@ const Profile = () => {
                             Enregistrer
                         </button>
                         {
-                        infoDataError &&
+                        infoDataError.display &&
                         <div className='error-update-profile-div'>
                             <Form.Text className='error-update-profile'>
                                 <RiErrorWarningLine/>
-                                Vos entrées ne sont pas valide
+                                {infoDataError.msg}
                             </Form.Text>
                         </div>
                         }

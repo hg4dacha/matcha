@@ -83,7 +83,7 @@ function updateProfilePicture($userid, $picturePath)
 
 
 // INSERT USER PICTURES
-function insertUserPictures($userid, $pictureNumber, $picturePath)
+function updateUserPictures($userid, $pictureNumber, $picturePath)
 {
     $dbc = db_connex();
     try
@@ -273,6 +273,36 @@ function updateUserDescription($userid, $descriptionUser)
         return ($error);
     }
 }
+
+
+
+
+
+
+// UPDATE USER INFO
+function updateUserInfo($userid, $lastname, $firstname, $username, $email)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET lastname = :lastname, firstname = :firstname, username = :username, email = :email WHERE id = :userid");
+        $reqUpdate->bindValue(':lastname', $lastname, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':firstname', $firstname, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':username', $username, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':email', $email, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
 
 
 

@@ -367,4 +367,40 @@ function checkLocation($userLocation)
 
 
 
+
+// CHECK USER INFO
+function checkUserInfo($userInfo)
+{
+    if ( (isset($userInfo->lastname) && !empty($userInfo->lastname)) &&
+         (isset($userInfo->firstname) && !empty($userInfo->firstname)) &&
+         (isset($userInfo->username) && !empty($userInfo->username)) &&
+         (isset($userInfo->email) && !empty($userInfo->email))
+       )
+    {
+        $lastname = htmlspecialchars($userInfo->lastname);
+        $firstname = htmlspecialchars($userInfo->firstname);
+        $username = htmlspecialchars($userInfo->username);
+        $email = htmlspecialchars($userInfo->email);
+
+        if ( preg_match("#^[a-zA-Z-]{1,30}$#", $lastname) &&
+             preg_match("#^[a-zA-Z-]{1,30}$#", $firstname) &&
+             preg_match("#^[a-zA-Z0-9_-]{1,15}$#", $username) &&
+             (preg_match("#^.{5,255}$#", $email) && filter_var($email, FILTER_VALIDATE_EMAIL))
+           )
+        {
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
+    else
+    {
+        return TRUE;
+    }
+}
+
+
+
 ?>

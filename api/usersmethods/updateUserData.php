@@ -21,13 +21,29 @@ function updateUserData($data, $userid, $object)
             } else { http_response_code(400); }
         break;
         case "pictures":
-
+            if(isset($data->userPictures) && !empty($data->userPictures)) {
+                $userPictures = $data->userPictures;
+                if(checkUserPictures($userPictures) === FALSE) {
+                    userPicturesTreatment($userPictures, $userid);
+                    http_response_code(200);
+                } else { http_response_code(400); }
+            } else { http_response_code(400); }
         break;
         case "primary":
-            
+            if(isset($data->usersPersonalInformation) && !empty($data->usersPersonalInformation)) {
+                $userInfo = $data->usersPersonalInformation;
+                if(checkUserInfo($userInfo) === FALSE) {
+                    userInfoTreatment($userInfo, $userid);
+                } else { http_response_code(400); }
+            } else { http_response_code(400); }
         break;
         case "birthdate":
-            
+            if(isset($data->dateSelected) && !empty($data->dateSelected)) {
+                $dateSelected = htmlspecialchars($data->dateSelected);
+                if(checkAge($dateSelected) === FALSE) {
+                    userBirthdateTreatment($dateSelected, $userid);
+                } else { http_response_code(400); }
+            } else { http_response_code(400); }
         break;
         case "gender":
     
