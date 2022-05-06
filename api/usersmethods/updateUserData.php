@@ -45,14 +45,24 @@ function updateUserData($data, $userid, $object)
                 } else { http_response_code(400); }
             } else { http_response_code(400); }
         break;
-        case "gender":
-    
-        break;
-        case "orientation":
-
+        case "type":
+            if((isset($data->genderChecked) && !empty($data->genderChecked)) &&
+              (isset($data->orientationChecked) && !empty($data->orientationChecked))) {
+                $genderChecked = $data->genderChecked;
+                $orientationChecked = $data->orientationChecked;
+                if(checkGender($genderChecked) === FALSE && checkOrientation($orientationChecked) === FALSE) {
+                    userGenderTreatment($genderChecked, $userid);
+                    userOrientationTreatment($orientationChecked, $userid);
+                } else { http_response_code(400); }
+            } else { http_response_code(400); }
         break;
         case "description":
-
+            if(isset($data->description) && !empty($data->description)) {
+                $description = htmlspecialchars($data->description);
+                if(checkDescription($description) === FALSE) {
+                    userDescriptionTreatment($description, $userid);
+                } else { http_response_code(400); }
+            } else { http_response_code(400); }
         break;
         case "tags":
 

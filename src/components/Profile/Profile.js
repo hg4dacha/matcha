@@ -411,10 +411,9 @@ const Profile = () => {
                      (differenceInYears(new Date(), dateSelected)) <= 130 )
                 {
                     prevDateSelectedRef.current = dateSelected;
-                    
+
                     axios.patch('/users/profile/birthdate', { dateSelected })
                     .then( (response) => {
-                        console.log(response.data);
                         if(response.status === 200)
                         {
                             updateSuccessAlert();
@@ -458,11 +457,6 @@ const Profile = () => {
     // PREVIOUS VALUE ↓↓↓
     const prevGenderCheckedRef = useRef();
     const prevOrientationCheckedRef = useRef();
-
-    useEffect( () => {
-        prevGenderCheckedRef.current = genderChecked;
-        prevOrientationCheckedRef.current = orientationChecked;
-    }, [genderChecked, orientationChecked]);
     
     const prevGenderChecked = prevGenderCheckedRef.current;
     const prevOrientationChecked = prevOrientationCheckedRef.current;
@@ -480,9 +474,23 @@ const Profile = () => {
                 if ( (genderChecked.maleGender !== genderChecked.femaleGender) &&
                      (orientationChecked.maleOrientation === true || orientationChecked.femaleOrientation === true) )
                 {
-                    console.log(genderChecked.maleGender)
-                    updateSuccessAlert();
-                    setGenderAndOrientationDataError(false);
+                    prevGenderCheckedRef.current = genderChecked;
+                    prevOrientationCheckedRef.current = orientationChecked;
+
+                    axios.patch('/users/profile/type', {
+                        genderChecked: genderChecked,
+                        orientationChecked: orientationChecked
+                    })
+                    .then( (response) => {
+                        if(response.status === 200)
+                        {
+                            updateSuccessAlert();
+                            setGenderAndOrientationDataError(false);
+                        }
+                    })
+                    .catch( (error) => {
+                        updateErrorAlert();
+                    })
                 }
                 else
                 {
@@ -509,7 +517,8 @@ const Profile = () => {
     const [description, setDescription] = useState('')
 
     const handleDescriptionChange = e => {
-        setDescription(e.target.value)
+        setDescription(e.target.value);
+        prevDescriptionRef.current = description;
     }
 
     // INCORRECT DATA ↓↓↓
@@ -526,9 +535,9 @@ const Profile = () => {
     // PREVIOUS VALUE ↓↓↓
     const prevDescriptionRef = useRef();
 
-    useEffect( () => {
-        prevDescriptionRef.current = description;
-    }, [description]);
+    // useEffect( () => {
+    //     prevDescriptionRef.current = description;
+    // }, [description]);
     
     const prevDescription = prevDescriptionRef.current;
     
@@ -543,8 +552,20 @@ const Profile = () => {
             {
                 if ( description.length <= 650 )
                 {
-                    setDescriptionDataError(false);
-                    updateSuccessAlert();
+                    prevDescriptionRef.current = description;
+                    
+                    axios.patch('/users/profile/description', { description })
+                    .then( (response) => {
+                        console.log(response.data);
+                        if(response.status === 200)
+                        {
+                            setDescriptionDataError(false);
+                            updateSuccessAlert();
+                        }
+                    })
+                    .catch( (error) => {
+                        updateErrorAlert();
+                    })
                 }
                 else
                 {
@@ -1109,6 +1130,8 @@ const Profile = () => {
                             setGenderChecked={setGenderChecked}
                             orientationChecked={orientationChecked}
                             setOrientationChecked={setOrientationChecked}
+                            prevGenderCheckedRef={prevGenderCheckedRef}
+                            prevOrientationCheckedRef={prevOrientationCheckedRef}
                         />
                         <button type='submit' className='buttons-form-profile'>
                             Enregistrer

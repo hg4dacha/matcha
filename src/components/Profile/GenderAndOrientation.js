@@ -34,6 +34,7 @@ const GenderAndOrientation = (props) => {
                                         femaleGender: !props.genderChecked.femaleGender
                                     })
                                 }
+                                if(props.prevGenderCheckedRef) { props.prevGenderCheckedRef.current = props.genderChecked; }
                             }}
                         />
                         <svg
@@ -72,6 +73,7 @@ const GenderAndOrientation = (props) => {
                                         femaleGender: !props.genderChecked.femaleGender
                                     })
                                 }
+                                if(props.prevGenderCheckedRef) { props.prevGenderCheckedRef.current = props.genderChecked; }
                             }}
                         />
                         <svg
@@ -110,6 +112,7 @@ const GenderAndOrientation = (props) => {
                                 else
                                 {
                                     props.setOrientationChecked({...props.orientationChecked, maleOrientation: !props.orientationChecked.maleOrientation});
+                                    if(props.prevOrientationCheckedRef) { props.prevOrientationCheckedRef.current = props.orientationChecked; }
                                 }
                             }}
                         />
@@ -142,6 +145,7 @@ const GenderAndOrientation = (props) => {
                                 else
                                 {
                                     props.setOrientationChecked({...props.orientationChecked, femaleOrientation: !props.orientationChecked.femaleOrientation});
+                                    if(props.prevOrientationCheckedRef) { props.prevOrientationCheckedRef.current = props.orientationChecked; }
                                 }
                             }}
                         />
