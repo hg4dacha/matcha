@@ -403,4 +403,43 @@ function checkUserInfo($userInfo)
 
 
 
+
+
+// CHECK PASSWORDS
+function checkPasswords($userPassword)
+{
+    if((isset($userPassword->currentPassword) && !empty($userPassword->currentPassword)) &&
+       (isset($userPassword->newPassword) && !empty($userPassword->newPassword)) &&
+       (isset($userPassword->newPasswordConfirmation) && !empty($userPassword->newPasswordConfirmation)))
+    {
+        $currentPassword = htmlspecialchars($userPassword->currentPassword);
+        $newPassword = htmlspecialchars($userPassword->newPassword);
+        $newPasswordConfirmation = htmlspecialchars($userPassword->newPasswordConfirmation);
+
+        if(preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).{6,255}$#", $currentPassword) &&
+           preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).{6,255}$#", $newPassword) &&
+           preg_match("#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).{6,255}$#", $newPasswordConfirmation))
+        {
+            if($newPassword === $newPasswordConfirmation)
+            {
+                return FALSE;
+            }
+            else
+            {
+                return TRUE;
+            }
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
+    else
+    {
+        return TRUE;
+    }
+}
+
+
+
 ?>

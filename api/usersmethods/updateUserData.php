@@ -65,16 +65,34 @@ function updateUserData($data, $userid, $object)
             } else { http_response_code(400); }
         break;
         case "tags":
-
+            if(isset($data->userTags) && !empty($data->userTags)) {
+                $userTags = $data->userTags;
+                if(checkUserTags($userTags) === FALSE) {
+                    userTagsTreatment($userTags, $userid);
+                } else { http_response_code(400); }
+            } else { http_response_code(400); }
         break;
         case "location":
-
+            if(isset($data->userLocation) && !empty($data->userLocation)) {
+                $userLocation = $data->userLocation;
+                if(checkLocation($userLocation) === FALSE) {
+                    userLocationTreatment($userLocation, $userid);
+                } else { http_response_code(400); }
+            } else { http_response_code(400); }
         break;
         case "password":
-
+            if(isset($data->userPassword) && !empty($data->userPassword)) {
+                $userPassword = $data->userPassword;
+                if(checkPasswords($userPassword) === FALSE) {
+                    userPasswordTreatment($userPassword, $userid);
+                } else { http_response_code(400); }
+            } else { http_response_code(400); }
         break;
         case "delete":
-
+            if(isset($data->passwordAccountDeletion) && !empty($data->passwordAccountDeletion)) {
+                $passwordAccountDeletion = $data->passwordAccountDeletion;
+                accountDeletionTreatment($passwordAccountDeletion, $userid);
+            } else { http_response_code(400); }
         break;
         default:
             http_response_code(400);

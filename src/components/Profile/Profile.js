@@ -535,10 +535,6 @@ const Profile = () => {
     // PREVIOUS VALUE ↓↓↓
     const prevDescriptionRef = useRef();
 
-    // useEffect( () => {
-    //     prevDescriptionRef.current = description;
-    // }, [description]);
-    
     const prevDescription = prevDescriptionRef.current;
     
 
@@ -553,10 +549,9 @@ const Profile = () => {
                 if ( description.length <= 650 )
                 {
                     prevDescriptionRef.current = description;
-                    
+
                     axios.patch('/users/profile/description', { description })
                     .then( (response) => {
-                        console.log(response.data);
                         if(response.status === 200)
                         {
                             setDescriptionDataError(false);
@@ -581,29 +576,23 @@ const Profile = () => {
     
     
     // USER TAGS ↓↓↓
-    const [userTags, setUserTags] = useState([
-        "",
-        "",
-        "",
-        "",
-        ""
-    ])
+    const [userTags, setUserTags] = useState([])
 
 
     const handleAddTag = (e) => {
-
         const tagID = e.currentTarget.id
         if ( (userTags.length < 5) && !(userTags.includes(tagID)) )
         {
             setUserTags(prevState => [...prevState, tagID]);
+            prevUserTagsRef.current = userTags;
         }
     }
 
 
     const handleRemoveTag = (e) => {
-
         userTags.length > 0 &&
         setUserTags(userTags.filter(tag => tag !== e.currentTarget.id));
+        prevUserTagsRef.current = userTags;
     }
 
 
@@ -613,10 +602,6 @@ const Profile = () => {
 
     // PREVIOUS VALUE ↓↓↓
     const prevUserTagsRef = useRef();
-
-    useEffect( () => {
-        prevUserTagsRef.current = userTags;
-    }, [userTags]);
     
     const prevUserTags = prevUserTagsRef.current;
     
@@ -629,8 +614,19 @@ const Profile = () => {
         {
             if ( userTags.length === 5 )
             {
-                setUserTagsDataError(false);
-                updateSuccessAlert();
+                prevUserTagsRef.current = userTags;
+
+                axios.patch('/users/profile/tags', { userTags })
+                .then( (response) => {
+                    if(response.status === 200)
+                    {
+                        setUserTagsDataError(false);
+                        updateSuccessAlert();
+                    }
+                })
+                .catch( (error) => {
+                    updateErrorAlert();
+                })
             }
             else
             {
@@ -671,10 +667,6 @@ const Profile = () => {
 
     // PREVIOUS VALUE ↓↓↓
     const prevUserLocationRef = useRef();
-
-    useEffect( () => {
-        prevUserLocationRef.current = userLocation;
-    }, [userLocation]);
     
     const prevUserLocation = prevUserLocationRef.current;
 
@@ -689,8 +681,20 @@ const Profile = () => {
             {
                 if (userLocation.country === 'France')
                 {
-                    updateSuccessAlert();
-                    setUserLocationDataError({ error: false, msg: '' });
+                    prevUserLocationRef.current = userLocation;
+
+                    axios.patch('/users/profile/location', { userLocation })
+                    .then( (response) => {
+                        if(response.status === 200)
+                        {
+                            updateSuccessAlert();
+                            setUserLocationDataError({ error: false, msg: '' });
+                        }
+                    })
+                    .catch( (error) => {
+                        updateErrorAlert();
+                    })
+
                 }
                 else
                 {
@@ -708,13 +712,11 @@ const Profile = () => {
 
 
     // USER PASSWORD ↓↓↓
-    const _userPassword = {
+    const [userPassword, setUserPassword] = useState({
         currentPassword: '',
         newPassword: '',
         newPasswordConfirmation: ''
-    }
-
-    const [userPassword, setUserPassword] = useState(_userPassword);
+    });
     
     const handlePasswordChange = e => {
         setUserPassword({...userPassword, [e.target.id]: e.target.value});
@@ -738,22 +740,25 @@ const Profile = () => {
                 if ( PASSWORD_REGEX.test(userPassword.newPassword) &&
                      userPassword.newPassword === userPassword.newPasswordConfirmation )
                 {
-                    if (userPassword.currentPassword)// if the currentPassword === userPassword
-                    {
-                        setPasswordDataError(false)
-                        setUserPassword(
-                            {
-                            currentPassword: '',
-                            newPassword: '',
-                            newPasswordConfirmation: ''
+
+                    axios.patch('/users/profile/password', { userPassword })
+                    .then( (response) => {
+                        if(response.status === 200)
+                        {
+                            setPasswordDataError(false)
+                            setUserPassword({
+                                currentPassword: '',
+                                newPassword: '',
+                                newPasswordConfirmation: ''
                             })
-                        updateSuccessAlert();
-                    }
-                    else
-                    {
+                            updateSuccessAlert();
+                        }
+                    })
+                    .catch( (error) => {
                         updateErrorAlert();
                         setPasswordDataError(true)
-                    }
+                    })
+
                 }
                 else
                 {
@@ -790,16 +795,20 @@ const Profile = () => {
     // ON CONFIRM ACCOUNT DELETION ↓↓↓
     const handleConfirmAccountDeletion = () => {
 
-        if (passwordAccountDeletion !== '')
-        {
-            setPasswordAccountDeletionDataError(false);
-            setPasswordAccountDeletion('');
-        }
-        else
-        {
+        axios.delete('/users/profile/delete', { data: { passwordAccountDeletion } }) // add "data:" to put a body in a "DELETE" request
+        .then( (response) => {
+console.log(response.data);
+            if(response.status === 200)
+            {
+                setPasswordAccountDeletionDataError(false);
+                setPasswordAccountDeletion('');
+            }
+        })
+        .catch( (error) => {
             updateErrorAlert();
             setPasswordAccountDeletionDataError(true);
-        }
+        })
+
     }
 
 
@@ -815,9 +824,16 @@ const Profile = () => {
     const handleSubmitAccountDeletion = e => {
         e.preventDefault();
 
+        setPasswordAccountDeletionDataError(false);
+
         if (passwordAccountDeletion !== '')
         {
             displayConfirmWindow(deleteAccount);
+        }
+        else
+        {
+            updateErrorAlert();
+            setPasswordAccountDeletionDataError(true);
         }
     }
 
@@ -1183,7 +1199,7 @@ const Profile = () => {
                         <div className='tags-section'>
                             { tagsData.map( data => {
                                 return (
-                                    <div key={uuidv4()} id={data} onClick={handleAddTag} className='tag-list-div'>
+                                    <div key={data} id={data} onClick={handleAddTag} className='tag-list-div'>
                                         <TagsBadge tag={data} />
                                     </div>
                                 )
@@ -1193,7 +1209,7 @@ const Profile = () => {
                         <div className='user-tags-selected'>
                             { userTags.map( data => {
                                 return (
-                                    <div key={uuidv4()} id={data} onClick={handleRemoveTag} className='user-tags-div'>
+                                    <div key={`${data}-selected`} id={data} onClick={handleRemoveTag} className='user-tags-div'>
                                         <TagsBadge tag={data} />
                                         <IoIosCloseCircle className='tag-hide' />
                                     </div>
@@ -1249,6 +1265,7 @@ const Profile = () => {
                             setUserLocationDataError={setUserLocationDataError}
                             updateErrorAlert={updateErrorAlert}
                             zoom={5}
+                            prevUserLocationRef={prevUserLocationRef}
                         />
                         <button type='submit' disabled={geolocationActivated ? true : false} className='buttons-form-profile'>
                             Enregistrer

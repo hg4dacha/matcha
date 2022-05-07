@@ -10,7 +10,7 @@ import _markerIcon from '../../images/marker.png';
 
 
 const Location = ({ userLocation, setUserLocation, geolocationActivated,
-setGeolocationActivated, setUserLocationDataError, updateErrorAlert, zoom }) => {
+setGeolocationActivated, setUserLocationDataError, updateErrorAlert, zoom, prevUserLocationRef }) => {
 
 
     const markerIcon = new L.Icon({
@@ -124,6 +124,7 @@ setGeolocationActivated, setUserLocationDataError, updateErrorAlert, zoom }) => 
                     setIsLoaded(false);
                     setItems(null);
                     setError(null);
+                    if(prevUserLocationRef) { prevUserLocationRef.current = userLocation; }
                 }
                 else
                 {

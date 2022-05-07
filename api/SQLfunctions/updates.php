@@ -306,4 +306,29 @@ function updateUserInfo($userid, $lastname, $firstname, $username, $email)
 
 
 
+
+// UPDATE USER PASSWORD
+function updateUserPassword($userid, $passwordUser)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET passwordUser = :passwordUser WHERE id = :userid");
+        $reqUpdate->bindValue(':passwordUser', $passwordUser, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
 ?>

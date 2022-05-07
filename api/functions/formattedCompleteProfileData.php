@@ -250,4 +250,45 @@ function userInfoTreatment($userInfo, $userid)
 
 
 
+
+
+
+function userPasswordTreatment($userPassword, $userid)
+{
+    $currentPassword = htmlspecialchars($userPassword->currentPassword);
+    $newPassword = htmlspecialchars($userPassword->newPassword);
+
+    $passwordDatabase = getPasswordById($userid);
+
+    if(password_verify($currentPassword, $passwordDatabase[0]))
+    {
+        $newPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+        updateUserPassword($userid, $newPassword);
+    }
+    else
+    {
+        header("HTTP/1.1 400 incorrect password");
+    }
+}
+
+
+
+
+
+function accountDeletionTreatment($password, $userid)
+{
+    $passwordDatabase = getPasswordById($userid);
+
+    if(password_verify($password, $passwordDatabase[0]))
+    {
+        echo "It's OK !";
+    }
+    else
+    {
+        header("HTTP/1.1 400 incorrect password");
+    }
+}
+
+
+
 ?>

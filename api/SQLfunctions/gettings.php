@@ -79,4 +79,24 @@ function getAllUserPictures($userid)
 
 
 
+
+
+function getPasswordById($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqGet = $dbc->prepare("SELECT passwordUser FROM users WHERE id = :userid");
+        $reqGet->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqGet->execute();
+        return $reqGet->fetch();
+    }
+    catch(PDOException $e)
+    {
+        header("HTTP/1.1 500 database");
+    }
+}
+
+
+
 ?>
