@@ -466,7 +466,7 @@ const CompleteProfile = () => {
 
         if ( !isNaN(userLocation.lat) && !isNaN(userLocation.lng) )
         {
-            if (userLocation.country === 'France')
+            if (userLocation.country === 'Tunisie')
             {
                 setUserLocationDataError({ error: false, msg: '' });
                 return (false);
@@ -812,7 +812,7 @@ const CompleteProfile = () => {
                         <div className='tags-section'>
                             { tagsData.map( data => {
                                 return (
-                                    <div key={uuidv4()} id={data} onClick={handleAddTag} className='tag-list-div'>
+                                    <div key={data} id={data} onClick={handleAddTag} className='tag-list-div'>
                                         <TagsBadge tag={data} />
                                     </div>
                                 )
@@ -822,7 +822,7 @@ const CompleteProfile = () => {
                         <div className='user-tags-selected'>
                             { userTags.map( data => {
                                 return (
-                                    <div key={uuidv4()} id={data} onClick={handleRemoveTag} className='user-tags-div'>
+                                    <div key={`${data}-selected`} id={data} onClick={handleRemoveTag} className='user-tags-div'>
                                         <TagsBadge tag={data} />
                                         <IoIosCloseCircle className='tag-hide' />
                                     </div>

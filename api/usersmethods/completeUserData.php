@@ -90,7 +90,7 @@ function completeUserData($data, $userid)
              $userTagsError === FALSE && $descriptionError === FALSE
            )
         {
-            $registrationValidated = registrationValidatedCheck(62);
+            $registrationValidated = registrationValidatedCheck($userid);
 
             if ( $registrationValidated[0] == TRUE )
             {

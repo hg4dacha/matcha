@@ -36,27 +36,27 @@ const SignIn = () => {
 
     useEffect( () => {
 
+        if(location.state === 'confirm')
+        {
+            setSuccessMessage(true);
+            setErrorMessage({ display: true, msg: "Felicitations ! Vous pouvez desormais vous connecter" });
+        }
+        else if(location.state === 'password')
+        {
+            setSuccessMessage(true);
+            setErrorMessage({ display: true, msg: "Le mot de passe a été modifié" });
+        }
+        else if(location.state === 'logout')
+        {
+            handleNewAlert({id: Math.random(), variant: "info", information: "Déconnexion"});
+        }
+        history.replace({...history.location, state: null })
+
         axios.get('/users/checking')
         .then( (response) => {
             if (response.status === 200)
             {
-                document.title = 'Connexion - Matcha';
-
-                if(location.state === 'confirm')
-                {
-                    setSuccessMessage(true);
-                    setErrorMessage({ display: true, msg: "Felicitations ! Vous pouvez desormais vous connecter" });
-                }
-                else if(location.state === 'password')
-                {
-                    setSuccessMessage(true);
-                    setErrorMessage({ display: true, msg: "Le mot de passe a été modifié" });
-                }
-                else if(location.state === 'logout')
-                {
-                    handleNewAlert({id: Math.random(), variant: "info", information: "Déconnexion"});
-                }
-                history.replace({...history.location, state: null })
+                document.title = 'Connexion - Matcha';                
             }
         })
         .catch( () => {

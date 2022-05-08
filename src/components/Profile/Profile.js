@@ -38,7 +38,9 @@ import axios from 'axios';
 const Profile = () => {
 
     
-    const { load } = useContext(UserContext);
+    const { value, load } = useContext(UserContext);
+
+    const setUser = value[1];
 
     const loading = load[0];
 
@@ -797,11 +799,14 @@ const Profile = () => {
 
         axios.delete('/users/profile/delete', { data: { passwordAccountDeletion } }) // add "data:" to put a body in a "DELETE" request
         .then( (response) => {
-console.log(response.data);
             if(response.status === 200)
             {
                 setPasswordAccountDeletionDataError(false);
                 setPasswordAccountDeletion('');
+                localStorage.clear();
+                setUser(null);
+                delete axios.defaults.headers.common["Authorization"];
+                navigate("/");
             }
         })
         .catch( (error) => {

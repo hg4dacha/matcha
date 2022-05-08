@@ -53,7 +53,9 @@ function formattedProfilePicture($profilePicture, $userid, $action)
             $allUserPictures = getAllUserPictures($userid);
             $profilePictureName = explode('/', $allUserPictures['profilePicture']);
             $profilePictureName = $profilePictureName[(count($profilePictureName)) - 1];
-            unlink($_SERVER['DOCUMENT_ROOT']."/matcha/api/pictures/".$profilePictureName);
+            if(file_exists($_SERVER['DOCUMENT_ROOT']."/matcha/api/pictures/".$profilePictureName)) {
+                unlink($_SERVER['DOCUMENT_ROOT']."/matcha/api/pictures/".$profilePictureName);
+            }
             updateProfilePicture($userid, $picturePath);
         }
     }
@@ -70,7 +72,9 @@ function formattedPicture($userid, $picture, $pictureNumber)
     if($allUserPictures[$pictureNumber] !== NULL) {
         $profilePictureName = explode('/', $allUserPictures[$pictureNumber]);
         $profilePictureName = $profilePictureName[(count($profilePictureName)) - 1];
-        unlink($_SERVER['DOCUMENT_ROOT']."/matcha/api/pictures/".$profilePictureName);
+        if(file_exists($_SERVER['DOCUMENT_ROOT']."/matcha/api/pictures/".$profilePictureName)) {
+            unlink($_SERVER['DOCUMENT_ROOT']."/matcha/api/pictures/".$profilePictureName);
+        }
     }
 
     if ( $picture == FALSE )
@@ -275,13 +279,50 @@ function userPasswordTreatment($userPassword, $userid)
 
 
 
+//___________________________/!\DELETE USER ACCOUNT /!\_________________________
+//______________________________________________________________________________
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/deletions.php");
+
+function deletePictureFromFolder($picture)
+{
+    if(!isset($picture)) {
+        return;
+    }
+    else {
+        $profilePictureName = explode('/', $picture);
+        $profilePictureName = $profilePictureName[(count($profilePictureName)) - 1];
+        if(file_exists($_SERVER['DOCUMENT_ROOT']."/matcha/api/pictures/".$profilePictureName)) {
+            unlink($_SERVER['DOCUMENT_ROOT']."/matcha/api/pictures/".$profilePictureName);
+        }
+        else {
+            return;
+        }
+    }
+}
+
+
 function accountDeletionTreatment($password, $userid)
 {
     $passwordDatabase = getPasswordById($userid);
 
     if(password_verify($password, $passwordDatabase[0]))
     {
-        echo "It's OK !";
+        $allUserPictures = getAllUserPictures($userid);
+        deletePictureFromFolder($allUserPictures['profilePicture']);
+        deletePictureFromFolder($allUserPictures['secondPicture']);
+        deletePictureFromFolder($allUserPictures['thirdPicture']);
+        deletePictureFromFolder($allUserPictures['fourthPicture']);
+        deletePictureFromFolder($allUserPictures['fifthPicture']);
+
+        deleteUser($userid);
+        deleteUserPictures($userid);
+        //delete notif and other tables...
+
+        if(isset($_COOKIE['REFRESH_TOKEN']) && !empty($_COOKIE['REFRESH_TOKEN'])) {
+            unset($_COOKIE['REFRESH_TOKEN']);
+        }
+        setcookie('REFRESH_TOKEN', '', time() - 10, '/', NULL, false, true);
+        http_response_code(200);
     }
     else
     {
