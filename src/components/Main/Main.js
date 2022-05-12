@@ -1,14 +1,18 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useContext } from 'react';
 import Navbar from '../NavBar/NavBar';
 import SearchOption from './SearchOption';
 import Card from '../Card/Card';
+import { UserContext } from '../UserContext/UserContext';
 import { IoClose, IoOptions, IoCalendarClear } from 'react-icons/io5';
 import { AiFillStar } from 'react-icons/ai';
 import { FaSlackHash, FaMapMarkedAlt } from "react-icons/fa";
+import Spinner from 'react-bootstrap/Spinner';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 
-import { USERS_LIST } from "../../other/USERS_LIST";
+// import { USERS_LIST } from "../../other/USERS_LIST";
 const currentUserLocation = { latitude: 48.856614, longitude: 2.3522219 };
 
 
@@ -19,9 +23,39 @@ const currentUserLocation = { latitude: 48.856614, longitude: 2.3522219 };
 const Main = () => {
 
 
+    const { load } = useContext(UserContext);
+
+    const loading = load[0];
+
+    const [users, setUsers] = useState([]);
+
+    const navigate = useNavigate();
+
+
     useEffect( () => {
-        document.title = 'Acceuil - Matcha'
-    }, [])
+
+        if(!loading) {
+            axios.get('/users/users')
+                .then( (response) => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data);
+                        // setUsers(response.data);
+                        document.title = 'Acceuil - Matcha';
+                    }
+                })
+                .catch( (error) => {
+                    if(error.request.statusText && error.request.statusText === 'incomplete profile') {
+                        navigate("/complete-profile");
+                    }
+                    else {
+                        navigate("/signin");
+                    }
+                })
+        }
+
+    }, [loading, navigate])
+
 
     
 // _-_-_-_-_-_-_-_-_- OFF CANVAS -_-_-_-_-_-_-_-_-_
@@ -147,20 +181,25 @@ const Main = () => {
             </div>
             <div className='main-container'>
                 {
-                    USERS_LIST.map( data => {
+                    users.length ?
+                    users.map( data => {
                         return (
                             <Card
-                                key={data.id}
-                                userid={data.id}
+                                key={data.userid}
+                                userid={data.userid}
                                 username={data.username}
-                                age={data.age}
+                                age={data.birthdate}
                                 popularity={data.popularity}
-                                location={data.location}
+                                location={{ latitude: data.lat, longitude: data.lng }}
                                 thumbnail={data.thumbnail}
                                 currentUserLocation={currentUserLocation}
                             />
                         )
-                    })
+                    }) :
+                    <div className='loading-cards'>
+                        <Spinner animation="border" variant="primary" className='loading-cards-spinner'/>
+                        Chargement...
+                    </div>
                 }
             </div>
         </Fragment>

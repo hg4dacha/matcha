@@ -56,7 +56,7 @@ const SignIn = () => {
         .then( (response) => {
             if (response.status === 200)
             {
-                document.title = 'Connexion - Matcha';                
+                document.title = 'Connexion - Matcha';
             }
         })
         .catch( () => {

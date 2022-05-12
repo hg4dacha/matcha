@@ -204,13 +204,15 @@ function updateUserOrientation($userid, $maleOrientation, $femaleOrientation)
 
 
 // UPDATE USER LOCATION
-function updateUserLocation($userid, $userLocation)
+function updateUserLocation($userid, $userLocation, $lat, $lng)
 {
     $dbc = db_connex();
     try
     {
-        $reqUpdate = $dbc->prepare("UPDATE users SET locationUser = :userLocation WHERE id = :userid");
+        $reqUpdate = $dbc->prepare("UPDATE users SET locationUser = :userLocation, lat = :lat, lng = :lng WHERE id = :userid");
         $reqUpdate->bindValue(':userLocation', $userLocation, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':lat', $lat, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':lng', $lng, PDO::PARAM_STR);
         $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_INT);
         $reqUpdate->execute();
     }

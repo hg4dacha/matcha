@@ -199,8 +199,10 @@ function userOrientationTreatment($orientationChecked, $userid)
 
 function userLocationTreatment($userLocation, $userid)
 {
-        $userLocation = json_encode($userLocation);
-        updateUserLocation($userid, $userLocation);
+        $lat = htmlspecialchars($userLocation->lat);
+        $lng = htmlspecialchars($userLocation->lng);
+        $userLocation = json_encode($userLocation, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        updateUserLocation($userid, $userLocation, $lat, $lng);
 }
 
 

@@ -99,4 +99,78 @@ function getPasswordById($userid)
 
 
 
+
+
+function getUserInfo($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqGet = $dbc->prepare("SELECT birthdate, gender, maleOrientation, femaleOrientation, tags, popularity, lat, lng, registrationValidated, profileCompleted, connectionStatue
+                                 FROM users WHERE id = :userid"
+        );
+        $reqGet->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqGet->execute();
+        return $reqGet->fetch();
+    }
+    catch(PDOException $e)
+    {
+        header("HTTP/1.1 500 database");
+    }
+}
+
+
+
+
+
+function getUsersForUser($gender)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT users.id AS userid, username, birthdate, popularity, lat, lng, profilePicture AS thumbnail
+            FROM users LEFT JOIN pictures ON users.id = pictures.userid WHERE users.gender = :gender
+            AND users.registrationValidated = 1 AND users.profileCompleted = 1 ORDER BY RAND() LIMIT 90"
+        );
+        $reqSelect->bindValue(':gender', $gender, PDO::PARAM_STR);
+        $reqSelect->execute();
+        return $reqSelect->fetchAll();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+function dashboardData($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqGet = $dbc->prepare(
+            "SELECT username, popularity, profilePicture AS thumbnail
+             FROM users LEFT JOIN pictures ON users.id = pictures.userid WHERE users.id = :userid"
+        );
+        $reqGet->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqGet->execute();
+        return $reqGet->fetch();
+    }
+    catch(PDOException $e)
+    {
+        header("HTTP/1.1 500 database");
+    }
+}
+
+
+
+
 ?>

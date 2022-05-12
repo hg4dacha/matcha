@@ -22,6 +22,8 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/logoutUser.php"
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getNewToken.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getProfileData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/updateUserData.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getUsers.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getDashboardData.php");
 
 
 
@@ -226,6 +228,14 @@ try {
                         elseif ( $action == 'profile' )
                         {
                             getProfileData($userid);
+                        }
+                        elseif ( $action == 'users' )
+                        {
+                            getUsers($userid);
+                        }
+                        elseif ( $action == 'dashboard' )
+                        {
+                            getDashboardData($userid);
                         }
                         else
                         {

@@ -466,7 +466,7 @@ const CompleteProfile = () => {
 
         if ( !isNaN(userLocation.lat) && !isNaN(userLocation.lng) )
         {
-            if (userLocation.country === 'Tunisie')
+            if (userLocation.country === 'France')
             {
                 setUserLocationDataError({ error: false, msg: '' });
                 return (false);

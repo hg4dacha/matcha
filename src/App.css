@@ -785,6 +785,20 @@ color: #ced6e0;
     justify-content: center;
 }
 
+.loading-cards {
+    display: flex;
+    align-items: center;
+    font-size: 21px;
+    color: #2d3436;
+    font-weight: 400;
+}
+
+.loading-cards-spinner {
+    width: 35px;
+    height: 35px;
+    margin-right: 9px;
+}
+
 .card-container {
     position: relative;
     margin: 1rem;
@@ -808,7 +822,7 @@ color: #ced6e0;
     border-radius: 2px;
     overflow: hidden;
     width: 220px;
-    height: 250px;
+    height: 220px;
     pointer-events: none;
     background-color: transparent;
     -webkit-transition: 0.2s ease-in;
@@ -843,7 +857,7 @@ color: #ced6e0;
 
 .card-username-and-age {
     font-weight: bold;
-    font-size: 17px;
+    font-size: 15px;
 }
 
 .card-distance-and-popularity {
@@ -1652,7 +1666,7 @@ color: #ced6e0;
     color: #7f8c8d;
     border: 0;
     padding: 2px 7px 5px 7px;
-    width: 70%;
+    width: 50%;
 }
 
 .user-photo-number {
@@ -1664,7 +1678,7 @@ color: #ced6e0;
     border-right: 1px solid #dbdbdb;
     border-radius: 1px;
     color: #2d3436;
-    width: 30%;
+    width: 50%;
 }
 
 .user-photo-input {
