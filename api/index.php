@@ -23,6 +23,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getNewToken.php
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getProfileData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/updateUserData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getUsers.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getFilteredUsers.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getDashboardData.php");
 
 
@@ -232,6 +233,23 @@ try {
                         elseif ( $action == 'users' )
                         {
                             getUsers($userid);
+                        }
+                        elseif( $action == 'filter' )
+                        {
+                            if ( isset($_GET['minAge']) && isset($_GET['maxAge']) &&
+                                 isset($_GET['minPop']) && isset($_GET['maxPop']) &&
+                                 isset($_GET['minGap']) && isset($_GET['maxGap']) &&
+                                 isset($_GET['minTag']) && isset($_GET['maxTag']) )
+                            {
+                                getFilteredUsers(
+                                    $userid, $_GET['minAge'], $_GET['maxAge'], $_GET['minPop'], $_GET['maxPop'],
+                                    $_GET['minGap'], $_GET['maxGap'], $_GET['minTag'], $_GET['maxTag']
+                                );
+                            }
+                            else
+                            {
+                                http_response_code(400);
+                            }
                         }
                         elseif ( $action == 'dashboard' )
                         {

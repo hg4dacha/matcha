@@ -86,14 +86,25 @@ const Main = () => {
 
     const handleImplementingOptions = () => {
 
-        const optionsSelected = {
-            ageRangeSelected : { min: ageRange.minimumValue, max: ageRange.maximumValue },
-            popularityRangeSelected : { min: popularityRange.minimumValue, max: popularityRange.maximumValue },
-            gapRangeSelected : { min: gapRange.minimumValue, max: gapRange.maximumValue },
-            tagsRangeSelected : { min: tagsRange.minimumValue, max: tagsRange.maximumValue }
-        }
+        // const optionsSelected = {
+        //     ageRangeSelected : { min: ageRange.minimumValue, max: ageRange.maximumValue },
+        //     popularityRangeSelected : { min: popularityRange.minimumValue, max: popularityRange.maximumValue },
+        //     gapRangeSelected : { min: gapRange.minimumValue, max: gapRange.maximumValue },
+        //     tagsRangeSelected : { min: tagsRange.minimumValue, max: tagsRange.maximumValue }
+        // }
 
-        console.log(optionsSelected);
+        // console.log(optionsSelected);
+
+        axios.get(`/users/filter/options?minAge=${ageRange.minimumValue}&maxAge=${ageRange.maximumValue}&minPop=${popularityRange.minimumValue}&maxPop=${popularityRange.maximumValue}&minGap=${gapRange.minimumValue}&maxGap=${gapRange.maximumValue}&minTag=${tagsRange.minimumValue}&maxTag=${tagsRange.maximumValue}`)
+        .then( (response) => {
+            if (response.status === 200)
+            {
+                console.log(response.data);
+            }
+        })
+        .catch( (error) => {
+
+        })
     }
 
 
