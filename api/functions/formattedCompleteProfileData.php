@@ -199,10 +199,10 @@ function userOrientationTreatment($orientationChecked, $userid)
 
 function userLocationTreatment($userLocation, $userid)
 {
-        $lat = htmlspecialchars($userLocation->lat);
-        $lng = htmlspecialchars($userLocation->lng);
-        $userLocation = json_encode($userLocation, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        updateUserLocation($userid, $userLocation, $lat, $lng);
+    $lat = htmlspecialchars($userLocation->lat);
+    $lng = htmlspecialchars($userLocation->lng);
+    $userLocation = json_encode($userLocation, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    updateUserLocation($userid, $userLocation, $lat, $lng);
 }
 
 
@@ -211,8 +211,13 @@ function userLocationTreatment($userLocation, $userid)
 
 function userTagsTreatment($userTags, $userid)
 {
-        $userTags = json_encode($userTags);
-        updateUserTags($userid, $userTags);
+    $tag1 = $userTags[0];
+    $tag2 = $userTags[1];
+    $tag3 = $userTags[2];
+    $tag4 = $userTags[3];
+    $tag5 = $userTags[4];
+    $userTags = json_encode($userTags, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    updateUserTags($userid, $userTags, $tag1, $tag2, $tag3, $tag4, $tag5);
 }
 
 

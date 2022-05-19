@@ -40,7 +40,7 @@ const Main = () => {
                     if (response.status === 200)
                     {
                         console.log(response.data);
-                        // setUsers(response.data);
+                        setUsers(response.data);
                         document.title = 'Acceuil - Matcha';
                     }
                 })

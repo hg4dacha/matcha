@@ -231,13 +231,21 @@ function updateUserLocation($userid, $userLocation, $lat, $lng)
 
 
 // UPDATE USER TAGS
-function updateUserTags($userid, $userTags)
+function updateUserTags($userid, $userTags, $tag1, $tag2, $tag3, $tag4, $tag5)
 {
     $dbc = db_connex();
     try
     {
-        $reqUpdate = $dbc->prepare("UPDATE users SET tags = :userTags WHERE id = :userid");
+        $reqUpdate = $dbc->prepare(
+            "UPDATE users SET tags = :userTags, tag1 = :tag1, tag2 = :tag2,
+            tag3 = :tag3, tag4 = :tag4, tag5 = :tag5 WHERE id = :userid"
+        );
         $reqUpdate->bindValue(':userTags', $userTags, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':tag1', $tag1, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':tag2', $tag2, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':tag3', $tag3, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':tag4', $tag4, PDO::PARAM_STR);
+        $reqUpdate->bindValue(':tag5', $tag5, PDO::PARAM_STR);
         $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_INT);
         $reqUpdate->execute();
     }
