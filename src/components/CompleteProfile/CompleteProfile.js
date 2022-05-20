@@ -37,9 +37,10 @@ const CompleteProfile = () => {
 
 
     
-    const { load } = useContext(UserContext);
+    const { load, value } = useContext(UserContext);
 
     const loading = load[0];
+    const setUser = value[1];
 
     const navigate = useNavigate();
 
@@ -528,6 +529,7 @@ const CompleteProfile = () => {
                     if (response.status === 200)
                     {
                         setDataValidationWaiting(false);
+                        setUser(response.data);
                         navigate("/users");
                     }
                 })

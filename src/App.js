@@ -36,16 +36,6 @@ function App() {
   axios.defaults.baseURL = "http://localhost:8080/matcha/api/";
   axios.defaults.withCredentials = true;
 
-  useEffect( () => {
-
-    if(user) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${value.user.AUTH_TOKEN}`;
-    }
-
-  }, [user, value.user])
-
-
-
 
   let refreshTokenTimeOut = useRef();
 
@@ -68,7 +58,9 @@ function App() {
     .catch( () => {
       load.setLoading(false);
     })
-  }, [load, value, refreshTokenTimeOut])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
   useEffect( () => {
@@ -78,6 +70,15 @@ function App() {
     return () => clearTimeout(refreshTokenTimeOut);
 
   }, [refreshTokenTimeOut, refreshToken])
+
+  
+  useEffect( () => {
+
+    if(user) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${value.user.AUTH_TOKEN}`; console.log(user);
+    }
+
+  }, [user, value.user])
   
 
 

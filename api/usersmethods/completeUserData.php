@@ -2,10 +2,13 @@
 
 
 
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/JWT/jwt.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/JWT/includes/config.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/functions/checkCompleteProfileData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/functions/formattedCompleteProfileData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/updates.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/gettings.php");
 
 
 
@@ -103,7 +106,78 @@ function completeUserData($data, $userid)
                 userTagsTreatment($userTags, $userid);
                 userDescriptionTreatment($description, $userid);
                 profileCompletedValidate($userid);
+
+
+                $userData = getUserData($userid);
+
+
+                // REFRESH TOKEN CREATION
+                $header_ = [
+                    "alg" => "HS256",
+                    "typ" => "JWT"
+                ];
+
+                $payload_ = [
+                    "user_id" => $userid,
+                    "lastname" => $userData['lastname'],
+                    "firstname" => $userData['firstname'],
+                    "username" => $userData['username'],
+                    "email" => $userData['email'],
+                    "lat" => $userData['lat'],
+                    "lng" => $userData['lng'],
+                    "thumbnail" => $userData['thumbnail']
+                ];
+
+                $tokenInstance = new JWT();
+                $REFRESH_TOKEN = $tokenInstance->generate($header_, $payload_, COOKIE_TOKEN_SECRET, 86400 * 30);
+                //_________________________
+
+
+
+                // JWT CREATION
+                $header = [
+                    "alg" => "HS256",
+                    "typ" => "JWT"
+                ];
+
+                $payload = [
+                    "user_id" => $userid,
+                    "lastname" => $userData['lastname'],
+                    "firstname" => $userData['firstname'],
+                    "username" => $userData['username'],
+                    "email" => $userData['email'],
+                    "lat" => $userData['lat'],
+                    "lng" => $userData['lng'],
+                    "thumbnail" => $userData['thumbnail']
+                ];
+
+                $jwtInstance = new JWT();
+                $jwt = $jwtInstance->generate($header, $payload);
+                //_________________________
+
+
+
+                // USER DATA
+                $userData = [
+                    "user" => [
+                        "user_id" => $userid,
+                        "lastname" => $userData['lastname'],
+                        "firstname" => $userData['firstname'],
+                        "username" => $userData['username'],
+                        "email" => $userData['email'],
+                        "lat" => $userData['lat'],
+                        "lng" => $userData['lng'],
+                        "thumbnail" => $userData['thumbnail']
+                    ],
+                    "EXPIRE_IN" => 3600,
+                    "AUTH_TOKEN" => $jwt
+                ];
+                //_________________________
+
+
                 updateUserConnection(TRUE, date(DATE_ATOM), $userid);
+                echo json_encode($userData);
+                setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
                 http_response_code(200);
             }
             else

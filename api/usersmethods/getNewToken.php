@@ -44,7 +44,10 @@ function getNewToken($REFRESH_TOKEN_COOKIE)
         "lastname" => $payload['lastname'],
         "firstname" => $payload['firstname'],
         "username" => $payload['username'],
-        "email" => $payload['email']
+        "email" => $payload['email'],
+        "lat" => $payload['lat'],
+        "lng" => $payload['lng'],
+        "thumbnail" => $payload['thumbnail']
     ];
 
     $jwtInstance = new JWT();
@@ -59,7 +62,10 @@ function getNewToken($REFRESH_TOKEN_COOKIE)
             "lastname" => $payload['lastname'],
             "firstname" => $payload['firstname'],
             "username" => $payload['username'],
-            "email" => $payload['email']
+            "email" => $payload['email'],
+            "lat" => $payload['lat'],
+            "lng" => $payload['lng'],
+            "thumbnail" => $payload['thumbnail']
         ],
         "EXPIRE_IN" => 3600,
         "AUTH_TOKEN" => $jwt

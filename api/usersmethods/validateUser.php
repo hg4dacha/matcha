@@ -53,6 +53,7 @@ function validateUser($data)
             {
                 $newtoken = uniqid().random_int(583483, 962379835641329875);
                 confirmRegistration($username, $newtoken);
+                http_response_code(200);
             }
             else
             {

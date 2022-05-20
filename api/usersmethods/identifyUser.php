@@ -67,79 +67,156 @@ function identifyUser($data)
 
                     if ( $connectionStatue[0] == FALSE )
                     {
-                        $primaryUserData = primaryUserData($userid[0]);
-    
-    
-
-                        // REFRESH TOKEN CREATION
-                        $header_ = [
-                            "alg" => "HS256",
-                            "typ" => "JWT"
-                        ];
-    
-                        $payload_ = [
-                            "user_id" => $userid[0],
-                            "lastname" => $primaryUserData['lastname'],
-                            "firstname" => $primaryUserData['firstname'],
-                            "username" => $primaryUserData['username'],
-                            "email" => $primaryUserData['email']
-                        ];
-    
-                        $tokenInstance = new JWT();
-                        $REFRESH_TOKEN = $tokenInstance->generate($header_, $payload_, COOKIE_TOKEN_SECRET, 86400 * 30);
-                        //_________________________
-    
-    
-    
-                        // JWT CREATION
-                        $header = [
-                            "alg" => "HS256",
-                            "typ" => "JWT"
-                        ];
-    
-                        $payload = [
-                            "user_id" => $userid[0],
-                            "lastname" => $primaryUserData['lastname'],
-                            "firstname" => $primaryUserData['firstname'],
-                            "username" => $primaryUserData['username'],
-                            "email" => $primaryUserData['email']
-                        ];
-    
-                        $jwtInstance = new JWT();
-                        $jwt = $jwtInstance->generate($header, $payload);
-                        //_________________________
-    
-    
-    
-                        // USER DATA
-                        $userData = [
-                            "user" => [
-                                "user_id" => $userid[0],
-                                "lastname" => $primaryUserData['lastname'],
-                                "firstname" => $primaryUserData['firstname'],
-                                "username" => $primaryUserData['username'],
-                                "email" => $primaryUserData['email']
-                            ],
-                            "EXPIRE_IN" => 3600,
-                            "AUTH_TOKEN" => $jwt
-                        ];
-                        //_________________________
-    
-    
                         $completedProfile = completedProfileCheck($userid[0]);
-    
-                        updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
-                        echo json_encode($userData);
-                        setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
-                        
+
                         if ( $completedProfile[0] == TRUE )
                         {
+                            $userData = getUserData($userid[0]);
+
+
+                            // REFRESH TOKEN CREATION
+                            $header_ = [
+                                "alg" => "HS256",
+                                "typ" => "JWT"
+                            ];
+
+                            $payload_ = [
+                                "user_id" => $userid[0],
+                                "lastname" => $userData['lastname'],
+                                "firstname" => $userData['firstname'],
+                                "username" => $userData['username'],
+                                "email" => $userData['email'],
+                                "lat" => $userData['lat'],
+                                "lng" => $userData['lng'],
+                                "thumbnail" => $userData['thumbnail']
+                            ];
+        
+                            $tokenInstance = new JWT();
+                            $REFRESH_TOKEN = $tokenInstance->generate($header_, $payload_, COOKIE_TOKEN_SECRET, 86400 * 30);
+                            //_________________________
+        
+        
+        
+                            // JWT CREATION
+                            $header = [
+                                "alg" => "HS256",
+                                "typ" => "JWT"
+                            ];
+        
+                            $payload = [
+                                "user_id" => $userid[0],
+                                "lastname" => $userData['lastname'],
+                                "firstname" => $userData['firstname'],
+                                "username" => $userData['username'],
+                                "email" => $userData['email'],
+                                "lat" => $userData['lat'],
+                                "lng" => $userData['lng'],
+                                "thumbnail" => $userData['thumbnail']
+                            ];
+        
+                            $jwtInstance = new JWT();
+                            $jwt = $jwtInstance->generate($header, $payload);
+                            //_________________________
+        
+        
+        
+                            // USER DATA
+                            $userData = [
+                                "user" => [
+                                    "user_id" => $userid[0],
+                                    "lastname" => $userData['lastname'],
+                                    "firstname" => $userData['firstname'],
+                                    "username" => $userData['username'],
+                                    "email" => $userData['email'],
+                                    "lat" => $userData['lat'],
+                                    "lng" => $userData['lng'],
+                                    "thumbnail" => $userData['thumbnail']
+                                ],
+                                "EXPIRE_IN" => 3600,
+                                "AUTH_TOKEN" => $jwt
+                            ];
+                            //_________________________
+
+                            updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
+                            echo json_encode($userData);
+                            setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
                             http_response_code(200);
                         }
                         else if ( $completedProfile[0] == FALSE )
                         {
+                            $primaryUserData = primaryUserData($userid[0]);
+
+
+                            // REFRESH TOKEN CREATION
+                            $header_ = [
+                                "alg" => "HS256",
+                                "typ" => "JWT"
+                            ];
+
+                            $payload_ = [
+                                "user_id" => $userid[0],
+                                "lastname" => $primaryUserData['lastname'],
+                                "firstname" => $primaryUserData['firstname'],
+                                "username" => $primaryUserData['username'],
+                                "email" => $primaryUserData['email'],
+                                "lat" => FALSE,
+                                "lng" => FALSE,
+                                "thumbnail" => FALSE
+                            ];
+        
+                            $tokenInstance = new JWT();
+                            $REFRESH_TOKEN = $tokenInstance->generate($header_, $payload_, COOKIE_TOKEN_SECRET, 86400 * 30);
+                            //_________________________
+        
+        
+        
+                            // JWT CREATION
+                            $header = [
+                                "alg" => "HS256",
+                                "typ" => "JWT"
+                            ];
+        
+                            $payload = [
+                                "user_id" => $userid[0],
+                                "lastname" => $primaryUserData['lastname'],
+                                "firstname" => $primaryUserData['firstname'],
+                                "username" => $primaryUserData['username'],
+                                "email" => $primaryUserData['email'],
+                                "lat" => FALSE,
+                                "lng" => FALSE,
+                                "thumbnail" => FALSE
+                            ];
+        
+                            $jwtInstance = new JWT();
+                            $jwt = $jwtInstance->generate($header, $payload);
+                            //_________________________
+        
+        
+        
+                            // USER DATA
+                            $userData = [
+                                "user" => [
+                                    "user_id" => $userid[0],
+                                    "lastname" => $primaryUserData['lastname'],
+                                    "firstname" => $primaryUserData['firstname'],
+                                    "username" => $primaryUserData['username'],
+                                    "email" => $primaryUserData['email'],
+                                    "lat" => FALSE,
+                                    "lng" => FALSE,
+                                    "thumbnail" => FALSE
+                                ],
+                                "EXPIRE_IN" => 3600,
+                                "AUTH_TOKEN" => $jwt
+                            ];
+                            //_________________________
+
+
+                            updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
+                            echo json_encode($userData);
+                            setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
                             http_response_code(206);
-                        }
+                        }                   
+
                     }
                     else
                     {
