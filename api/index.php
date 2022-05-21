@@ -24,7 +24,6 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getProfileData.
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/updateUserData.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getUsers.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getFilteredUsers.php");
-require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getDashboardData.php");
 
 
 
@@ -250,10 +249,6 @@ try {
                             {
                                 http_response_code(400);
                             }
-                        }
-                        elseif ( $action == 'dashboard' )
-                        {
-                            getDashboardData($userid);
                         }
                         else
                         {

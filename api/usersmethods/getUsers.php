@@ -48,8 +48,10 @@ function getUsers($userid)
                 }
                 elseif ( $gender === "MALE" && $maleOrientation == TRUE && $femaleOrientation == FALSE || $gender === "FEMALE" && $maleOrientation == FALSE && $femaleOrientation == TRUE )
                 {
-                    // $results = getUsersForUser($gender);
-                    // echo(json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                    $results = getSameGenderUsers(
+                        $userid, $birthdate, $gender, $maleOrientation, $femaleOrientation, $popularity, $lat, $lng, $tag1, $tag2, $tag3, $tag4, $tag5
+                    );
+                    echo(json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
                     http_response_code(200);
                 }
             }
@@ -58,11 +60,11 @@ function getUsers($userid)
             }
         }
         else {
-            http_response_code(400);
+            header("HTTP/1.1 400 disconnect");
         }
     }
     else {
-        http_response_code(400);
+        header("HTTP/1.1 400 invalid registration");
     }
 
 }

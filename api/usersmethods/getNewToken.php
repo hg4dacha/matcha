@@ -9,7 +9,6 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/JWT/includes/config.php");
 
 function getNewToken($REFRESH_TOKEN_COOKIE)
 {
-    // var_dump($REFRESH_TOKEN_COOKIE);
     $jwt = new JWT();
 
     // CHECK TOKEN SYNTAX VALIDITY
@@ -39,19 +38,20 @@ function getNewToken($REFRESH_TOKEN_COOKIE)
         "typ" => "JWT"
     ];
 
-    $payload = [
+    $payload_ = [
         "user_id" => $payload['user_id'],
         "lastname" => $payload['lastname'],
         "firstname" => $payload['firstname'],
         "username" => $payload['username'],
         "email" => $payload['email'],
+        "popularity" => $payload['popularity'],
         "lat" => $payload['lat'],
         "lng" => $payload['lng'],
         "thumbnail" => $payload['thumbnail']
     ];
 
     $jwtInstance = new JWT();
-    $jwt = $jwtInstance->generate($header, $payload);
+    $jwt = $jwtInstance->generate($header, $payload_);
     //_________________________
 
 
@@ -63,9 +63,10 @@ function getNewToken($REFRESH_TOKEN_COOKIE)
             "firstname" => $payload['firstname'],
             "username" => $payload['username'],
             "email" => $payload['email'],
+            "popularity" => $payload['popularity'],
             "lat" => $payload['lat'],
             "lng" => $payload['lng'],
-            "thumbnail" => $payload['thumbnail']
+            "thumbnail" => urldecode($payload['thumbnail'])
         ],
         "EXPIRE_IN" => 3600,
         "AUTH_TOKEN" => $jwt

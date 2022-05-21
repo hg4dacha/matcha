@@ -12,7 +12,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { RiHeart3Line } from 'react-icons/ri';
 import { BiMenu } from 'react-icons/bi';
-import axios from 'axios';
+// import axios from 'axios';
 
 
 
@@ -24,7 +24,7 @@ const Navbar$ = () => {
 
     const numberOfNotif = 0;
 
-    const { load } = useContext(UserContext);
+    const { value, load } = useContext(UserContext);
 
     const loading = load[0];
 
@@ -40,30 +40,34 @@ const Navbar$ = () => {
     useEffect( () => {
 
         if(!loading) {
-            axios.get('/users/dashboard')
-            .then( (response) => {
-                if (response.status === 200)
-                {
-                    setDashboardData({
-                        popularity: response.data.popularity,
-                        thumbnail: response.data.thumbnail,
-                        username: response.data.username
-                    })
-                }
-            })
-            .catch( () => {
 
+            setDashboardData({
+                popularity: value[0].user.popularity,
+                thumbnail: value[0].user.thumbnail,
+                username: value[0].user.username
             })
 
             window.onresize = () => {
                 setWindowSize(window.innerWidth);
             }
 
+            // axios.get('/notifications/check')
+            // .then( (response) => {
+            //     if (response.status === 200)
+            //     {
+
+            //     }
+            // })
+            // .catch( () => {
+
+            // })
+
             return () => {
                 window.onresize = () => null
             }
+            
         }
-    }, [loading])
+    }, [loading, value])
 
 
 
@@ -127,12 +131,13 @@ const Navbar$ = () => {
                 <Nav>
                     <LogOut/>
                     <div className='navbar-popularity-user-div'>
-                        <span className='popularity'><AiFillStar className='star'/>{`${dashboardData.popularity}°`}</span>
+                        {dashboardData.popularity && <span className='popularity'><AiFillStar className='star'/>{`${dashboardData.popularity}°`}</span>}
                         <div className='navbar-user-image-name-div'>
+                            {dashboardData.thumbnail &&
                             <div className='profile-picture-navbar-div'>
                                 <img src={dashboardData.thumbnail} alt='user' className='profile-picture-navbar'/>
-                            </div>
-                            <span className='navbar-username'>{dashboardData.username}</span>
+                            </div>}
+                            {dashboardData.username && <span className='navbar-username'>{dashboardData.username}</span>}
                         </div>
                     </div>
                 </Nav>

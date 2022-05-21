@@ -123,9 +123,10 @@ function completeUserData($data, $userid)
                     "firstname" => $userData['firstname'],
                     "username" => $userData['username'],
                     "email" => $userData['email'],
+                    "popularity" => $userData['popularity'],
                     "lat" => $userData['lat'],
                     "lng" => $userData['lng'],
-                    "thumbnail" => $userData['thumbnail']
+                    "thumbnail" => urlencode($userData['thumbnail'])
                 ];
 
                 $tokenInstance = new JWT();
@@ -146,9 +147,10 @@ function completeUserData($data, $userid)
                     "firstname" => $userData['firstname'],
                     "username" => $userData['username'],
                     "email" => $userData['email'],
+                    "popularity" => $userData['popularity'],
                     "lat" => $userData['lat'],
                     "lng" => $userData['lng'],
-                    "thumbnail" => $userData['thumbnail']
+                    "thumbnail" => urlencode($userData['thumbnail'])
                 ];
 
                 $jwtInstance = new JWT();
@@ -165,6 +167,7 @@ function completeUserData($data, $userid)
                         "firstname" => $userData['firstname'],
                         "username" => $userData['username'],
                         "email" => $userData['email'],
+                        "popularity" => $userData['popularity'],
                         "lat" => $userData['lat'],
                         "lng" => $userData['lng'],
                         "thumbnail" => $userData['thumbnail']

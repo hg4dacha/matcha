@@ -12,8 +12,7 @@ import axios from 'axios';
 
 
 
-// import { USERS_LIST } from "../../other/USERS_LIST";
-const currentUserLocation = { latitude: 48.856614, longitude: 2.3522219 };
+
 
 
 
@@ -23,10 +22,11 @@ const currentUserLocation = { latitude: 48.856614, longitude: 2.3522219 };
 const Main = () => {
 
 
-    const { load } = useContext(UserContext);
+    const { value, load } = useContext(UserContext);
 
     const loading = load[0];
 
+    const [userData, setUserData] = useState(null);
     const [users, setUsers] = useState([]);
 
     const navigate = useNavigate();
@@ -35,11 +35,13 @@ const Main = () => {
     useEffect( () => {
 
         if(!loading) {
+
+            setUserData(value[0].user);
+
             axios.get('/users/users')
                 .then( (response) => {
                     if (response.status === 200)
                     {
-                        console.log(response.data);
                         setUsers(response.data);
                         document.title = 'Acceuil - Matcha';
                     }
@@ -54,7 +56,7 @@ const Main = () => {
                 })
         }
 
-    }, [loading, navigate])
+    }, [loading, value, navigate])
 
 
     
@@ -203,7 +205,7 @@ const Main = () => {
                                 popularity={data.popularity}
                                 location={{ latitude: data.lat, longitude: data.lng }}
                                 thumbnail={data.thumbnail}
-                                currentUserLocation={currentUserLocation}
+                                currentUserLocation={{ latitude: userData.lat, longitude: userData.lng }}
                             />
                         )
                     }) :

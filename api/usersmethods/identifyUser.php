@@ -86,9 +86,10 @@ function identifyUser($data)
                                 "firstname" => $userData['firstname'],
                                 "username" => $userData['username'],
                                 "email" => $userData['email'],
+                                "popularity" => $userData['popularity'],
                                 "lat" => $userData['lat'],
                                 "lng" => $userData['lng'],
-                                "thumbnail" => $userData['thumbnail']
+                                "thumbnail" => urlencode($userData['thumbnail'])
                             ];
         
                             $tokenInstance = new JWT();
@@ -109,9 +110,10 @@ function identifyUser($data)
                                 "firstname" => $userData['firstname'],
                                 "username" => $userData['username'],
                                 "email" => $userData['email'],
+                                "popularity" => $userData['popularity'],
                                 "lat" => $userData['lat'],
                                 "lng" => $userData['lng'],
-                                "thumbnail" => $userData['thumbnail']
+                                "thumbnail" => urlencode($userData['thumbnail'])
                             ];
         
                             $jwtInstance = new JWT();
@@ -128,6 +130,7 @@ function identifyUser($data)
                                     "firstname" => $userData['firstname'],
                                     "username" => $userData['username'],
                                     "email" => $userData['email'],
+                                    "popularity" => $userData['popularity'],
                                     "lat" => $userData['lat'],
                                     "lng" => $userData['lng'],
                                     "thumbnail" => $userData['thumbnail']
@@ -159,9 +162,10 @@ function identifyUser($data)
                                 "firstname" => $primaryUserData['firstname'],
                                 "username" => $primaryUserData['username'],
                                 "email" => $primaryUserData['email'],
-                                "lat" => FALSE,
-                                "lng" => FALSE,
-                                "thumbnail" => FALSE
+                                "popularity" => "empty",
+                                "lat" => "empty",
+                                "lng" => "empty",
+                                "thumbnail" => "empty"
                             ];
         
                             $tokenInstance = new JWT();
@@ -182,9 +186,10 @@ function identifyUser($data)
                                 "firstname" => $primaryUserData['firstname'],
                                 "username" => $primaryUserData['username'],
                                 "email" => $primaryUserData['email'],
-                                "lat" => FALSE,
-                                "lng" => FALSE,
-                                "thumbnail" => FALSE
+                                "popularity" => "empty",
+                                "lat" => "empty",
+                                "lng" => "empty",
+                                "thumbnail" => "empty"
                             ];
         
                             $jwtInstance = new JWT();
@@ -201,9 +206,10 @@ function identifyUser($data)
                                     "firstname" => $primaryUserData['firstname'],
                                     "username" => $primaryUserData['username'],
                                     "email" => $primaryUserData['email'],
-                                    "lat" => FALSE,
-                                    "lng" => FALSE,
-                                    "thumbnail" => FALSE
+                                    "popularity" => "empty",
+                                    "lat" => "empty",
+                                    "lng" => "empty",
+                                    "thumbnail" => "empty"
                                 ],
                                 "EXPIRE_IN" => 3600,
                                 "AUTH_TOKEN" => $jwt
@@ -220,27 +226,27 @@ function identifyUser($data)
                     }
                     else
                     {
-                        header("HTTP/1.1 400 connected");
+                        // header("HTTP/1.1 400 connected");
                     }
                 }
                 else
                 {
-                    header("HTTP/1.1 400 registration invalidated");
+                    // header("HTTP/1.1 400 registration invalidated");
                 }
             }
             else
             {
-                http_response_code(400);
+                // http_response_code(400);
             }
         }
         else
         {
-            http_response_code(400);
+            // http_response_code(400);
         }
     }
     else
     {
-        http_response_code(400);
+        // http_response_code(400);
     }
 }
 

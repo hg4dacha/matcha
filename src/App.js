@@ -45,9 +45,11 @@ function App() {
       if(response.status === 200) {
 
         value.setUser(response.data);
-        refreshTokenTimeOut.current = setTimeout( () => {
-          refreshToken();
-        }, (response.data.EXPIRE_IN * 1000) - 1000);
+        if(response.data.EXPIRE_IN) {
+          refreshTokenTimeOut.current = setTimeout( () => {
+            refreshToken();
+          }, (response.data.EXPIRE_IN * 1000) - 1000);
+        }
         load.setLoading(false);
 
       }
@@ -75,7 +77,7 @@ function App() {
   useEffect( () => {
 
     if(user) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${value.user.AUTH_TOKEN}`; console.log(user);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${value.user.AUTH_TOKEN}`;
     }
 
   }, [user, value.user])
