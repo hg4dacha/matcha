@@ -26,13 +26,11 @@ const Navbar$ = () => {
 
     const { value, load } = useContext(UserContext);
 
+    const [user, setUser] = value;
+
     const loading = load[0];
 
-    const [dashboardData, setDashboardData] = useState({
-        popularity: '',
-        thumbnail: '',
-        username: ''
-    });
+    const [dashboardData, setDashboardData] = useState(null);
 
     const [windowSize, setWindowSize] = useState(window.screen.width)
 
@@ -41,10 +39,11 @@ const Navbar$ = () => {
 
         if(!loading) {
 
+            user &&
             setDashboardData({
-                popularity: value[0].user.popularity,
-                thumbnail: value[0].user.thumbnail,
-                username: value[0].user.username
+                popularity: user.user.popularity,
+                thumbnail: user.user.thumbnail,
+                username: user.user.username
             })
 
             window.onresize = () => {
@@ -67,7 +66,8 @@ const Navbar$ = () => {
             }
             
         }
-    }, [loading, value])
+
+    }, [loading, user])
 
 
 
@@ -129,15 +129,15 @@ const Navbar$ = () => {
                     }
                 </Nav>
                 <Nav>
-                    <LogOut/>
+                    <LogOut setUser={setUser} />
                     <div className='navbar-popularity-user-div'>
-                        {dashboardData.popularity && <span className='popularity'><AiFillStar className='star'/>{`${dashboardData.popularity}°`}</span>}
+                        {dashboardData && <span className='popularity'><AiFillStar className='star'/>{`${dashboardData.popularity}°`}</span>}
                         <div className='navbar-user-image-name-div'>
-                            {dashboardData.thumbnail &&
+                            {dashboardData &&
                             <div className='profile-picture-navbar-div'>
                                 <img src={dashboardData.thumbnail} alt='user' className='profile-picture-navbar'/>
                             </div>}
-                            {dashboardData.username && <span className='navbar-username'>{dashboardData.username}</span>}
+                            {dashboardData && <span className='navbar-username'>{dashboardData.username}</span>}
                         </div>
                     </div>
                 </Nav>

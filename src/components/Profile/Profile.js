@@ -172,6 +172,7 @@ const Profile = () => {
             .then( (response) => {
                 if(response.status === 200)
                 {
+                    setUser(response.data);
                     updateSuccessAlert();
                 }
             })
@@ -337,6 +338,7 @@ const Profile = () => {
                         .then( (response) => {
                             if(response.status === 200)
                             {
+                                setUser(response.data);
                                 setInfoDataError({ display: false, msg: "" });
                                 updateSuccessAlert();
                             }
@@ -490,7 +492,7 @@ const Profile = () => {
                             setGenderAndOrientationDataError(false);
                         }
                     })
-                    .catch( (error) => {
+                    .catch( () => {
                         updateErrorAlert();
                     })
                 }
@@ -560,7 +562,7 @@ const Profile = () => {
                             updateSuccessAlert();
                         }
                     })
-                    .catch( (error) => {
+                    .catch( () => {
                         updateErrorAlert();
                     })
                 }
@@ -626,7 +628,7 @@ const Profile = () => {
                         updateSuccessAlert();
                     }
                 })
-                .catch( (error) => {
+                .catch( () => {
                     updateErrorAlert();
                 })
             }
@@ -689,11 +691,12 @@ const Profile = () => {
                     .then( (response) => {
                         if(response.status === 200)
                         {
+                            setUser(response.data);
                             updateSuccessAlert();
                             setUserLocationDataError({ error: false, msg: '' });
                         }
                     })
-                    .catch( (error) => {
+                    .catch( () => {
                         updateErrorAlert();
                     })
 

@@ -785,6 +785,22 @@ color: #ced6e0;
     justify-content: center;
 }
 
+.no-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 21px;
+    color: #576574;
+    font-weight: 400;
+}
+
+.no-result-icon {
+    margin-right: 3px;
+    width: 30px;
+    height: 30px;
+    color: #218c74;
+}
+
 .loading-cards {
     display: flex;
     align-items: center;

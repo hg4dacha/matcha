@@ -1,16 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { BiLogOutCircle } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../UserContext/UserContext';
 import axios from 'axios';
 
 
 
-const LogOut = () => {
+const LogOut = ({ setUser }) => {
 
-    const { value } = useContext(UserContext);
-
-    const setUser = value[1];
 
     const navigate = useNavigate();
 
@@ -21,9 +17,8 @@ const LogOut = () => {
         .then( (response) => {
             if (response.status === 200)
             {
-                localStorage.clear();
-                setUser(null);
                 delete axios.defaults.headers.common["Authorization"];
+                setUser(null);
                 navigate("/signin", {state: 'logout'});
             }
         })

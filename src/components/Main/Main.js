@@ -5,6 +5,7 @@ import Card from '../Card/Card';
 import { UserContext } from '../UserContext/UserContext';
 import { IoClose, IoOptions, IoCalendarClear } from 'react-icons/io5';
 import { AiFillStar } from 'react-icons/ai';
+import { HiOutlineEmojiSad } from 'react-icons/hi';
 import { FaSlackHash, FaMapMarkedAlt } from "react-icons/fa";
 import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
@@ -26,8 +27,8 @@ const Main = () => {
 
     const loading = load[0];
 
-    const [userData, setUserData] = useState(null);
-    const [users, setUsers] = useState([]);
+    const [userLocation, setUserLocation] = useState({lat: '', lng: ''});
+    const [users, setUsers] = useState(false);
 
     const navigate = useNavigate();
 
@@ -36,13 +37,21 @@ const Main = () => {
 
         if(!loading) {
 
-            setUserData(value[0].user);
+            setUserLocation({lat: value[0].user.lat, lng: value[0].user.lng});
 
             axios.get('/users/users')
                 .then( (response) => {
                     if (response.status === 200)
                     {
-                        setUsers(response.data);
+                        if(response.data.length === 0) {
+                            setUsers([]);
+                        }
+                        else if(response.data.length === 1) {
+                            setUsers([response.data]);
+                        }
+                        else {
+                            setUsers(response.data);
+                        }
                         document.title = 'Acceuil - Matcha';
                     }
                 })
@@ -56,7 +65,8 @@ const Main = () => {
                 })
         }
 
-    }, [loading, value, navigate])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading])
 
 
     
@@ -88,24 +98,26 @@ const Main = () => {
 
     const handleImplementingOptions = () => {
 
-        // const optionsSelected = {
-        //     ageRangeSelected : { min: ageRange.minimumValue, max: ageRange.maximumValue },
-        //     popularityRangeSelected : { min: popularityRange.minimumValue, max: popularityRange.maximumValue },
-        //     gapRangeSelected : { min: gapRange.minimumValue, max: gapRange.maximumValue },
-        //     tagsRangeSelected : { min: tagsRange.minimumValue, max: tagsRange.maximumValue }
-        // }
-
-        // console.log(optionsSelected);
+        setUsers(false);
 
         axios.get(`/users/filter/options?minAge=${ageRange.minimumValue}&maxAge=${ageRange.maximumValue}&minPop=${popularityRange.minimumValue}&maxPop=${popularityRange.maximumValue}&minGap=${gapRange.minimumValue}&maxGap=${gapRange.maximumValue}&minTag=${tagsRange.minimumValue}&maxTag=${tagsRange.maximumValue}`)
         .then( (response) => {
             if (response.status === 200)
             {
                 console.log(response.data);
+                if(response.data.length === 0) {
+                    setUsers([]);
+                }
+                else if(response.data.length === 1) {
+                    setUsers([response.data]);
+                }
+                else {
+                    setUsers(response.data);
+                }
             }
         })
-        .catch( (error) => {
-
+        .catch( () => {
+            setUsers([]);
         })
     }
 
@@ -193,8 +205,8 @@ const Main = () => {
                 </button>
             </div>
             <div className='main-container'>
-                {
-                    users.length ?
+                {   users.length === 0 ? <div className='no-result'><HiOutlineEmojiSad className='no-result-icon' />Aucun résultat</div> :
+                    users !== false ?
                     users.map( data => {
                         return (
                             <Card
@@ -205,7 +217,7 @@ const Main = () => {
                                 popularity={data.popularity}
                                 location={{ latitude: data.lat, longitude: data.lng }}
                                 thumbnail={data.thumbnail}
-                                currentUserLocation={{ latitude: userData.lat, longitude: userData.lng }}
+                                currentUserLocation={{ latitude: userLocation.lat, longitude: userLocation.lng }}
                             />
                         )
                     }) :

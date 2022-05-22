@@ -7,106 +7,18 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/configuration/database.php")
 
 
 
-// function getUsers($userid, $lat, $lng, $gender, $maleOrientation, $femaleOrientation)
-// {
-//     $dbc = db_connex();
-//     try
-//     {
-//         $request = $dbc->prepare(
-//             "SELECT usr.id AS userid, username, birthdate, popularity, lat, lng, distance, thumbnail
-//             FROM (
-//                SELECT *, ROUND( SQRT( POW(111.5 * (lat - :lat), 2) + POW(111.5 * (:lng - lng) * COS(lat / 57.3), 2) ), 0) AS distance FROM users
-//             ) usr
-//             LEFT JOIN (
-//                 SELECT *, profilePicture AS thumbnail FROM pictures
-//             ) pct
-//             ON usr.id = pct.userid
-//             WHERE usr.distance < 10000
-//             AND usr.id != :userid
-//             AND registrationValidated = 1 AND profileCompleted = 1
-//             AND gender != :gender AND maleOrientation != :maleOrientation
-//             AND femaleOrientation != :femaleOrientation
-//             ORDER BY usr.distance
-//             LIMIT 1
-//         ");
-//         $request->bindValue(':userid', $userid, PDO::PARAM_INT);
-//         $request->bindValue(':lat', $lat, PDO::PARAM_STR);
-//         $request->bindValue(':lng', $lng, PDO::PARAM_STR);
-//         $request->bindValue(':gender', $gender, PDO::PARAM_STR);
-//         $request->bindValue(':maleOrientation', $maleOrientation, PDO::PARAM_STR);
-//         $request->bindValue(':femaleOrientation', $femaleOrientation, PDO::PARAM_STR);
-//         $request->execute();
-//         return $request->fetchAll();
-//     }
-//     catch(PDOException $e)
-//     {
-//         // header("HTTP/1.1 500 database");
-//         print_r($e->message);
-//     }
-// }
-
-
-
-
-
-// function getUsers($userid, $birthdate, $gender, $maleOrientation, $femaleOrientation, $popularity, $lat, $lng)
-// {
-//     $dbc = db_connex();
-//     try
-//     {
-//         $request = $dbc->prepare(
-//             "SELECT usr.id AS userid, username, birthdate, popularity, lat, lng, age_diff, distance, thumbnail
-//             FROM (
-//                SELECT *, ROUND(SQRT( POW(111.5 * (lat - :lat), 2) + POW(111.5 * (:lng - lng) * COS(lat / 57.3), 2) ), 0) AS distance,
-//                TIMESTAMPDIFF(YEAR, :birthdate, birthdate) AS age_diff FROM users
-//             ) usr
-//             LEFT JOIN (
-//                 SELECT *, profilePicture AS thumbnail FROM pictures
-//             ) pct
-//             ON usr.id = pct.userid
-//             WHERE usr.distance <= 100
-//             AND usr.age_diff BETWEEN -5 AND 5
-//             AND popularity BETWEEN :popularity - 3000 AND :popularity + 3000
-//             AND usr.id != :userid
-//             AND registrationValidated = 1 AND profileCompleted = 1
-//             AND gender != :gender AND maleOrientation != :maleOrientation
-//             AND femaleOrientation != :femaleOrientation
-//             ORDER BY usr.distance
-//             LIMIT 90
-//         ");
-//         $request->bindValue(':userid', $userid, PDO::PARAM_INT);
-//         $request->bindValue(':birthdate', $birthdate, PDO::PARAM_STR);
-//         $request->bindValue(':lat', $lat, PDO::PARAM_STR);
-//         $request->bindValue(':lng', $lng, PDO::PARAM_STR);
-//         $request->bindValue(':gender', $gender, PDO::PARAM_STR);
-//         $request->bindValue(':maleOrientation', $maleOrientation, PDO::PARAM_STR);
-//         $request->bindValue(':femaleOrientation', $femaleOrientation, PDO::PARAM_STR);
-//         $request->bindValue(':popularity', $popularity, PDO::PARAM_STR);
-//         $request->execute();
-//         return $request->fetchAll();
-//     }
-//     catch(PDOException $e)
-//     {
-//         // header("HTTP/1.1 500 database");
-//         print_r($e);
-//     }
-// }
-
-
-// age_diff, distance, first_tag_match, second_tag_match, third_tag_match, fourth_tag_match, fifth_tag_match
-
-
-function getBothGenderUsers(
-    $userid, $birthdate, $gender, $maleOrientation, $femaleOrientation, $popularity, $lat, $lng, $tag1, $tag2, $tag3, $tag4, $tag5
+function getOppositeGenderUsersWithOptions(
+    $userid, $gender, $maleOrientation, $femaleOrientation, $lat, $lng, $tag1, $tag2, $tag3,
+    $tag4, $tag5, $minAge, $maxAge, $minPop, $maxPop, $minGap, $maxGap, $minTag, $maxTag
 ) {
     $dbc = db_connex();
     try
     {
         $request = $dbc->prepare(
-            "SELECT usr.id AS userid, username, birthdate, popularity, lat, lng, thumbnail
+            "SELECT usr.id AS userid, username, birthdate, popularity, lat, lng, thumbnail, distance
             FROM (
                SELECT *, ROUND(SQRT( POW(111.5 * (lat - :lat), 2) + POW(111.5 * (:lng - lng) * COS(lat / 57.3), 2) ), 0) AS distance,
-               TIMESTAMPDIFF(YEAR, :birthdate, birthdate) AS age_diff,
+               TIMESTAMPDIFF(YEAR, birthdate, CURRENT_DATE()) AS age_diff,
                (CASE
                     WHEN tag1 = :tag1 THEN 1
                     WHEN tag2 = :tag1 THEN 1
@@ -148,25 +60,23 @@ function getBothGenderUsers(
                 SELECT *, profilePicture AS thumbnail FROM pictures
             ) pct
             ON usr.id = pct.userid
-            WHERE usr.distance BETWEEN 0 AND 500
-            AND usr.age_diff BETWEEN -8 AND 8
-            AND popularity BETWEEN :popularity - 5000 AND :popularity + 5000
-            AND (usr.first_tag_match + usr.second_tag_match + usr.third_tag_match + usr.fourth_tag_match + usr.fifth_tag_match) BETWEEN 0 AND 5
+            WHERE usr.distance BETWEEN :minGap AND :maxGap
+            AND usr.age_diff BETWEEN :minAge AND :maxAge
+            AND popularity BETWEEN :minPop AND :maxPop
+            AND (usr.first_tag_match + usr.second_tag_match + usr.third_tag_match + usr.fourth_tag_match + usr.fifth_tag_match) BETWEEN :minTag AND :maxTag
             AND usr.id != :userid
             AND registrationValidated = 1 AND profileCompleted = 1
-            AND gender = :gender AND maleOrientation = :maleOrientation
-            AND femaleOrientation = :femaleOrientation
+            AND gender != :gender AND maleOrientation != :maleOrientation
+            AND femaleOrientation != :femaleOrientation
             AND usr.id NOT IN (SELECT blocked FROM blocked WHERE blocker = :userid)
             AND usr.id NOT IN (SELECT blocker FROM blocked WHERE blocked = :userid)
             ORDER BY usr.distance
             LIMIT 90
         ");
         $request->bindValue(':userid', $userid, PDO::PARAM_INT);
-        $request->bindValue(':birthdate', $birthdate, PDO::PARAM_STR);
         $request->bindValue(':gender', $gender, PDO::PARAM_STR);
         $request->bindValue(':maleOrientation', $maleOrientation, PDO::PARAM_STR);
         $request->bindValue(':femaleOrientation', $femaleOrientation, PDO::PARAM_STR);
-        $request->bindValue(':popularity', $popularity, PDO::PARAM_STR);
         $request->bindValue(':lat', $lat, PDO::PARAM_STR);
         $request->bindValue(':lng', $lng, PDO::PARAM_STR);
         $request->bindValue(':tag1', $tag1, PDO::PARAM_STR);
@@ -174,6 +84,15 @@ function getBothGenderUsers(
         $request->bindValue(':tag3', $tag3, PDO::PARAM_STR);
         $request->bindValue(':tag4', $tag4, PDO::PARAM_STR);
         $request->bindValue(':tag5', $tag5, PDO::PARAM_STR);
+        $request->bindValue(':minAge', $minAge, PDO::PARAM_INT);
+        $request->bindValue(':maxAge', $maxAge, PDO::PARAM_INT);
+        $request->bindValue(':minPop', $minPop, PDO::PARAM_INT);
+        $request->bindValue(':maxPop', $maxPop, PDO::PARAM_INT);
+        $request->bindValue(':minGap', $minGap, PDO::PARAM_INT);
+        $request->bindValue(':maxGap', $maxGap, PDO::PARAM_INT);
+        $request->bindValue(':minTag', $minTag, PDO::PARAM_INT);
+        $request->bindValue(':maxTag', $maxTag, PDO::PARAM_INT);
+
         $request->execute();
         return $request->fetchAll();
     }
@@ -188,12 +107,15 @@ function getBothGenderUsers(
 
 
 
-$result = getSameGenderUsers(1173, "1989-12-15T13:17:03+01:00", "FEMALE", FALSE, TRUE, 4320, 47.5201, 4.4457, "photographie", "jeuxVideo", "nature", "intello", "social");
+$result = getOppositeGenderUsersWithOptions(
+    1173, "MALE", FALSE, TRUE, 47.5201, 4.4457, "photographie", "jeuxVideo", "nature", "intello", "social",
+    20, 25, 2000, 5000, 200, 6000, 4, 5
+);
 
 $i = 0;
 while($i !== count($result))
 {
-    print_r($result[$i]);
+    var_dump($result[$i]);
     echo('<br/>');
     echo('<br/>');
     $i++;

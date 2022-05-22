@@ -42,8 +42,10 @@ function getUsers($userid)
                 }
                 elseif ( $gender === "MALE" && $maleOrientation == TRUE && $femaleOrientation == TRUE || $gender === "FEMALE" && $maleOrientation == TRUE && $femaleOrientation == TRUE )
                 {
-                    // $results = getUsersForUser($gender);
-                    // echo(json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                    $results = getBothGenderUsers(
+                        $userid, $birthdate, $gender, $maleOrientation, $femaleOrientation, $popularity, $lat, $lng, $tag1, $tag2, $tag3, $tag4, $tag5
+                    );
+                    echo(json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
                     http_response_code(200);
                 }
                 elseif ( $gender === "MALE" && $maleOrientation == TRUE && $femaleOrientation == FALSE || $gender === "FEMALE" && $maleOrientation == FALSE && $femaleOrientation == TRUE )
