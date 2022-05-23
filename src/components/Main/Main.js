@@ -46,9 +46,6 @@ const Main = () => {
                         if(response.data.length === 0) {
                             setUsers([]);
                         }
-                        else if(response.data.length === 1) {
-                            setUsers([response.data]);
-                        }
                         else {
                             setUsers(response.data);
                         }
@@ -107,9 +104,6 @@ const Main = () => {
                 console.log(response.data);
                 if(response.data.length === 0) {
                     setUsers([]);
-                }
-                else if(response.data.length === 1) {
-                    setUsers([response.data]);
                 }
                 else {
                     setUsers(response.data);

@@ -7,7 +7,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/configuration/database.php")
 
 
 
-function getOppositeGenderUsersWithOptions(
+function getBothGenderUsersWithOptions(
     $userid, $gender, $maleOrientation, $femaleOrientation, $lat, $lng, $tag1, $tag2, $tag3,
     $tag4, $tag5, $minAge, $maxAge, $minPop, $maxPop, $minGap, $maxGap, $minTag, $maxTag
 ) {
@@ -15,7 +15,7 @@ function getOppositeGenderUsersWithOptions(
     try
     {
         $request = $dbc->prepare(
-            "SELECT usr.id AS userid, username, birthdate, popularity, lat, lng, thumbnail, distance
+            "SELECT usr.id AS userid, username, birthdate, popularity, lat, lng, thumbnail
             FROM (
                SELECT *, ROUND(SQRT( POW(111.5 * (lat - :lat), 2) + POW(111.5 * (:lng - lng) * COS(lat / 57.3), 2) ), 0) AS distance,
                TIMESTAMPDIFF(YEAR, birthdate, CURRENT_DATE()) AS age_diff,
@@ -66,8 +66,9 @@ function getOppositeGenderUsersWithOptions(
             AND (usr.first_tag_match + usr.second_tag_match + usr.third_tag_match + usr.fourth_tag_match + usr.fifth_tag_match) BETWEEN :minTag AND :maxTag
             AND usr.id != :userid
             AND registrationValidated = 1 AND profileCompleted = 1
-            AND gender != :gender AND maleOrientation != :maleOrientation
-            AND femaleOrientation != :femaleOrientation
+            AND (gender = :gender OR gender != :gender)
+            AND maleOrientation = :maleOrientation
+            AND femaleOrientation = :femaleOrientation
             AND usr.id NOT IN (SELECT blocked FROM blocked WHERE blocker = :userid)
             AND usr.id NOT IN (SELECT blocker FROM blocked WHERE blocked = :userid)
             ORDER BY usr.distance
@@ -107,19 +108,19 @@ function getOppositeGenderUsersWithOptions(
 
 
 
-$result = getOppositeGenderUsersWithOptions(
-    1173, "MALE", FALSE, TRUE, 47.5201, 4.4457, "photographie", "jeuxVideo", "nature", "intello", "social",
-    20, 25, 2000, 5000, 200, 6000, 4, 5
-);
+// $result = getBothGenderUsersWithOptions(
+//     1173, "MALE", TRUE, TRUE, 47.5201, 4.4457, "photographie", "jeuxVideo", "nature", "intello", "social",
+//     20, 25, 1000, 5000, 200, 6000, 1, 5
+// );
 
-$i = 0;
-while($i !== count($result))
-{
-    var_dump($result[$i]);
-    echo('<br/>');
-    echo('<br/>');
-    $i++;
-}
+// $i = 0;
+// while($i !== count($result))
+// {
+//     var_dump($result[$i]);
+//     echo('<br/>');
+//     echo('<br/>');
+//     $i++;
+// }
 
 
 

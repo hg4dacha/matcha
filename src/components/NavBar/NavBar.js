@@ -44,7 +44,7 @@ const Navbar$ = () => {
                 popularity: user.user.popularity,
                 thumbnail: user.user.thumbnail,
                 username: user.user.username
-            })
+            });
 
             window.onresize = () => {
                 setWindowSize(window.innerWidth);

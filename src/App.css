@@ -868,7 +868,7 @@ color: #ced6e0;
     width: 100%;
     padding: 0 10px 5px;
     color: white;
-    text-shadow: 0.1em 0em 0.5em #2d3436;
+    text-shadow: 0em 0em 0.2em #2d3436;
 }
 
 .card-username-and-age {
@@ -891,7 +891,7 @@ color: #ced6e0;
 .card-logo {
     width: 11px;
     height: 11px;
-    box-shadow: 0 0 5px -3px #2d3436;
+    box-shadow: 0 0 5px -5px #2d3436;
 }
 
 @media all and (max-width: 1030px)
@@ -920,7 +920,7 @@ color: #ced6e0;
 
     .card-picture-content {
         width: 90px;
-        height: 120px;
+        height: 90px;
     }
 
     .card-user-info {
@@ -928,11 +928,11 @@ color: #ced6e0;
     }
 
     .card-username-and-age {
-        font-size: 8px;
+        font-size: 6px;
     }
 
     .card-distance-and-popularity {
-        font-size: 7px;
+        font-size: 5px;
     }
 
     .card-logo {

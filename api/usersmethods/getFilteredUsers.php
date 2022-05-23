@@ -58,14 +58,20 @@ function getFilteredUsers($userid, $minAge, $maxAge, $minPop, $maxPop, $minGap, 
                         }
                         elseif ( $gender === "MALE" && $maleOrientation == TRUE && $femaleOrientation == TRUE || $gender === "FEMALE" && $maleOrientation == TRUE && $femaleOrientation == TRUE )
                         {
-                            // $results = getUsersForUser($gender);
-                            // echo(json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                            $results = getBothGenderUsersWithOptions(
+                                $userid, $gender, $maleOrientation, $femaleOrientation, $lat, $lng, $tag1, $tag2, $tag3,
+                                $tag4, $tag5, $minAge, $maxAge, $minPop, $maxPop, $minGap, $maxGap, $minTag, $maxTag
+                            );
+                            echo(json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
                             http_response_code(200);
                         }
                         elseif ( $gender === "MALE" && $maleOrientation == TRUE && $femaleOrientation == FALSE || $gender === "FEMALE" && $maleOrientation == FALSE && $femaleOrientation == TRUE )
                         {
-                            // $results = getUsersForUser($gender);
-                            // echo(json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                            $results = getSameGenderUsersWithOptions(
+                                $userid, $gender, $maleOrientation, $femaleOrientation, $lat, $lng, $tag1, $tag2, $tag3,
+                                $tag4, $tag5, $minAge, $maxAge, $minPop, $maxPop, $minGap, $maxGap, $minTag, $maxTag
+                            );
+                            echo(json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
                             http_response_code(200);
                         }
                     }
