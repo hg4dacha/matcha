@@ -48,7 +48,8 @@ const Carousel$ = ({userPhotos, forPictureSize}) => {
     // FOR PICTURE SIZE ↓↓↓    
     const sizeOfImage = {
         maxWidth: '100%',
-        maxHeight: (forPictureSize / 100) * 90
+        maxHeight: (forPictureSize / 100) * 90,
+        minWidth: '500px'
     }
 
 

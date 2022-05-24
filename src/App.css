@@ -3163,6 +3163,11 @@ color: #ced6e0;
     border-radius: 2px;
 }
 
+.carousel-item {
+    display: flex !important;
+    justify-content: center !important;
+}
+
 .btn-prev-nxt, .btn-prev-nxt:focus, .btn-prev-nxt:active {
 	background:none;
     border: none;
