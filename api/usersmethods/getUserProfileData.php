@@ -1,9 +1,8 @@
 <?php
 
-// https://randomuser.me/api/?results=500&nat=fr&gender=male&inc=name,email&exc=gender,login,registered,dob,phone,cell,id,picture,nat,location
-// https://geo.api.gouv.fr/departements/93/communes?fields=code,nom,region,centre
 
-require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/configuration/database.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/gettings.php");
+
 
 
 function profileLiked($userid, $profileid)
@@ -50,25 +49,35 @@ function currentUserLiked($userid, $profileid)
     }
 }
 
-$profileLiked = profileLiked(497, 1016);
-
-$currentUserLiked = currentUserLiked(497, 1016);
-
-$array = ([
-    "profileLiked" => $profileLiked,
-    "currentUserLiked" => $currentUserLiked
-]);
-
-$array2 = ([
-    "test" => "test00",
-    "test2" => "test01"
-]);
-
-echo(json_encode(array_merge($array, $array2)));
-
-// echo(json_encode($array));
 
 
+
+
+function getUserProfileData($currentUserid, $userid)
+{
+    if(checkUserBlocking($currentUserid, $userid) != 0) {
+        http_response_code(200);
+        exit;
+    }
+
+    if(checkCurrentUserBlocking($currentUserid, $userid) != 0) {
+        http_response_code(200);
+        exit;
+    }
+
+    $profileData = profileData($userid);
+
+    $profileLiked = profileLiked($currentUserid, $userid);
+    $currentUserLiked = currentUserLiked($currentUserid, $userid);
+    $likesArray = [
+        "profileLiked" => $profileLiked,
+        "currentUserLiked" => $currentUserLiked
+    ];
+
+    // echo(json_encode(profileData($userid), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    echo(json_encode(array_merge($profileData, $likesArray) , JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    http_response_code(200);
+}
 
 
 

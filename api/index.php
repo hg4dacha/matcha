@@ -25,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/updateUserData.
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getUsers.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getFilteredUsers.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/checkUserStatus.php");
-require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getProfileData.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getUserProfileData.php");
 
 
 
@@ -257,7 +257,7 @@ try {
                         }
                         elseif ( $action == 'data' )
                         {
-                            getProfileData($userid, $object);
+                            getUserProfileData($userid, $object);
                         }
                         else
                         {

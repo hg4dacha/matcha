@@ -20,17 +20,13 @@ import { IoMaleFemaleSharp } from "react-icons/io5";
 import { HiBadgeCheck } from "react-icons/hi";
 import axios from 'axios';
 
-import jeanma1 from '../../images/jeanma1.jpg'
-import jeanma2 from '../../images/jeanma2.jpg'
-import jeanma3 from '../../images/jeanma3.jpg'
-import selfie from '../../images/selfie.jpg'
-import selfie22 from '../../images/selfie22.jpg'
+
 
 
 
 const AccessProfile = (props) => {
 
-    // const userPhotos = [selfie22, selfie, jeanma1, jeanma2, jeanma3]
+
     const [userPersonalInfo, setUserPersonalInfo] = useState({
         username: '',
         popularity: '',
@@ -57,7 +53,7 @@ const AccessProfile = (props) => {
         axios.get(`/users/data/${params.userid}`)
         .then( (response) => {
             if (response.status === 200)
-            {
+            {console.log(response.data);
                 setUserPersonalInfo({
                     username: response.data.username,
                     popularity: response.data.popularity,
@@ -98,7 +94,7 @@ const AccessProfile = (props) => {
             window.onresize = () => null
         }
 
-    }, [])
+    }, [params.userid])
 
 
 
@@ -141,7 +137,7 @@ const AccessProfile = (props) => {
 
 
     // BLUR WHEN OPENING CHAT ↓↓↓
-    const [chatState, setChatState] = useState(false)
+    const setChatState = useState(false)[1]
 
     const blurFunc = (chatState) => {
         
@@ -199,7 +195,8 @@ const AccessProfile = (props) => {
             <div className='profile-description'>
                 <div className='photos-part'>
                     <div className='photos-list'>
-                        <Carousel userPhotos={userPhotos} forPictureSize={pictureSize} />
+                        {userPhotos[0] &&
+                        <Carousel userPhotos={userPhotos} forPictureSize={pictureSize} />}
                     </div>
                 </div>
                 <div className='infos-part'>
