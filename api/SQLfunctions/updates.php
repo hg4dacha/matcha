@@ -341,4 +341,50 @@ function updateUserPassword($userid, $passwordUser)
 
 
 
+
+// UPDATE POPULARITY
+function addPopularity($userid, $addition)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET popularity = popularity + :addition WHERE id = :userid");
+        $reqUpdate->bindValue(':addition', $addition, PDO::PARAM_INT);
+        $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+function decreasePopularity($userid, $addition)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE users SET popularity = popularity - :addition WHERE id = :userid");
+        $reqUpdate->bindValue(':addition', $addition, PDO::PARAM_INT);
+        $reqUpdate->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
 ?>

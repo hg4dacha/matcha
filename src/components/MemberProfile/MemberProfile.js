@@ -97,15 +97,38 @@ const MemberProfile = () => {
 
 
     const unblockConfirmation = () => {
-        setProfileStatus('200')
-        handleNewAlert({variant: "success",
-                        information: "Le profil a été débloqué."})
+        axios.delete('/blocked/delete', { data: params.userid })
+        .then( (response) => {
+            if (response.status === 200)
+            {
+                if(response.data.toString() === '200') {
+                    setProfileStatus('200');
+                }
+                else if(response.data.toString() === '403') {
+                    setProfileStatus('403');
+                }
+                handleNewAlert({
+                    variant: "success",
+                    information: "Le profil a été débloqué."
+                });
+            }
+        })
+        .catch( () => {})
     }
 
     const blockConfirmation = () => {
-        setProfileStatus('302')
-        handleNewAlert({variant: "info",
-                        information: "Le profil a été bloqué."})
+        axios.post('/blocked/add', params.userid)
+        .then( (response) => {
+            if (response.status === 200)
+            {
+                setProfileStatus('302')
+                handleNewAlert({
+                    variant: "info",
+                    information: "Le profil a été bloqué."
+                });
+            }
+        })
+        .catch( () => {})
     }
 
     const reportConfirmation = () => {

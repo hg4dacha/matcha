@@ -39,7 +39,9 @@ const AccessProfile = (props) => {
         gender: '',
         maleOrientation: '',
         femaleOrientation: '',
-        descriptionUser: ''
+        descriptionUser: '',
+        profileLiked: '',
+        currentUserLiked:''
     });
     const [userTags, setUserTags] = useState([]);
     const [userPhotos, setUserPhotos] = useState([]);
@@ -53,7 +55,7 @@ const AccessProfile = (props) => {
         axios.get(`/users/data/${params.userid}`)
         .then( (response) => {
             if (response.status === 200)
-            {console.log(response.data);
+            {
                 setUserPersonalInfo({
                     username: response.data.username,
                     popularity: response.data.popularity,
@@ -66,7 +68,9 @@ const AccessProfile = (props) => {
                     gender: response.data.gender,
                     maleOrientation: response.data.maleOrientation,
                     femaleOrientation: response.data.femaleOrientation,
-                    descriptionUser: response.data.descriptionUser
+                    descriptionUser: response.data.descriptionUser,
+                    profileLiked: response.data.profileLiked,
+                    currentUserLiked: response.data.currentUserLiked
                 });
                 setUserTags(
                     JSON.parse(response.data.tags)
@@ -78,6 +82,7 @@ const AccessProfile = (props) => {
                     response.data.fourthPicture,
                     response.data.fifthPicture
                 ]);
+                setLike(response.data.profileLiked);
             }
         })
         .catch( () => {
@@ -102,13 +107,31 @@ const AccessProfile = (props) => {
     const [like, setLike] = useState(false)
 
     const toLike = () => {
-        setLike(true)
-        props.onLike()
+        axios.post('/likes/add', params.userid)
+        .then( (response) => {
+            if (response.status === 200)
+            {
+                setLike(true)
+                props.onLike()
+            }
+        })
+        .catch( () => {
+
+        })
     }
 
     const toDislike = () => {
-        setLike(false)
-        props.onDislike()
+        axios.delete('/likes/delete', { data: params.userid  })
+        .then( (response) => {
+            if (response.status === 200)
+            {
+                setLike(false)
+                props.onDislike()
+            }
+        })
+        .catch( () => {
+
+        })
     }
 
     const heart = like ?
@@ -187,11 +210,14 @@ const AccessProfile = (props) => {
     return (
         <Fragment>
             {confirmationWindow}
-            <Chat
-                onChatChange={blurFunc}
-                onDeleteDiscussion={displayConfirmWindow}
-                onDeleteDiscussionConfirmation={props.onDeleteDiscussionConfirmation}
-            />
+            {
+                (userPersonalInfo.profileLiked && userPersonalInfo.currentUserLiked) &&
+                <Chat
+                    onChatChange={blurFunc}
+                    onDeleteDiscussion={displayConfirmWindow}
+                    onDeleteDiscussionConfirmation={props.onDeleteDiscussionConfirmation}
+                />
+            }
             <div className='profile-description'>
                 <div className='photos-part'>
                     <div className='photos-list'>

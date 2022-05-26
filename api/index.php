@@ -27,6 +27,15 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getFilteredUser
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/checkUserStatus.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getUserProfileData.php");
 
+// LIKES FUNCTIONS
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/likesmethods/addlike.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/likesmethods/deletelike.php");
+
+// BLOCKED FUNCTIONS
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/blockedmethods/addBlocking.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/blockedmethods/deleteBlocking.php");
+
+
 
 
 
@@ -279,7 +288,59 @@ try {
             }
             else if ($request === 'likes')
             {
-
+                switch($method)
+                {
+                    case "POST":
+                        $data = json_decode(file_get_contents('php://input'));
+                        if ( $action == 'add' )
+                        {
+                            addLike($userid, $data);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                    case "DELETE":
+                        $data = json_decode(file_get_contents('php://input'));
+                        if ( $action == 'delete' )
+                        {
+                            deleteLike($userid, $data);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                }
+            }
+            else if ($request === 'blocked')
+            {
+                switch($method)
+                {
+                    case "POST":
+                        $data = json_decode(file_get_contents('php://input'));
+                        if ( $action == 'add' )
+                        {
+                            addBlocking($userid, $data);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                    case "DELETE":
+                        $data = json_decode(file_get_contents('php://input'));
+                        if ( $action == 'delete' )
+                        {
+                            deleteBlocking($userid, $data);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                }
             }
             else
             {

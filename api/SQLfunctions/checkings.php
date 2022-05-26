@@ -148,4 +148,107 @@ function connectionStatueCheck($id)
 
 
 
+
+
+function checkUserBlocking($currentUserid, $userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqGet = $dbc->prepare(
+            "SELECT id FROM blocked WHERE blocker = :userid AND blocked = :currentUserid"
+        );
+        $reqGet->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqGet->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
+        $reqGet->execute();
+        return $reqGet->fetch();
+    }
+    catch(PDOException $e)
+    {
+        header("HTTP/1.1 500 database");
+    }
+}
+
+
+
+
+
+
+function checkCurrentUserBlocking($currentUserid, $userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqGet = $dbc->prepare(
+            "SELECT id FROM blocked WHERE blocker = :currentUserid AND blocked = :userid"
+        );
+        $reqGet->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
+        $reqGet->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqGet->execute();
+        return $reqGet->fetch();
+    }
+    catch(PDOException $e)
+    {
+        header("HTTP/1.1 500 database");
+    }
+}
+
+
+
+
+
+
+// CHECK USER LIKE PROFILE
+function profileLiked($userid, $profileid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT id FROM likes WHERE liker = :userid AND liked = :profileid");
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->bindValue(':profileid', $profileid, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->fetch();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+
+// CHECK PROFILE LIKE USER
+function currentUserLiked($userid, $profileid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT id FROM likes WHERE liked = :userid AND liker = :profileid");
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->bindValue(':profileid', $profileid, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->fetch();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
 ?>
