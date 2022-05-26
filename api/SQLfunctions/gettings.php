@@ -179,6 +179,32 @@ function profileData($userid)
 
 
 
+function getDataFromBlocked($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT username, profilePicture AS thumbnail FROM users LEFT JOIN pictures ON users.id = pictures.userid WHERE users.id  = :userid"
+        );
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->fetch();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
 
 
 

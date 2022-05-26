@@ -34,6 +34,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/likesmethods/deletelike.php"
 // BLOCKED FUNCTIONS
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/blockedmethods/addBlocking.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/blockedmethods/deleteBlocking.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/blockedmethods/getBlockedData.php");
 
 
 
@@ -323,6 +324,16 @@ try {
                         if ( $action == 'add' )
                         {
                             addBlocking($userid, $data);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                    case "GET":
+                        if ( $action == 'data' )
+                        {
+                            getBlockedData($userid, $object);
                         }
                         else
                         {

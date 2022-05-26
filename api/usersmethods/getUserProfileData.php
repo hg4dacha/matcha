@@ -33,7 +33,7 @@ function getUserProfileData($currentUserid, $userid)
         "currentUserLiked" => $currentUserLiked == FALSE ? FALSE : TRUE
     ];
 
-    echo(json_encode(array_merge($profileData, $likesArray) , JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    echo(json_encode(array_merge($profileData, $likesArray), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     http_response_code(200);
 }
 
