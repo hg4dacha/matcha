@@ -26,6 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getUsers.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getFilteredUsers.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/checkUserStatus.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/getUserProfileData.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/usersmethods/refreshDataProfile.php");
 
 // LIKES FUNCTIONS
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/likesmethods/addlike.php");
@@ -108,7 +109,7 @@ try {
         }
     }
      // ***REQUEST NEW TOKEN*** //
-    elseif($request === "users" && $action === "token" && $method === "POST")
+    elseif($request === "users" && $action === "token" && $method === "GET")
     {
         if(isset($_COOKIE['REFRESH_TOKEN']) && !empty($_COOKIE['REFRESH_TOKEN'])) {
             getNewToken($_COOKIE['REFRESH_TOKEN']);
@@ -268,6 +269,10 @@ try {
                         elseif ( $action == 'data' )
                         {
                             getUserProfileData($userid, $object);
+                        }
+                        elseif ( $action == 'profile-refresh' )
+                        {
+                            refreshDataProfile($userid, $object);
                         }
                         else
                         {

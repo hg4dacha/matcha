@@ -76,6 +76,7 @@ const MemberProfile = () => {
                     onBlockingConfirmation={blockConfirmation}
                     onReportConfirmation={reportConfirmation}
                     onDeleteDiscussionConfirmation={deleteDiscussionConfirmation}
+                    onCurrentUserBlocked={currentUserBlocked}
                 />
             )
         }
@@ -149,6 +150,14 @@ const MemberProfile = () => {
     const deleteDiscussionConfirmation = () => {
         handleNewAlert({variant: "info",
                         information: "La discussion a été supprimée."})
+    }
+
+    const currentUserBlocked = () => {
+        setProfileStatus('403')
+        handleNewAlert({
+            variant: "info",
+            information: "Vous avez été bloqué par l'utilisateur."
+        });
     }
 
 

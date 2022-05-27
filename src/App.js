@@ -40,7 +40,7 @@ function App() {
   let refreshTokenTimeOut = useRef();
 
   const refreshToken = useCallback( () => {
-    axios.post('/users/token')
+    axios.get('/users/token')
     .then( (response) => {
       if(response.status === 200) {
 
@@ -69,7 +69,7 @@ function App() {
 
     refreshToken();
 
-    return () => clearTimeout(refreshTokenTimeOut);
+    return () => clearTimeout(refreshTokenTimeOut.current);
 
   }, [refreshTokenTimeOut, refreshToken])
 

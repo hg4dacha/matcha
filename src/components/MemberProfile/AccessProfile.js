@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import ConfirmWindow from '../ConfirmWindow/ConfirmWindow';
@@ -45,10 +45,35 @@ const AccessProfile = (props) => {
     });
     const [userTags, setUserTags] = useState([]);
     const [userPhotos, setUserPhotos] = useState([]);
-
     const [pictureSize, setPictureSize] = useState(null);
-
     const params = useParams();
+
+
+    let requestTimeOut = useRef();
+
+    const getDisplayData = useCallback( () => {
+
+        axios.get(`/users/profile-refresh/${params.userid}`)
+        .then( (response) => {
+            if(response.status === 200) {
+                if(response.data.currentUserBlocked) {
+                    props.onCurrentUserBlocked();
+                    return;
+                }
+                else {
+                    setUserPersonalInfo(prevState => ({
+                        ...prevState,
+                        connectionStatue: response.data.connectionStatue,
+                        profileLiked: response.data.profileLiked,
+                        currentUserLiked: response.data.currentUserLiked
+                    }));
+                }
+            }
+        })
+        .catch( () => {})
+
+    }, [])
+
 
     useEffect( () => {
 
@@ -85,9 +110,7 @@ const AccessProfile = (props) => {
                 setLike(response.data.profileLiked);
             }
         })
-        .catch( () => {
-
-        })
+        .catch( () => {})
 
         setPictureSize(document.querySelector('.profile-description').offsetHeight);
 
@@ -95,8 +118,13 @@ const AccessProfile = (props) => {
             setPictureSize(document.querySelector('.profile-description').offsetHeight);
         }
 
+        requestTimeOut.current = setInterval( () => {
+            getDisplayData();
+        }, 5000);
+
         return () => {
-            window.onresize = () => null
+            window.onresize = () => null;
+            clearInterval(requestTimeOut.current);
         }
 
     }, [params.userid])
@@ -135,13 +163,12 @@ const AccessProfile = (props) => {
     }
 
     const heart = like ?
-                  <Button variant="offline-danger" onClick={ () => toDislike() } className='button-like act'>
-                      <IoMdHeart className='like-heart' color='darkred' />
-                  </Button> :
-                  <Button variant="offline-danger" onClick={ () => toLike() } className='button-like dis'>
-                      <IoMdHeartEmpty className='like-heart' color='rgb(1, 1, 3)' />
-                  </Button> ;
-
+        <Button variant="offline-danger" onClick={ () => toDislike() } className='button-like act'>
+            <IoMdHeart className='like-heart' color='darkred' />
+        </Button> :
+        <Button variant="offline-danger" onClick={ () => toLike() } className='button-like dis'>
+            <IoMdHeartEmpty className='like-heart' color='rgb(1, 1, 3)' />
+        </Button> ;
 
 
     // // INLINE OFFLINE ↓↓↓
