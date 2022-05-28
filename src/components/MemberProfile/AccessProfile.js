@@ -50,6 +50,7 @@ const AccessProfile = (props) => {
 
 
     let requestTimeOut = useRef();
+    const currentUserBlocked = props.onCurrentUserBlocked;
 
     const getDisplayData = useCallback( () => {
 
@@ -57,7 +58,7 @@ const AccessProfile = (props) => {
         .then( (response) => {
             if(response.status === 200) {
                 if(response.data.currentUserBlocked) {
-                    props.onCurrentUserBlocked();
+                    currentUserBlocked();
                     return;
                 }
                 else {
@@ -72,7 +73,7 @@ const AccessProfile = (props) => {
         })
         .catch( () => {})
 
-    }, [])
+    }, [currentUserBlocked, params.userid])
 
 
     useEffect( () => {
@@ -127,7 +128,7 @@ const AccessProfile = (props) => {
             clearInterval(requestTimeOut.current);
         }
 
-    }, [params.userid])
+    }, [params.userid, getDisplayData])
 
 
 

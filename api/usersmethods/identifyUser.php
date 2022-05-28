@@ -67,6 +67,17 @@ function identifyUser($data)
 
                     if ( $connectionStatue[0] == FALSE )
                     {
+                        // COOKIE OPTIONS
+                        $arr_cookie_options = array (
+                            'expires' => time() + 60 * 60 * 24 * 30,
+                            'path' => '/',
+                            'domain' => NULL,
+                            'secure' => false,
+                            'httponly' => true,
+                            'samesite' => 'Lax'
+                        );
+
+
                         $completedProfile = completedProfileCheck($userid[0]);
 
                         if ( $completedProfile[0] == TRUE )
@@ -142,7 +153,8 @@ function identifyUser($data)
 
                             updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
                             echo json_encode($userData);
-                            setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
+                            // setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
+                            setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, $arr_cookie_options);
                             http_response_code(200);
                         }
                         else if ( $completedProfile[0] == FALSE )
@@ -219,34 +231,35 @@ function identifyUser($data)
 
                             updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
                             echo json_encode($userData);
-                            setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
+                            // setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
+                            setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, $arr_cookie_options);
                             http_response_code(206);
                         }                   
 
                     }
                     else
                     {
-                        // header("HTTP/1.1 400 connected");
+                        header("HTTP/1.1 400 connected");
                     }
                 }
                 else
                 {
-                    // header("HTTP/1.1 400 registration invalidated");
+                    header("HTTP/1.1 400 registration invalidated");
                 }
             }
             else
             {
-                // http_response_code(400);
+                http_response_code(400);
             }
         }
         else
         {
-            // http_response_code(400);
+            http_response_code(400);
         }
     }
     else
     {
-        // http_response_code(400);
+        http_response_code(400);
     }
 }
 

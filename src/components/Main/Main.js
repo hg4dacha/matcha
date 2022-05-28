@@ -101,7 +101,6 @@ const Main = () => {
         .then( (response) => {
             if (response.status === 200)
             {
-                console.log(response.data);
                 if(response.data.length === 0) {
                     setUsers([]);
                 }

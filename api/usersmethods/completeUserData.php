@@ -180,7 +180,16 @@ function completeUserData($data, $userid)
 
                 updateUserConnection(TRUE, date(DATE_ATOM), $userid);
                 echo json_encode($userData);
-                setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
+                $arr_cookie_options = array (
+                    'expires' => time() + 60 * 60 * 24 * 30,
+                    'path' => '/',
+                    'domain' => NULL,
+                    'secure' => false,
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                );
+                // setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
+                setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, $arr_cookie_options);
                 http_response_code(200);
             }
             else

@@ -12,7 +12,15 @@ function logoutUser($userid)
     if(isset($_COOKIE['REFRESH_TOKEN']) && !empty($_COOKIE['REFRESH_TOKEN'])) {
         unset($_COOKIE['REFRESH_TOKEN']);
     }
-    setcookie('REFRESH_TOKEN', '', time() - 10, '/', NULL, false, true);
+    $arr_cookie_options = array (
+        'expires' => time() - 10,
+        'path' => '/',
+        'domain' => NULL,
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    );
+    setcookie('REFRESH_TOKEN', '', $arr_cookie_options);
     http_response_code(200);
 }
 
