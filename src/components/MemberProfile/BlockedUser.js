@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button'
 import { IoReturnUpBack } from "react-icons/io5";
@@ -8,7 +8,7 @@ import axios from 'axios';
 
 
 
-const BlockedUser = () => {
+const BlockedUser = (props) => {
     
 
     const params = useParams();
@@ -17,6 +17,25 @@ const BlockedUser = () => {
         username: '',
         thumbnail: ''
     });
+
+
+    let requestTimeOut = useRef();
+    const currentUserDeblocked = props.onCurrentUserDeblocked;
+
+    const getDisplayData = useCallback( () => {
+
+        axios.get(`/users/profile-refresh/${params.userid}`)
+        .then( (response) => {
+            if(response.status === 200) {
+                if(!response.data.currentUserBlocked) {
+                    currentUserDeblocked();
+                    return;
+                }
+            }
+        })
+        .catch( () => {})
+
+    }, [currentUserDeblocked, params.userid])
 
 
     useEffect( () => {
@@ -33,7 +52,15 @@ const BlockedUser = () => {
         })
         .catch( () => {})
 
-    }, [params.userid])
+        requestTimeOut.current = setInterval( () => {
+            getDisplayData();
+        }, 5000);
+
+        return () => {
+            clearInterval(requestTimeOut.current);
+        }
+
+    }, [params.userid, getDisplayData])
 
 
     const previousPage = () => {

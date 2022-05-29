@@ -172,19 +172,6 @@ const AccessProfile = (props) => {
         </Button> ;
 
 
-    // // INLINE OFFLINE ↓↓↓
-    // const [inline, setInline] = useState(false)
-
-    // const inlineOffline = () => {
-    //     setInline(!inline)
-    // }
-
-
-    // const connectionState = inline ?
-    //                         <small className='user-connection-status'><GoPrimitiveDot color='#009432' />En ligne</small> :
-    //                         <small className='user-connection-status'><GoPrimitiveDot color='#7f8c8d' />
-    //                             Hors ligne<span className='last-connection'>&nbsp;&nbsp;Dernière connexion le 25/02/22 à 13h46</span>
-    //                         </small> ;
 
 
     // BLUR WHEN OPENING CHAT ↓↓↓

@@ -65,7 +65,9 @@ const MemberProfile = () => {
         }
         else if (profileStatus === '403') {
             setComponentDisplay(
-                <BlockedUser />
+                <BlockedUser
+                    onCurrentUserDeblocked={currentUserDeblocked}
+                />
             )
         }
         else if (profileStatus === '200') {
@@ -157,6 +159,14 @@ const MemberProfile = () => {
         handleNewAlert({
             variant: "info",
             information: "Vous avez été bloqué par l'utilisateur."
+        });
+    }
+
+    const currentUserDeblocked = () => {
+        setProfileStatus('200')
+        handleNewAlert({
+            variant: "success",
+            information: "Vous avez été débloqué par l'utilisateur."
         });
     }
 
