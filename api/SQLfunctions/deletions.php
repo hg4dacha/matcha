@@ -100,4 +100,59 @@ function deleteBlocked($currentUserid, $userid)
 
 
 
+
+
+// DELETE MESSAGES
+function deleteAllUserMessages($currentUserid, $userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM messages WHERE userid = :currentUserid AND
+            ((triggerID = :currentUserid AND receiverID = :userid) OR (triggerID = :userid AND receiverID = :currentUserid))");
+        $reqDelete->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->execute();
+        return $reqDelete->fetchAll();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// DELETE MESSAGES
+function deleteHistory($currentUserid, $userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM history WHERE visitor = :currentUserid AND profileVisited = :userid");
+        $reqDelete->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->execute();
+        return $reqDelete->fetchAll();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
 ?>

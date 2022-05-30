@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
+import React, { Fragment, useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { UserContext } from '../UserContext/UserContext';
 import { v4 as uuidv4 } from 'uuid';
 import ConfirmWindow from '../ConfirmWindow/ConfirmWindow';
 import Chat from './Chat';
@@ -26,6 +27,8 @@ import axios from 'axios';
 
 const AccessProfile = (props) => {
 
+    const { value } = useContext(UserContext);
+    const user = value[0];
 
     const [userPersonalInfo, setUserPersonalInfo] = useState({
         username: '',
@@ -228,6 +231,10 @@ const AccessProfile = (props) => {
             {
                 (userPersonalInfo.profileLiked && userPersonalInfo.currentUserLiked) &&
                 <Chat
+                    thumbnail={userPhotos[0]}
+                    username={userPersonalInfo.username}
+                    userId={user && user.user.user_id}
+                    profileId={params.userid}
                     onChatChange={blurFunc}
                     onDeleteDiscussion={displayConfirmWindow}
                     onDeleteDiscussionConfirmation={props.onDeleteDiscussionConfirmation}

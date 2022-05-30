@@ -251,4 +251,32 @@ function currentUserLiked($userid, $profileid)
 
 
 
+
+
+// CHECK PROFILE VISITED
+function getVisitedProfile($currentUserid, $userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT id, visitDate FROM history WHERE visitor = :currentUserid AND profileVisited = :userid"
+        );
+        $reqSelect->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->fetch();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
 ?>

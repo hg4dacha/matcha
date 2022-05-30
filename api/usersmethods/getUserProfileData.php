@@ -4,6 +4,7 @@
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/gettings.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/checkings.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/addings.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/deletions.php");
 
 
 
@@ -21,8 +22,19 @@ function getUserProfileData($currentUserid, $userid)
         exit;
     }
 
-    addNewNotification('visit', 'new', date(DATE_ATOM), $currentUserid, $userid);
-    addHistory($currentUserid, $userid, date(DATE_ATOM));
+    $visitedProfile = getVisitedProfile($currentUserid, $userid);
+    if($visitedProfile == FALSE) {
+        addHistory($currentUserid, $userid, date(DATE_ATOM));
+        addNewNotification('visit', 'new', date(DATE_ATOM), $currentUserid, $userid);
+    }
+    else {
+        deleteHistory($currentUserid, $userid);
+        addHistory($currentUserid, $userid, date(DATE_ATOM));
+        $hourdiff = round((strtotime(date(DATE_ATOM)) - strtotime($visitedProfile['visitDate'])) / 3600, 0);
+        if($hourdiff >= 24) {
+            addNewNotification('visit', 'new', date(DATE_ATOM), $currentUserid, $userid);
+        }
+    }
 
     $profileData = profileData($userid);
 

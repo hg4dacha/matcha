@@ -43,7 +43,6 @@ function App() {
     axios.get('/users/token')
     .then( (response) => {
       if(response.status === 200) {
-
         value.setUser(response.data);
         if(response.data.EXPIRE_IN) {
           refreshTokenTimeOut.current = setTimeout( () => {

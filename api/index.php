@@ -37,6 +37,12 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/blockedmethods/addBlocking.p
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/blockedmethods/deleteBlocking.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/blockedmethods/getBlockedData.php");
 
+// MESSAGES FUNCTIONS
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/addMessage.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/getAllMessages.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/deleteAllMessages.php");
+
+
 
 
 
@@ -350,6 +356,44 @@ try {
                         if ( $action == 'delete' )
                         {
                             deleteBlocking($userid, $data);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                }
+            }
+            else if ($request === 'messages')
+            {
+                switch($method)
+                {
+                    case "POST":
+                        $data = json_decode(file_get_contents('php://input'));
+                        if ( $action == 'add' )
+                        {
+                            addMessage($userid, $object, $data);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                    case "GET":
+                        if ( $action == 'data' )
+                        {
+                            getAllMessages($userid, $object);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                    case "DELETE":
+                        $data = json_decode(file_get_contents('php://input'));
+                        if ( $action == 'delete' )
+                        {
+                            deleteAllMessages($userid, $data);
                         }
                         else
                         {

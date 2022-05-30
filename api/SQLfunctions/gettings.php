@@ -205,6 +205,36 @@ function getDataFromBlocked($userid)
 
 
 
+function getAllUserMessages($currentUserid, $userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT * FROM messages WHERE userid  = :currentUserid AND
+            ((triggerID = :currentUserid AND receiverID = :userid) OR (triggerID = :userid AND receiverID = :currentUserid))
+            ORDER BY messageDate"
+        );
+        $reqSelect->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->fetchAll();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+
 
 
 

@@ -9,14 +9,36 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import { RiDeleteBin5Line } from "react-icons/ri";
 import MsgIn from './MsgIn';
 import MsgOut from './MsgOut';
+import axios from 'axios';
 
 
-import selfie22 from '../../images/selfie22.jpg'
 
 
 
 
 const Chat = (props) => {
+
+
+    // CHAT MESSAGES ↓↓↓
+    const [chatMessages, setChatMessages] = useState([])
+    
+    useEffect( () => {
+
+        axios.get(`/messages/data/${props.profileId}`)
+        .then( (response) => {
+            if (response.status === 200)
+            {
+                setChatMessages(response.data);
+            }
+        })
+        .catch( () => {})
+
+        // SCROLL IN BOTTOM
+        const scrollChat = document.querySelector('.discussion');
+        scrollChat.scrollTop = scrollChat.scrollHeight;
+
+    }, [props.profileId])
+
 
     // CHAT DRAWER ↓↓↓
     const [chatDrawer, setChatDrawer] = useState(false)
@@ -41,70 +63,6 @@ const Chat = (props) => {
     const chatContent = chatDrawer ?
                         'chat-content-open' :
                         'chat-content-close' ;
-
-    
-                        
-    const allChat = [
-        {
-            msg: "Salut",
-            userID: '934'
-        },
-        {
-            msg: "Bonjour",
-            userID: '000'
-        },
-        {
-            msg: "Comment ca va ?",
-            userID: '934'
-        },
-        {
-            msg: "Ca va et toi",
-            userID: '000'
-        },
-        {
-            msg: "Oui ca va. Tu fais quoi ?",
-            userID: '934'
-        },
-        {
-            msg: "Rien de special et toi",
-            userID: '000'
-        },
-        {
-            msg: "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte",
-            userID: '934'
-        },
-        {
-            msg: "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. ",
-            userID: '000'
-        },
-        {
-            msg: "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte",
-            userID: '934'
-        },
-        {
-            msg: "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. ",
-            userID: '000'
-        },
-        {
-            msg: "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte",
-            userID: '934'
-        },
-        {
-            msg: "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. ",
-            userID: '000'
-        },
-        {
-            msg: "Non meme pas...",
-            userID: '934'
-        },
-        {
-            msg: "Au revoir",
-            userID: '000'
-        }
-    ]
-    
-    // CHAT MESSAGES ↓↓↓
-    const [chatMessages, setChatMessages] = useState(allChat)
     
 
     // WRITTEN MESSAGE ↓↓↓
@@ -119,12 +77,22 @@ const Chat = (props) => {
     const handleAddNewMsg = (e) => {
         e.preventDefault();
         e.stopPropagation();
+
         if (theMessage !== '') {
-            setChatMessages(prevState => [...prevState, {
-                msg: theMessage,
-                userID: '000'
-            }]);
-            setTheMessage('');
+            axios.post(`/messages/add/${props.profileId}`, {message: theMessage})
+            .then( (response) => {
+                if (response.status === 200)
+                {
+                    console.log(response.data);
+                    setChatMessages(prevState => [...prevState, {
+                        id: uuidv4(),
+                        triggerID: props.userId,
+                        messageText: theMessage
+                    }]);
+                    setTheMessage('');
+                }
+            })
+            .catch( () => {})
         }
     }
     
@@ -140,19 +108,19 @@ const Chat = (props) => {
     // SEND BUTTON STYLE ↓↓↓
     const sendCursor = theMessage === '' ? 'initial' : 'pointer' ;
     const sendColor = theMessage === '' ? '#8FA3AD' : '#007bff' ;
-
-
-    // SCROLL IN BOTTOM ↓↓↓
-    useEffect( () => {
-        const scrollChat = document.querySelector('.discussion')
-        scrollChat.scrollTop = scrollChat.scrollHeight
-    }, [chatMessages])
     
     
     // DELETE DISCUSSION ↓↓↓
     const onConfirmDeleteDiscussion = () => {
-        setChatMessages([]);
-        props.onDeleteDiscussionConfirmation();
+        axios.delete(`/messages/delete/${props.profileId}`, { data: props.profileId })
+        .then( (response) => {
+            if (response.status === 200)
+            {
+                setChatMessages([]);
+                props.onDeleteDiscussionConfirmation();
+            }
+        })
+        .catch( () => {})
     }
 
     const deleteDiscussion = {
@@ -183,9 +151,9 @@ const Chat = (props) => {
                     <div className='interlocutor'>
                         <div className='interlocutor-left-part'>
                             <div className='interlocutor-image-div'>
-                                <img src={selfie22} alt='interlocutor' className='interlocutor-image'/>
+                                {props.thumbnail && <img src={props.thumbnail} alt='interlocutor' className='interlocutor-image'/>}
                             </div>
-                            <span className='interlocutor-name'>username-269428</span>
+                            {props.username && <span className='interlocutor-name'>{props.username}</span>}
                         </div>
                         <div className='interlocutor-right-part'>
                             <IoMdHeart size='23' color='#010103' className='m-1' />
@@ -204,11 +172,11 @@ const Chat = (props) => {
                     </div>
                     <div className='discussion'>
                         {chatMessages.map( msg => {
-                            if (msg.userID === '000'){
-                                return <MsgIn key={uuidv4()} msgContent={msg.msg} />
+                            if (msg.triggerID === props.userId){
+                                return <MsgIn key={msg.id} msgContent={msg.messageText} />
                             }
                             else {
-                                return <MsgOut key={uuidv4()} msgContent={msg.msg} />
+                                return <MsgOut key={msg.id} msgContent={msg.messageText} />
                             }
                         })}
                         {emptyChat}

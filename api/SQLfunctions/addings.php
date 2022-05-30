@@ -100,4 +100,31 @@ function addBlocked($blocker, $blocked)
 }
 
 
+
+
+
+function addNewMessage($userid, $triggerID,	$receiverID, $messageText, $messageDate)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqAddMessage = $dbc->prepare(
+            "INSERT INTO messages (userid, triggerID, receiverID, messageText, messageDate)
+             VALUES (:userid, :triggerID, :receiverID, :messageText, :messageDate)"
+        );
+        $reqAddMessage->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqAddMessage->bindValue(':triggerID', $triggerID, PDO::PARAM_INT);
+        $reqAddMessage->bindValue(':receiverID', $receiverID, PDO::PARAM_INT);
+        $reqAddMessage->bindValue(':messageText', $messageText, PDO::PARAM_STR);
+        $reqAddMessage->bindValue(':messageDate', $messageDate, PDO::PARAM_STR);
+        $reqAddMessage->execute();
+    }
+    catch(PDOException $e)
+    {
+        header("HTTP/1.1 500 database");
+    }
+}
+
+
+
 ?>
