@@ -152,9 +152,8 @@ function identifyUser($data)
                             //_________________________
 
                             updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
-                            echo json_encode($userData);
-                            // setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
                             setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, $arr_cookie_options);
+                            echo json_encode($userData);
                             http_response_code(200);
                         }
                         else if ( $completedProfile[0] == FALSE )
@@ -230,9 +229,8 @@ function identifyUser($data)
 
 
                             updateUserConnection(TRUE, date(DATE_ATOM), $userid[0]);
-                            echo json_encode($userData);
-                            // setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
                             setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, $arr_cookie_options);
+                            echo json_encode($userData);
                             http_response_code(206);
                         }                   
 

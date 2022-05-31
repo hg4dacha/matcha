@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { FaChevronRight } from "react-icons/fa";
 import { IoChatbubblesSharp } from "react-icons/io5";
@@ -21,6 +21,25 @@ const Chat = (props) => {
 
     // CHAT MESSAGES ↓↓↓
     const [chatMessages, setChatMessages] = useState([])
+
+    // MESSAGE NOTIFICATIONS ↓↓↓
+    const [messageNotifications, setMessageNotifications] = useState(0);
+
+
+    let requestTimeOut = useRef();
+
+    const getNewMessages = useCallback( () => {
+
+        axios.get(`/messages/chat-refresh/${props.profileId}`)
+        .then( (response) => {
+            if(response.status === 200) {
+                console.log(response.data);
+            }
+        })
+        .catch( () => {})
+
+    }, [props.profileId])
+
     
     useEffect( () => {
 
@@ -28,7 +47,8 @@ const Chat = (props) => {
         .then( (response) => {
             if (response.status === 200)
             {
-                setChatMessages(response.data);
+                setChatMessages(response.data.messages);
+                setMessageNotifications(response.data.unviewedMessages);
             }
         })
         .catch( () => {})
@@ -37,7 +57,15 @@ const Chat = (props) => {
         const scrollChat = document.querySelector('.discussion');
         scrollChat.scrollTop = scrollChat.scrollHeight;
 
-    }, [props.profileId])
+        // requestTimeOut.current = setInterval( () => {
+        //     getNewMessages();
+        // }, 5000);
+
+        // return () => {
+        //     clearInterval(requestTimeOut.current);
+        // }
+
+    }, [props.profileId, getNewMessages])
 
 
     // CHAT DRAWER ↓↓↓
@@ -46,23 +74,10 @@ const Chat = (props) => {
     const moveChatDrawer = e => {
         e.preventDefault();
         
-        let chatElement = document.querySelector('.chat');
-        
-        chatElement.classList.contains('chatOpen') ?
-        chatElement.classList.remove('chatOpen') :
-        chatElement.classList.add('chatOpen');
-        
-        setChatDrawer(!chatDrawer)
-        props.onChatChange(!chatDrawer)
+        setChatDrawer(!chatDrawer);
+        props.onChatChange(!chatDrawer);
+        setMessageNotifications(0);
     }
-
-    const theChatDrawer = chatDrawer ?
-                          <FaChevronRight className='iconChatDrawer' /> :
-                          <IoChatbubblesSharp className='iconChatDrawer' /> ;
-
-    const chatContent = chatDrawer ?
-                        'chat-content-open' :
-                        'chat-content-close' ;
     
 
     // WRITTEN MESSAGE ↓↓↓
@@ -78,7 +93,7 @@ const Chat = (props) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (theMessage !== '') {
+        if (theMessage !== '' && theMessage.length <= 700) {
             axios.post(`/messages/add/${props.profileId}`, {message: theMessage})
             .then( (response) => {
                 if (response.status === 200)
@@ -141,12 +156,12 @@ const Chat = (props) => {
 
     
     return (
-        <div className='chat'>
+        <div className={`chat ${chatDrawer ? 'chatOpen' : ''}`}>
             <div className='iconChatDrawerDiv centerElementsInPage' onClick={moveChatDrawer}>
-                <span className='nb-notif-chat-drawer'>3</span>
-                {theChatDrawer}
+                {messageNotifications > 0 && <span className='nb-notif-chat-drawer'>{messageNotifications}</span>}
+                {chatDrawer ? <FaChevronRight className='iconChatDrawer' /> : <IoChatbubblesSharp className='iconChatDrawer' />}
             </div>
-            <div className={chatContent}>
+            <div className={`${chatDrawer ? 'chat-content-open' : 'chat-content-close'}`}>
                 <div className='discussionContainer'>
                     <div className='interlocutor'>
                         <div className='interlocutor-left-part'>

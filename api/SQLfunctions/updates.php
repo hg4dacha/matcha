@@ -387,4 +387,27 @@ function decreasePopularity($userid, $addition)
 
 
 
+
+function markMessagesAsViewed($msgId)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE messages SET messageViewed = 1 WHERE id = :msgId");
+        $reqUpdate->bindValue(':msgId', $msgId, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
 ?>

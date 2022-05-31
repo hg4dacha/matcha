@@ -41,6 +41,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/blockedmethods/getBlockedDat
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/addMessage.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/getAllMessages.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/deleteAllMessages.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/getNewMessages.php");
 
 
 
@@ -383,6 +384,10 @@ try {
                         if ( $action == 'data' )
                         {
                             getAllMessages($userid, $object);
+                        }
+                        elseif ( $action == 'chat-refresh' )
+                        {
+                            getNewMessages($userid, $object);
                         }
                         else
                         {

@@ -41,13 +41,13 @@ function App() {
 
   const refreshToken = useCallback( () => {
     axios.get('/users/token')
-    .then( (response) => {
+    .then( (response) => {console.log(response.data)
       if(response.status === 200) {
-        value.setUser(response.data);
+        setUser(response.data);
         if(response.data.EXPIRE_IN) {
           refreshTokenTimeOut.current = setTimeout( () => {
             refreshToken();
-          }, (response.data.EXPIRE_IN * 1000) - 1000);
+          }, response.data.EXPIRE_IN);
         }
         load.setLoading(false);
 
@@ -60,9 +60,9 @@ function App() {
       load.setLoading(false);
     })
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [load])
 
+// (response.data.EXPIRE_IN * 1000) - 10000
 
   useEffect( () => {
 
@@ -76,6 +76,7 @@ function App() {
   useEffect( () => {
 
     if(user) {
+      console.log(value.user.AUTH_TOKEN);
       axios.defaults.headers.common['Authorization'] = `Bearer ${value.user.AUTH_TOKEN}`;
     }
 

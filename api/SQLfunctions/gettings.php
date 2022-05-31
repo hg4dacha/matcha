@@ -234,6 +234,33 @@ function getAllUserMessages($currentUserid, $userid)
 
 
 
+function getNumberOFNewMessages($currentUserid, $userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT id FROM messages WHERE userid = :currentUserid AND triggerID = :userid AND messageViewed = 0"
+        );
+        $reqSelect->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->fetchAll();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
 
 
 

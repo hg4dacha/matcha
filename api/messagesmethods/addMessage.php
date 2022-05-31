@@ -10,7 +10,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/SQLfunctions/addings.php");
 
 function addMessage($currentUserid, $userid, $message)
 {
-    if(isset($message->message) && !empty($message->message))
+    if(isset($message->message) && !empty($message->message) && strlen($message->message) <= 700)
     {
         $message = htmlspecialchars($message->message);
         if(is_numeric($userid) && $currentUserid !== $userid)

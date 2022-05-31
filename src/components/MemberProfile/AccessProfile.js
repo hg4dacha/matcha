@@ -178,15 +178,10 @@ const AccessProfile = (props) => {
 
 
     // BLUR WHEN OPENING CHAT ↓↓↓
-    const setChatState = useState(false)[1]
+    const [chatState, setChatState] = useState(false)
 
-    const blurFunc = (chatState) => {
-        
-        setChatState(chatState)
-
-        document.querySelector('.profile-description').classList.contains('profile-blurring') ?
-        document.querySelector('.profile-description').classList.remove('profile-blurring') :
-        document.querySelector('.profile-description').classList.add('profile-blurring') ;
+    const blurFunc = (chatDrawer) => {    
+        setChatState(chatDrawer);
     }
 
 
@@ -240,7 +235,7 @@ const AccessProfile = (props) => {
                     onDeleteDiscussionConfirmation={props.onDeleteDiscussionConfirmation}
                 />
             }
-            <div className='profile-description'>
+            <div className={`profile-description ${chatState ? 'profile-blurring' : ''}`}>
                 <div className='photos-part'>
                     <div className='photos-list'>
                         {userPhotos[0] &&
