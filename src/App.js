@@ -41,28 +41,33 @@ function App() {
 
   const refreshToken = useCallback( () => {
     axios.get('/users/token')
-    .then( (response) => {console.log(response.data)
+    .then( (response) => {
       if(response.status === 200) {
         setUser(response.data);
         if(response.data.EXPIRE_IN) {
           refreshTokenTimeOut.current = setTimeout( () => {
             refreshToken();
-          }, response.data.EXPIRE_IN);
+          }, (response.data.EXPIRE_IN * 1000) - 10000);
         }
         load.setLoading(false);
-
       }
       else if(response.status === 206) {
+        refreshTokenTimeOut.current = setTimeout( () => {
+          refreshToken();
+        }, 60000 * 15);
         load.setLoading(false);
       }
     })
     .catch( () => {
+      refreshTokenTimeOut.current = setTimeout( () => {
+        refreshToken();
+      }, 60000 * 15);
       load.setLoading(false);
     })
 
   }, [load])
 
-// (response.data.EXPIRE_IN * 1000) - 10000
+
 
   useEffect( () => {
 
@@ -76,7 +81,6 @@ function App() {
   useEffect( () => {
 
     if(user) {
-      console.log(value.user.AUTH_TOKEN);
       axios.defaults.headers.common['Authorization'] = `Bearer ${value.user.AUTH_TOKEN}`;
     }
 
