@@ -2570,18 +2570,17 @@ color: #ced6e0;
 .chat {
     z-index: 98;
     background-color: white;
-    /* background-image: url('./images/bg-chat.svg'); */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     box-shadow: -3px 0px 10px -5px #636e72;
     filter: blur(0px);
     border-radius: 2% 0% 0% 2%;
-    width: 0%;
+    width: 30%;
     height: 92%;
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: -30%;
     -webkit-transition: 0.2s ease-in;
     -moz-transition: 0.2s ease-in;
     -o-transition: 0.2s ease-in;
@@ -2589,7 +2588,7 @@ color: #ced6e0;
 }
 
 .chatOpen {
-    width: 30%;
+    right: 0;
     -webkit-transition: 0.2s ease-in;
     -moz-transition: 0.2s ease-in;
     -o-transition: 0.2s ease-in;
@@ -2901,8 +2900,12 @@ color: #ced6e0;
 
 @media all and (max-width: 1030px)
 {
-    .chatOpen {
+    .chat {
+        right: -80%;
         width: 80%;
+    }
+    .chatOpen {
+        right: 0;
     }
 }
 
@@ -2922,8 +2925,12 @@ color: #ced6e0;
         top: -7px;
         left: -4px;
     }
-    .chatOpen {
+    .chat {
+        right: -90%;
         width: 90%;
+    }
+    .chatOpen {
+        right: 0;
     }
     .interlocutor-name {
         font-size: 10px;

@@ -14,9 +14,15 @@ function getNewMessages($currentUserid, $userid)
             "unviewedMessages" => count($unviewedMessages),
             "messages" => $unviewedMessages
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+        $i = 0;
+        while($i !== count($unviewedMessages)) {
+            markMessagesAsViewed($unviewedMessages[$i]['id']);
+            $i++;
+        }
     }
     else {
-        echo [];
+        echo(json_encode([]));
     }
 }
 

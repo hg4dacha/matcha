@@ -25,6 +25,22 @@ const Chat = (props) => {
     // MESSAGE NOTIFICATIONS ↓↓↓
     const [messageNotifications, setMessageNotifications] = useState(0);
 
+    // CHAT DRAWER ↓↓↓
+    const [chatDrawer, setChatDrawer] = useState(false)
+
+    // To avoid API calls at each "chatDrawer" change ↓↓↓
+    const [initialRequest, setInitialRequest] = useState(false)
+
+    const moveChatDrawer = e => {
+        e.preventDefault();
+
+        setChatDrawer(!chatDrawer);
+        props.onChatChange(!chatDrawer);
+        setMessageNotifications(0);
+        // SCROLL IN BOTTOM
+        const scrollChat = document.querySelector('.discussion');
+        scrollChat.scrollTop = scrollChat.scrollHeight;
+    }
 
     let requestTimeOut = useRef();
 
@@ -33,51 +49,56 @@ const Chat = (props) => {
         axios.get(`/messages/chat-refresh/${props.profileId}`)
         .then( (response) => {
             if(response.status === 200) {
-                console.log(response.data);
+                // console.log(response.data.messages);
+                if(response.data.unviewedMessages > 0) {
+                    setChatMessages(prevState => [...prevState,
+                        ...response.data.messages]
+                    );
+                    !chatDrawer &&
+                    setMessageNotifications(response.data.unviewedMessages);
+                    // SCROLL IN BOTTOM
+                    const scrollChat = document.querySelector('.discussion');
+                    scrollChat.scrollTop = scrollChat.scrollHeight;
+                }
             }
         })
         .catch( () => {})
 
-    }, [props.profileId])
+    }, [props.profileId, chatDrawer])
 
     
     useEffect( () => {
 
-        axios.get(`/messages/data/${props.profileId}`)
-        .then( (response) => {
-            if (response.status === 200)
-            {
-                setChatMessages(response.data.messages);
-                setMessageNotifications(response.data.unviewedMessages);
-            }
-        })
-        .catch( () => {})
+        if(!initialRequest) {
 
-        // SCROLL IN BOTTOM
-        const scrollChat = document.querySelector('.discussion');
-        scrollChat.scrollTop = scrollChat.scrollHeight;
+            axios.get(`/messages/data/${props.profileId}`)
+            .then( (response) => {
+                if (response.status === 200)
+                {
+                    setChatMessages(response.data.messages);
+                    !chatDrawer &&
+                    setMessageNotifications(response.data.unviewedMessages);
+                }
+            })
+            .catch( () => {})
+        }
 
-        // requestTimeOut.current = setInterval( () => {
-        //     getNewMessages();
-        // }, 5000);
+            // SCROLL IN BOTTOM
+            const scrollChat = document.querySelector('.discussion');
+            scrollChat.scrollTop = scrollChat.scrollHeight;
 
-        // return () => {
-        //     clearInterval(requestTimeOut.current);
-        // }
+            requestTimeOut.current = setInterval( () => {
+                getNewMessages();
+            }, 3000);
 
-    }, [props.profileId, getNewMessages])
+            setInitialRequest(true);
 
+            return () => {
+                clearInterval(requestTimeOut.current);
 
-    // CHAT DRAWER ↓↓↓
-    const [chatDrawer, setChatDrawer] = useState(false)
+        }
 
-    const moveChatDrawer = e => {
-        e.preventDefault();
-        
-        setChatDrawer(!chatDrawer);
-        props.onChatChange(!chatDrawer);
-        setMessageNotifications(0);
-    }
+    }, [props.profileId, getNewMessages, chatDrawer, initialRequest])
     
 
     // WRITTEN MESSAGE ↓↓↓
@@ -98,13 +119,15 @@ const Chat = (props) => {
             .then( (response) => {
                 if (response.status === 200)
                 {
-                    console.log(response.data);
                     setChatMessages(prevState => [...prevState, {
                         id: uuidv4(),
                         triggerID: props.userId,
                         messageText: theMessage
                     }]);
                     setTheMessage('');
+                    // SCROLL IN BOTTOM
+                    const scrollChat = document.querySelector('.discussion');
+                    scrollChat.scrollTop = scrollChat.scrollHeight;
                 }
             })
             .catch( () => {})

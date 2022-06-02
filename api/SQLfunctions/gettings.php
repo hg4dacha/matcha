@@ -240,7 +240,7 @@ function getNumberOFNewMessages($currentUserid, $userid)
     try
     {
         $reqSelect = $dbc->prepare(
-            "SELECT id FROM messages WHERE userid = :currentUserid AND triggerID = :userid AND messageViewed = 0"
+            "SELECT * FROM messages WHERE userid = :currentUserid AND triggerID = :userid AND messageViewed = 0"
         );
         $reqSelect->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
         $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
