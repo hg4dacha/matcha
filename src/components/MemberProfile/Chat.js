@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { FaChevronRight } from "react-icons/fa";
 import { IoChatbubblesSharp } from "react-icons/io5";
@@ -21,6 +21,8 @@ const Chat = (props) => {
 
     // CHAT MESSAGES ↓↓↓
     const [chatMessages, setChatMessages] = useState([])
+    const chat = useMemo( () => ({chatMessages, setChatMessages}), [chatMessages, setChatMessages]);
+
 
     // MESSAGE NOTIFICATIONS ↓↓↓
     const [messageNotifications, setMessageNotifications] = useState(0);
@@ -51,7 +53,7 @@ const Chat = (props) => {
             if(response.status === 200) {
                 // console.log(response.data.messages);
                 if(response.data.unviewedMessages > 0) {
-                    setChatMessages(prevState => [...prevState,
+                    chat.setChatMessages(prevState => [...prevState,
                         ...response.data.messages]
                     );
                     !chatDrawer &&
@@ -64,7 +66,7 @@ const Chat = (props) => {
         })
         .catch( () => {})
 
-    }, [props.profileId, chatDrawer])
+    }, [props.profileId, chatDrawer, chat])
 
     
     useEffect( () => {
@@ -75,7 +77,7 @@ const Chat = (props) => {
             .then( (response) => {
                 if (response.status === 200)
                 {
-                    setChatMessages(response.data.messages);
+                    chat.setChatMessages(response.data.messages);
                     !chatDrawer &&
                     setMessageNotifications(response.data.unviewedMessages);
                 }
@@ -98,7 +100,7 @@ const Chat = (props) => {
 
         }
 
-    }, [props.profileId, getNewMessages, chatDrawer, initialRequest])
+    }, [props.profileId, getNewMessages, chatDrawer, initialRequest, chat])
     
 
     // WRITTEN MESSAGE ↓↓↓
@@ -119,7 +121,7 @@ const Chat = (props) => {
             .then( (response) => {
                 if (response.status === 200)
                 {
-                    setChatMessages(prevState => [...prevState, {
+                    chat.setChatMessages(prevState => [...prevState, {
                         id: uuidv4(),
                         triggerID: props.userId,
                         messageText: theMessage
@@ -154,7 +156,7 @@ const Chat = (props) => {
         .then( (response) => {
             if (response.status === 200)
             {
-                setChatMessages([]);
+                chat.setChatMessages([]);
                 props.onDeleteDiscussionConfirmation();
             }
         })
