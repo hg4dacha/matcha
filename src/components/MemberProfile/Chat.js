@@ -26,6 +26,7 @@ const Chat = (props) => {
 
     // MESSAGE NOTIFICATIONS ↓↓↓
     const [messageNotifications, setMessageNotifications] = useState(0);
+    const notif = useMemo( () => ({messageNotifications, setMessageNotifications}), [messageNotifications, setMessageNotifications]);
 
     // CHAT DRAWER ↓↓↓
     const [chatDrawer, setChatDrawer] = useState(false)
@@ -38,7 +39,7 @@ const Chat = (props) => {
 
         setChatDrawer(!chatDrawer);
         props.onChatChange(!chatDrawer);
-        setMessageNotifications(0);
+        notif.setMessageNotifications(0);
         // SCROLL IN BOTTOM
         const scrollChat = document.querySelector('.discussion');
         scrollChat.scrollTop = scrollChat.scrollHeight;
@@ -57,7 +58,7 @@ const Chat = (props) => {
                         ...response.data.messages]
                     );
                     !chatDrawer &&
-                    setMessageNotifications(response.data.unviewedMessages);
+                    notif.setMessageNotifications(response.data.unviewedMessages);
                     // SCROLL IN BOTTOM
                     const scrollChat = document.querySelector('.discussion');
                     scrollChat.scrollTop = scrollChat.scrollHeight;
@@ -66,7 +67,7 @@ const Chat = (props) => {
         })
         .catch( () => {})
 
-    }, [props.profileId, chatDrawer, chat])
+    }, [props.profileId, chatDrawer, chat, notif])
 
     
     useEffect( () => {
@@ -79,7 +80,7 @@ const Chat = (props) => {
                 {
                     chat.setChatMessages(response.data.messages);
                     !chatDrawer &&
-                    setMessageNotifications(response.data.unviewedMessages);
+                    notif.setMessageNotifications(response.data.unviewedMessages);
                 }
             })
             .catch( () => {})
@@ -100,7 +101,7 @@ const Chat = (props) => {
 
         }
 
-    }, [props.profileId, getNewMessages, chatDrawer, initialRequest, chat])
+    }, [props.profileId, getNewMessages, chatDrawer, initialRequest, chat, notif])
     
 
     // WRITTEN MESSAGE ↓↓↓
@@ -170,12 +171,12 @@ const Chat = (props) => {
     }
 
     const handleDeleteDiscussion = () => {
-        chatMessages.length !== 0 &&
+        chat.chatMessages.length !== 0 &&
         props.onDeleteDiscussion(deleteDiscussion);
         
     }
 
-    const emptyChat = chatMessages.length === 0 ?
+    const emptyChat = chat.chatMessages.length === 0 ?
                       <div className='empty-chat'>La discussion est vide.</div> :
                       null;
 
@@ -183,7 +184,7 @@ const Chat = (props) => {
     return (
         <div className={`chat ${chatDrawer ? 'chatOpen' : ''}`}>
             <div className='iconChatDrawerDiv centerElementsInPage' onClick={moveChatDrawer}>
-                {messageNotifications > 0 && <span className='nb-notif-chat-drawer'>{messageNotifications}</span>}
+                {notif.messageNotifications > 0 && <span className='nb-notif-chat-drawer'>{notif.messageNotifications}</span>}
                 {chatDrawer ? <FaChevronRight className='iconChatDrawer' /> : <IoChatbubblesSharp className='iconChatDrawer' />}
             </div>
             <div className={`${chatDrawer ? 'chat-content-open' : 'chat-content-close'}`}>
@@ -211,7 +212,7 @@ const Chat = (props) => {
                         </div>
                     </div>
                     <div className='discussion'>
-                        {chatMessages.map( msg => {
+                        {chat.chatMessages.map( msg => {
                             if (msg.triggerID === props.userId){
                                 return <MsgIn key={msg.id} msgContent={msg.messageText} />
                             }

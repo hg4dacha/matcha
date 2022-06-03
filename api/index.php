@@ -43,6 +43,9 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/getAllMessag
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/deleteAllMessages.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/getNewMessages.php");
 
+// NOTIFICATIONS FUNCTIONS
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/notificationsmethods/getAllNotifications.php");
+
 
 
 
@@ -399,6 +402,22 @@ try {
                         if ( $action == 'delete' )
                         {
                             deleteAllMessages($userid, $data);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                }
+            }
+            else if ($request === 'notifications')
+            {
+                switch($method)
+                {
+                    case "GET":
+                        if ( $action == 'data' )
+                        {
+                            getAllNotifications($userid);
                         }
                         else
                         {

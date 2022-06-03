@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useRef, useCallback, useContext } from 'react';
+import React, { Fragment, useEffect, useState, useRef, useCallback, useContext, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../UserContext/UserContext';
 import { v4 as uuidv4 } from 'uuid';
@@ -46,9 +46,11 @@ const AccessProfile = (props) => {
         profileLiked: '',
         currentUserLiked:''
     });
+    const info = useMemo( () => ({userPersonalInfo, setUserPersonalInfo}), [userPersonalInfo, setUserPersonalInfo]);
     const [userTags, setUserTags] = useState([]);
     const [userPhotos, setUserPhotos] = useState([]);
     const [pictureSize, setPictureSize] = useState(null);
+    const [initialRequest, setInitialRequest] = useState(false)
     const params = useParams();
 
 
@@ -65,7 +67,7 @@ const AccessProfile = (props) => {
                     return;
                 }
                 else {
-                    setUserPersonalInfo(prevState => ({
+                    info.setUserPersonalInfo(prevState => ({
                         ...prevState,
                         connectionStatue: response.data.connectionStatue,
                         profileLiked: response.data.profileLiked,
@@ -76,62 +78,68 @@ const AccessProfile = (props) => {
         })
         .catch( () => {})
 
-    }, [currentUserBlocked, params.userid])
+    }, [currentUserBlocked, params.userid, info])
 
 
     useEffect( () => {
 
-        axios.get(`/users/data/${params.userid}`)
-        .then( (response) => {
-            if (response.status === 200)
-            {
-                setUserPersonalInfo({
-                    username: response.data.username,
-                    popularity: response.data.popularity,
-                    connectionStatue: response.data.connectionStatue,
-                    lastConnection: response.data.lastConnection,
-                    lastname: response.data.lastname,
-                    firstname: response.data.firstname,
-                    birthdate: response.data.birthdate,
-                    locationUser: JSON.parse(response.data.locationUser),
-                    gender: response.data.gender,
-                    maleOrientation: response.data.maleOrientation,
-                    femaleOrientation: response.data.femaleOrientation,
-                    descriptionUser: response.data.descriptionUser,
-                    profileLiked: response.data.profileLiked,
-                    currentUserLiked: response.data.currentUserLiked
-                });
-                setUserTags(
-                    JSON.parse(response.data.tags)
-                );
-                setUserPhotos([
-                    response.data.profilePicture,
-                    response.data.secondPicture,
-                    response.data.thirdPicture,
-                    response.data.fourthPicture,
-                    response.data.fifthPicture
-                ]);
-                setLike(response.data.profileLiked);
-            }
-        })
-        .catch( () => {})
+        if(!initialRequest) {
 
-        setPictureSize(document.querySelector('.profile-description').offsetHeight);
+            axios.get(`/users/data/${params.userid}`)
+            .then( (response) => {
+                if (response.status === 200)
+                {
+                    info.setUserPersonalInfo({
+                        username: response.data.username,
+                        popularity: response.data.popularity,
+                        connectionStatue: response.data.connectionStatue,
+                        lastConnection: response.data.lastConnection,
+                        lastname: response.data.lastname,
+                        firstname: response.data.firstname,
+                        birthdate: response.data.birthdate,
+                        locationUser: JSON.parse(response.data.locationUser),
+                        gender: response.data.gender,
+                        maleOrientation: response.data.maleOrientation,
+                        femaleOrientation: response.data.femaleOrientation,
+                        descriptionUser: response.data.descriptionUser,
+                        profileLiked: response.data.profileLiked,
+                        currentUserLiked: response.data.currentUserLiked
+                    });
+                    setUserTags(
+                        JSON.parse(response.data.tags)
+                    );
+                    setUserPhotos([
+                        response.data.profilePicture,
+                        response.data.secondPicture,
+                        response.data.thirdPicture,
+                        response.data.fourthPicture,
+                        response.data.fifthPicture
+                    ]);
+                    setLike(response.data.profileLiked);
+                }
+            })
+            .catch( () => {})
 
-        window.onresize = () => {
             setPictureSize(document.querySelector('.profile-description').offsetHeight);
+
+            window.onresize = () => {
+                setPictureSize(document.querySelector('.profile-description').offsetHeight);
+            }
+
         }
 
         requestTimeOut.current = setInterval( () => {
             getDisplayData();
         }, 5000);
 
+        setInitialRequest(true);
+
         return () => {
             window.onresize = () => null;
             clearInterval(requestTimeOut.current);
         }
 
-    }, [params.userid, getDisplayData])
+    }, [params.userid, getDisplayData, info, initialRequest])
 
 
 
@@ -224,10 +232,10 @@ const AccessProfile = (props) => {
         <Fragment>
             {confirmationWindow}
             {
-                (userPersonalInfo.profileLiked && userPersonalInfo.currentUserLiked) &&
+                (info.userPersonalInfo.profileLiked && info.userPersonalInfo.currentUserLiked) &&
                 <Chat
                     thumbnail={userPhotos[0]}
-                    username={userPersonalInfo.username}
+                    username={info.userPersonalInfo.username}
                     userId={user && user.user.user_id}
                     profileId={params.userid}
                     onChatChange={blurFunc}
@@ -246,12 +254,12 @@ const AccessProfile = (props) => {
                     <div className='infos-list'>
                         <div className='username-global-div'>
                             <div className='username-and-popularity'>
-                                <h1 className='username-member-profile'>{userPersonalInfo.username}</h1>
-                                <span className='popularity popularity-member-profile'><AiFillStar className='star'/>{`${userPersonalInfo.popularity}°`}</span>
+                                <h1 className='username-member-profile'>{info.userPersonalInfo.username}</h1>
+                                <span className='popularity popularity-member-profile'><AiFillStar className='star'/>{`${info.userPersonalInfo.popularity}°`}</span>
                                 <HiBadgeCheck className='was-liked' />
                             </div>
                             {
-                                userPersonalInfo.connectionStatue === '1' ?
+                                info.userPersonalInfo.connectionStatue === '1' ?
                                 <small className='user-connection-status'><GoPrimitiveDot color='#009432' />
                                     En ligne
                                 </small> :
@@ -259,7 +267,7 @@ const AccessProfile = (props) => {
                                     Hors ligne
                                     <span className='last-connection'>
                                         &nbsp;&nbsp;Dernière connexion le&nbsp;
-                                        {`${new Date(userPersonalInfo.lastConnection).toLocaleDateString('fr-FR', {day: '2-digit', month: '2-digit', year: '2-digit'})} à ${new Date(userPersonalInfo.lastConnection).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}`}
+                                        {`${new Date(info.userPersonalInfo.lastConnection).toLocaleDateString('fr-FR', {day: '2-digit', month: '2-digit', year: '2-digit'})} à ${new Date(info.userPersonalInfo.lastConnection).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}`}
                                     </span>
                                 </small>
                             }
@@ -269,24 +277,24 @@ const AccessProfile = (props) => {
                         </div>
                         <div>
                             <div className='alignment'>
-                                <RiUser3Line className='user-infos-icons'/>{`${userPersonalInfo.lastname} ${userPersonalInfo.firstname}`}
+                                <RiUser3Line className='user-infos-icons'/>{`${info.userPersonalInfo.lastname} ${info.userPersonalInfo.firstname}`}
                             </div>
                             <div className='alignment'>
-                                <FiCalendar className='user-infos-icons'/>{`${differenceInYears(new Date(), new Date(userPersonalInfo.birthdate))} ans`}
+                                <FiCalendar className='user-infos-icons'/>{`${differenceInYears(new Date(), new Date(info.userPersonalInfo.birthdate))} ans`}
                             </div>
                             <div className='alignment'>
-                                <GiPositionMarker className='user-infos-icons'/>{`${userPersonalInfo.locationUser.city}, ${userPersonalInfo.locationUser.state} (${userPersonalInfo.locationUser.country})`}
+                                <GiPositionMarker className='user-infos-icons'/>{`${info.userPersonalInfo.locationUser.city}, ${info.userPersonalInfo.locationUser.state} (${info.userPersonalInfo.locationUser.country})`}
                             </div>
                             <div className='alignment'>
                                 <IoMaleFemaleSharp className='user-infos-icons'/>Je suis
-                                <span className='bold' style={{color: '#40739e'}}>&nbsp;{userPersonalInfo.gender === 'MALE' ? 'un homme' : 'une femme'}</span>
+                                <span className='bold' style={{color: '#40739e'}}>&nbsp;{info.userPersonalInfo.gender === 'MALE' ? 'un homme' : 'une femme'}</span>
                             </div>
                             <div className='alignment'>
                                 <BiSearch className='user-infos-icons'/>Je cherche
                                 <span className='bold' style={{color: '#58B19F'}}>&nbsp;{
-                                    (userPersonalInfo.maleOrientation === '1' && userPersonalInfo.femaleOrientation === '1') ?
+                                    (info.userPersonalInfo.maleOrientation === '1' && info.userPersonalInfo.femaleOrientation === '1') ?
                                     "un homme et une femme" :
-                                    (userPersonalInfo.maleOrientation === '1' ? "un homme" : "une femme")
+                                    (info.userPersonalInfo.maleOrientation === '1' ? "un homme" : "une femme")
                                 }</span>
                             </div>
                         </div>
@@ -306,7 +314,7 @@ const AccessProfile = (props) => {
                                 }
                             </div>
                             <p className='user-description'>
-                                {userPersonalInfo.descriptionUser}
+                                {info.userPersonalInfo.descriptionUser}
                             </p>
                         </div>
                         <div className='danger-buttons-div'>

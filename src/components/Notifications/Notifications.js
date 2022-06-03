@@ -1,4 +1,5 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment, useEffect, useContext } from 'react';
+import { UserContext } from '../UserContext/UserContext';
 import Navbar from '../NavBar/NavBar';
 import NotificationAlert from './NotificationAlert';
 import AlertMsg from '../AlertMsg/AlertMsg';
@@ -7,6 +8,7 @@ import { RiHistoryFill } from 'react-icons/ri';
 import { BiNotification } from 'react-icons/bi';
 import { CgSmileSad } from 'react-icons/cg';
 import { GoInfo } from 'react-icons/go';
+import axios from 'axios';
 
 
 
@@ -148,9 +150,26 @@ const oldNotificationList = [
 
 const Notifications = () => {
 
+    const { load } = useContext(UserContext);
+    const loading = load[0];
+
     useEffect( () => {
-        document.title = 'Notifications - Matcha'
-    }, [])
+
+        if(!loading) {
+
+            axios.get(`/notifications/data`)
+            .then( (response) => {
+                if (response.status === 200)
+                {
+                    console.log(response.data);
+                }
+            })
+            .catch( () => {})
+
+            document.title = 'Notifications - Matcha';
+        }
+
+    }, [loading])
 
 
     const [newNotifications, setNewNotifications] = useState(newNotificationList)

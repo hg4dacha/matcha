@@ -126,7 +126,7 @@ const NotificationAlert = ({
                         <img src={userImage} alt='user' className='notification-alert-picture'/>
                     </div>
                     <div className='notification-text'>
-                        <Link to={`/MemberProfile`} className='notification-user-link'>
+                        <Link to={`/users`} className='notification-user-link'>
                             {userName}
                         </Link>
                         <MessageType/>
