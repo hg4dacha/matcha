@@ -11,7 +11,7 @@ import { VscEye } from 'react-icons/vsc';
 
 
 const NotificationAlert = ({
-    notificationId, userImage, userName, notificationDate, notificationType,
+    notificationId, trigger, userImage, userName, notificationDate, notificationType,
     notificationAge, notificationList, setNotificationList, successAlert, errorAlert }) => {
 
 
@@ -126,7 +126,7 @@ const NotificationAlert = ({
                         <img src={userImage} alt='user' className='notification-alert-picture'/>
                     </div>
                     <div className='notification-text'>
-                        <Link to={`/users`} className='notification-user-link'>
+                        <Link to={`/users/${trigger}`} className='notification-user-link'>
                             {userName}
                         </Link>
                         <MessageType/>

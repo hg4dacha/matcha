@@ -410,4 +410,27 @@ function markMessagesAsViewed($msgId)
 
 
 
+
+function markNotificationAsOld($notifId)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqUpdate = $dbc->prepare("UPDATE notifications SET age = 'old' WHERE id = :notifId");
+        $reqUpdate->bindValue(':notifId', $notifId, PDO::PARAM_INT);
+        $reqUpdate->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
 ?>
