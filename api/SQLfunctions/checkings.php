@@ -279,4 +279,32 @@ function getVisitedProfile($currentUserid, $userid)
 
 
 
+
+
+// CHECK NOTIFICATION DELETION RIGHTS
+function checkNotificationDeletionRights($userid, $notificationId)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT id FROM notifications WHERE id = :notificationId AND receiverID = :userid"
+        );
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->bindValue(':notificationId', $notificationId, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->rowCount();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
 ?>

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useContext } from 'react';
+import React, { Fragment, useEffect, useState, useContext, useMemo, useRef, useCallback } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -12,7 +12,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { RiHeart3Line } from 'react-icons/ri';
 import { BiMenu } from 'react-icons/bi';
-// import axios from 'axios';
+import axios from 'axios';
 
 
 
@@ -22,17 +22,31 @@ import { BiMenu } from 'react-icons/bi';
 
 const Navbar$ = () => {
 
-    const numberOfNotif = 0;
 
     const { value, load } = useContext(UserContext);
-
     const [user, setUser] = value;
-
     const loading = load[0];
-
     const [dashboardData, setDashboardData] = useState(null);
-
+    // const dash = useMemo( () => ({dashboardData, setDashboardData}), [dashboardData, setDashboardData]);
     const [windowSize, setWindowSize] = useState(window.screen.width)
+    const [notifNumber, setNotifNumber] = useState(null);
+    // const notif = useMemo( () => ({notifNumber, setNotifNumber}), [notifNumber, setNotifNumber]);
+    const [initialRequest, setInitialRequest] = useState(false);
+
+
+    // let requestTimeOut = useRef();
+
+    // const getnotificationsNumber = useCallback( () => {
+
+    //     axios.get(`/notifications/check`)
+    //     .then( (response) => {
+    //         if(response.status === 200) {
+    //             setNotifNumber(response.data);
+    //         }
+    //     })
+    //     .catch( () => {})
+
+    // }, [])
 
 
     useEffect( () => {
@@ -50,16 +64,22 @@ const Navbar$ = () => {
                 setWindowSize(window.innerWidth);
             }
 
-            // axios.get('/notifications/check')
-            // .then( (response) => {
-            //     if (response.status === 200)
-            //     {
+            if(!initialRequest) {
 
-            //     }
-            // })
-            // .catch( () => {
+                axios.get('/notifications/check')
+                .then( (response) => {
+                    if (response.status === 200)
+                    {
+                        setNotifNumber(response.data);
+                    }
+                })
+                .catch( () => {
 
-            // })
+                })
+
+            }
+
+            setInitialRequest(true);
 
             return () => {
                 window.onresize = () => null
@@ -67,7 +87,7 @@ const Navbar$ = () => {
             
         }
 
-    }, [loading, user])
+    }, [loading, user, initialRequest])
 
 
 
@@ -88,7 +108,7 @@ const Navbar$ = () => {
                         <NavLink to="/notifications" className='nav-link'>
                             <IoNotificationsOutline size={16} className='iconsNavbar'/>
                             Notifications
-                            <span className={`nb-notifications ${numberOfNotif > 0 ? "notifs-true" : "notifs-false"}`}>{numberOfNotif}</span>
+                            {notifNumber !== null && <span className={`nb-notifications ${notifNumber > 0 ? "notifs-true" : "notifs-false"}`}>{notifNumber}</span>}
                         </NavLink>
                         <NavLink to="/favorites" className='nav-link'>
                             <RiHeart3Line size={16} className='iconsNavbar'/>

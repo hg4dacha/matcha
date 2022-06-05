@@ -261,7 +261,7 @@ function getNumberOFNewMessages($currentUserid, $userid)
 
 
 
-function getAllOldNotifications($userid, $age)
+function getAllUSerNotifications($userid, $age)
 {
     $dbc = db_connex();
     try
@@ -272,7 +272,7 @@ function getAllOldNotifications($userid, $age)
             FROM notifications
             LEFT JOIN pictures ON notifications.triggerID = pictures.userid
             LEFT JOIN users ON notifications.triggerID = users.id
-            WHERE notifications.receiverID = :userid AND notifications.age = :age ORDER BY notifications.notificationDate"
+            WHERE notifications.receiverID = :userid AND notifications.age = :age ORDER BY notifications.notificationDate DESC"
         );
         $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
         $reqSelect->bindValue(':age', $age, PDO::PARAM_STR);

@@ -52,7 +52,6 @@ const Chat = (props) => {
         axios.get(`/messages/chat-refresh/${props.profileId}`)
         .then( (response) => {
             if(response.status === 200) {
-                // console.log(response.data.messages);
                 if(response.data.unviewedMessages > 0) {
                     chat.setChatMessages(prevState => [...prevState,
                         ...response.data.messages]

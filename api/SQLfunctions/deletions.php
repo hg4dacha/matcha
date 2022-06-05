@@ -114,7 +114,6 @@ function deleteAllUserMessages($currentUserid, $userid)
         $reqDelete->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
         $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
         $reqDelete->execute();
-        return $reqDelete->fetchAll();
     }
     catch(PDOException $e)
     {
@@ -130,7 +129,33 @@ function deleteAllUserMessages($currentUserid, $userid)
 
 
 
-// DELETE MESSAGES
+// DELETE NOTIFICATION
+function deleteUserNotification($userid, $notificationId)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM notifications WHERE id = :notificationId AND receiverID = :userid");
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->bindValue(':notificationId', $notificationId, PDO::PARAM_INT);
+        $reqDelete->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// DELETE HISTORY
 function deleteHistory($currentUserid, $userid)
 {
     $dbc = db_connex();
@@ -141,7 +166,6 @@ function deleteHistory($currentUserid, $userid)
         $reqDelete->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
         $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
         $reqDelete->execute();
-        return $reqDelete->fetchAll();
     }
     catch(PDOException $e)
     {

@@ -45,6 +45,9 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/messagesmethods/getNewMessag
 
 // NOTIFICATIONS FUNCTIONS
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/notificationsmethods/getAllNotifications.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/notificationsmethods/deleteNotification.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/notificationsmethods/getNewNotifications.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/notificationsmethods/getNotificationsNumber.php");
 
 
 
@@ -418,6 +421,24 @@ try {
                         if ( $action == 'data' )
                         {
                             getAllNotifications($userid);
+                        }
+                        elseif ( $action == 'notifications-refresh' )
+                        {
+                            getNewNotifications($userid);
+                        }
+                        elseif ( $action == 'check' )
+                        {
+                            getNotificationsNumber($userid);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                    case "DELETE":
+                        if ( $action == 'delete' )
+                        {
+                            deleteNotification($userid, $object);
                         }
                         else
                         {

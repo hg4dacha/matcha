@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect, useContext, useMemo } from 'react';
+import React, { useState, Fragment, useEffect, useContext, useMemo, useRef, useCallback } from 'react';
 import { UserContext } from '../UserContext/UserContext';
 import Navbar from '../NavBar/NavBar';
 import NotificationAlert from './NotificationAlert';
@@ -25,9 +25,30 @@ const Notifications = () => {
     const [newNotifications, setNewNotifications] = useState(false);
     const newNotif = useMemo( () => ({newNotifications, setNewNotifications}), [newNotifications, setNewNotifications]);
     const [oldNotifications, setOldNotifications] = useState(false);
-    const [initialRequest, setInitialRequest] = useState(false)
+    const [initialRequest, setInitialRequest] = useState(false);
+
+    let requestTimeOut = useRef();
+
+    const getNewNotifications = useCallback( () => {
+
+        axios.get(`/notifications/notifications-refresh`)
+        .then( (response) => {
+            if(response.status === 200) {
+                if(response.data.length > 0) {
+                    newNotif.setNewNotifications(prevState =>
+                        [...prevState, ...response.data]
+                    );
+                }
+            }
+        })
+        .catch( () => {})
+
+    }, [newNotif])
+
 
     useEffect( () => {
+
+        document.title = 'Notifications - Matcha';
 
         if(!loading) {
 
@@ -43,12 +64,19 @@ const Notifications = () => {
                 .catch( () => {})
             }
 
-            document.title = 'Notifications - Matcha';
+            requestTimeOut.current = setInterval( () => {
+                getNewNotifications();
+            }, 5000);
 
             setInitialRequest(true);
+
+            return () => {
+                clearInterval(requestTimeOut.current);
+            }
+
         }
 
-    }, [loading, initialRequest, newNotif])
+    }, [loading, initialRequest, newNotif, getNewNotifications])
 
 
 

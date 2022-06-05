@@ -4,6 +4,7 @@ import { IoClose } from 'react-icons/io5';
 import { IoMdHeart, IoIosMail, IoMdHeartDislike } from 'react-icons/io';
 import { WiFire } from 'react-icons/wi';
 import { VscEye } from 'react-icons/vsc';
+import axios from 'axios';
 
 
 
@@ -28,13 +29,22 @@ const NotificationAlert = ({
 
     const onHideNotif = () => {
 
-        setHideNotif(true)
+        axios.delete(`/notifications/delete/${notificationId}`)
+        .then( (response) => {
+            if (response.status === 200)
+            {
+                setHideNotif(true);
+                deleteTimeOut = setTimeout( () => {
+                    setDeleteNotif(true);
+                    setNotificationList( (notificationList.filter( notification => notification.notificationId !== notificationId)) );
+                    successAlert();
+                }, 200)
+            }
+        })
+        .catch( () => {
+            errorAlert();
+        })
 
-        deleteTimeOut = setTimeout( () => {
-            setDeleteNotif(true);
-            setNotificationList( (notificationList.filter( notification => notification.notificationId !== notificationId)) );
-            successAlert();
-        }, 200)
     }
 
     useEffect( () => {
