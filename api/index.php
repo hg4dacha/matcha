@@ -49,6 +49,9 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/notificationsmethods/deleteN
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/notificationsmethods/getNewNotifications.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/notificationsmethods/getNotificationsNumber.php");
 
+// FAVORITES FUNCTIONS
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/favoritesmethods/getFavorites.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/favoritesmethods/deleteFavorite.php");
 
 
 
@@ -439,6 +442,32 @@ try {
                         if ( $action == 'delete' )
                         {
                             deleteNotification($userid, $object);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                }
+            }
+            else if ($request === 'favorites')
+            {
+                switch($method)
+                {
+                    case "GET":
+                        if ( $action == 'data' )
+                        {
+                            getFavorites($userid);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                    case "DELETE":
+                        if ( $action == 'delete' )
+                        {
+                            deleteFavorite($userid, $object);
                         }
                         else
                         {

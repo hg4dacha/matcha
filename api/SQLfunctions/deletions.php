@@ -179,4 +179,30 @@ function deleteHistory($currentUserid, $userid)
 
 
 
+
+
+// DELETE FAVORITE
+function deleteUserFavorite($currentUserid, $userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM likes WHERE liker = :currentUserid AND liked = :userid");
+        $reqDelete->bindValue(':currentUserid', $currentUserid, PDO::PARAM_INT);
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
 ?>

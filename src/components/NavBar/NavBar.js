@@ -27,26 +27,30 @@ const Navbar$ = () => {
     const [user, setUser] = value;
     const loading = load[0];
     const [dashboardData, setDashboardData] = useState(null);
-    // const dash = useMemo( () => ({dashboardData, setDashboardData}), [dashboardData, setDashboardData]);
     const [windowSize, setWindowSize] = useState(window.screen.width)
     const [notifNumber, setNotifNumber] = useState(null);
-    // const notif = useMemo( () => ({notifNumber, setNotifNumber}), [notifNumber, setNotifNumber]);
+    const notif = useMemo( () => ({notifNumber, setNotifNumber}), [notifNumber, setNotifNumber]);
     const [initialRequest, setInitialRequest] = useState(false);
 
 
-    // let requestTimeOut = useRef();
+    let requestTimeOut = useRef();
 
-    // const getnotificationsNumber = useCallback( () => {
+    const getnotificationsNumber = useCallback( () => {
 
-    //     axios.get(`/notifications/check`)
-    //     .then( (response) => {
-    //         if(response.status === 200) {
-    //             setNotifNumber(response.data);
-    //         }
-    //     })
-    //     .catch( () => {})
+        axios.get(`/notifications/check`)
+        .then( (response) => {
+            if(response.status === 200) {
+                if(window.location.pathname !== '/notifications') {
+                    notif.setNotifNumber(response.data);
+                }
+                else {
+                    notif.setNotifNumber(0);
+                }
+            }
+        })
+        .catch( () => {})
 
-    // }, [])
+    }, [notif])
 
 
     useEffect( () => {
@@ -64,13 +68,18 @@ const Navbar$ = () => {
                 setWindowSize(window.innerWidth);
             }
 
-            if(!initialRequest) {
+            if(window.location.pathname === '/notifications') {
+
+                notif.setNotifNumber(0);
+
+            }
+            else if(!initialRequest) {
 
                 axios.get('/notifications/check')
                 .then( (response) => {
                     if (response.status === 200)
                     {
-                        setNotifNumber(response.data);
+                        notif.setNotifNumber(response.data);
                     }
                 })
                 .catch( () => {
@@ -79,15 +88,20 @@ const Navbar$ = () => {
 
             }
 
+            requestTimeOut.current = setInterval( () => {
+                getnotificationsNumber();
+            }, 5000);
+
             setInitialRequest(true);
 
             return () => {
-                window.onresize = () => null
+                clearInterval(requestTimeOut.current);
+                window.onresize = () => null;
             }
             
         }
 
-    }, [loading, user, initialRequest])
+    }, [loading, user, initialRequest, getnotificationsNumber, notif])
 
 
 

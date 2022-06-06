@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Card from '../Card/Card';
 import { IoMdHeartDislike } from 'react-icons/io';
+import axios from 'axios';
 
 
 
@@ -24,12 +25,22 @@ const ProfileFavorite = ({ id, username, age, popularity, location, thumbnail, c
 
         const currentProfileID = e.currentTarget.id;
 
-        setHideProfile(true)
-        deleteTimeOut = setTimeout( () => {
-            setDeleteProfile(true);
-            setFavoriteProfiles( (favoriteProfiles.filter( profil => profil.id !== currentProfileID)) );
-            successAlert(currentProfileID);
-        } , 200)
+        axios.delete(`/favorites/delete/${id}`)
+        .then( (response) => {
+            if (response.status === 200)
+            {console.log(response.data);
+                setHideProfile(true)
+                deleteTimeOut = setTimeout( () => {
+                    setDeleteProfile(true);
+                    setFavoriteProfiles( (favoriteProfiles.filter( profil => profil.id !== currentProfileID)) );
+                    successAlert(currentProfileID);
+                } , 200)
+            }
+        })
+        .catch( () => {
+            errorAlert();
+        })
+
     }
 
     useEffect( () => {

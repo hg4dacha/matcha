@@ -1,12 +1,12 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useContext } from 'react';
+import { UserContext } from '../UserContext/UserContext';
 import Navbar from '../NavBar/NavBar';
 import ProfileFavorite from './ProfileFavorite';
 import AlertMsg from '../AlertMsg/AlertMsg';
 import { RiHeart3Line } from 'react-icons/ri';
 import { CgSmileSad } from 'react-icons/cg';
-
-import { USERS_LIST } from "../../other/USERS_LIST";
-const currentUserLocation = { latitude: 48.856614, longitude: 2.3522219 };
+import Spinner from 'react-bootstrap/Spinner';
+import axios from 'axios';
 
 
 
@@ -17,12 +17,35 @@ const currentUserLocation = { latitude: 48.856614, longitude: 2.3522219 };
 
 const Favorites = () => {
 
+
+    const { value, load } = useContext(UserContext);
+    const loading = load[0];
+    const [userLocation, setUserLocation] = useState({lat: '', lng: ''});
+
+
     useEffect( () => {
-        document.title = 'Favoris - Matcha'
-    }, [])
+
+        document.title = 'Favoris - Matcha';
+
+        if(!loading) {
+
+            setUserLocation({lat: value[0].user.lat, lng: value[0].user.lng});
+        
+            axios.get(`/favorites/data`)
+            .then( (response) => {
+                if (response.status === 200)
+                {
+                    setFavoriteProfiles(response.data);
+                }
+            })
+            .catch( () => {})
+
+        }
+
+    }, [loading, value])
 
 
-    const [favoriteProfiles, setFavoriteProfiles] = useState(USERS_LIST)
+    const [favoriteProfiles, setFavoriteProfiles] = useState(false)
 
 
 
@@ -41,7 +64,7 @@ const Favorites = () => {
     const successAlert = (id) => {
         handleNewAlert({id: id,
                         variant: "info",
-                        information: "Supprimé"})
+                        information: "J'aime retiré"})
     }
 
     const errorAlert = (id) => {
@@ -75,29 +98,34 @@ const Favorites = () => {
                     </div>
                 </div>
                 {
-                favoriteProfiles.length < 1 ?
-                <div className='notifications-empty'>
-                    <CgSmileSad className='historical-empty-logo' />
-                    Pas de profils favoris pour le moment
-                </div> :
-                favoriteProfiles.map( data => {
-                    return (
-                        <ProfileFavorite
-                            key={data.id}
-                            id={data.id}
-                            username={data.username}
-                            age={data.age}
-                            popularity={data.popularity}
-                            location={data.location}
-                            thumbnail={data.thumbnail}
-                            currentUserLocation={currentUserLocation}
-                            favoriteProfiles={favoriteProfiles}
-                            setFavoriteProfiles={setFavoriteProfiles}
-                            successAlert={successAlert}
-                            errorAlert={errorAlert}
-                        />
-                    )
-                })
+                    favoriteProfiles.length < 1 ?
+                    <div className='notifications-empty'>
+                        <CgSmileSad className='historical-empty-logo' />
+                        Pas de profils favoris pour le moment
+                    </div> :
+                    favoriteProfiles !== false ?
+                    favoriteProfiles.map( data => {
+                        return (
+                            <ProfileFavorite
+                                key={data.id}
+                                id={data.id}
+                                username={data.username}
+                                age={data.birthdate}
+                                popularity={data.popularity}
+                                location={{ latitude: data.lat, longitude: data.lng }}
+                                thumbnail={data.thumbnail}
+                                currentUserLocation={{ latitude: userLocation.lat, longitude: userLocation.lng }}
+                                favoriteProfiles={favoriteProfiles}
+                                setFavoriteProfiles={setFavoriteProfiles}
+                                successAlert={successAlert}
+                                errorAlert={errorAlert}
+                            />
+                        )
+                    }) :
+                    <div className='loading-cards'>
+                        <Spinner animation="border" variant="primary" className='loading-cards-spinner'/>
+                        Chargement...
+                    </div>
                 }
             </div>
         </Fragment>

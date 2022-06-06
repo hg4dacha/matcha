@@ -293,6 +293,37 @@ function getAllUSerNotifications($userid, $age)
 
 
 
+function getUserFavorites($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT likes.liked, pictures.profilePicture AS thumbnail, users.id, users.username,
+            users.birthdate, users.popularity, users.lat, users.lng
+            FROM likes
+            LEFT JOIN pictures ON likes.liked = pictures.userid
+            LEFT JOIN users ON likes.liked = users.id
+            WHERE likes.liker = :userid ORDER BY likes.id DESC"
+        );
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->fetchAll();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
 
 
 
