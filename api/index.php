@@ -53,6 +53,10 @@ require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/notificationsmethods/getNoti
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/favoritesmethods/getFavorites.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/favoritesmethods/deleteFavorite.php");
 
+// HISTORY FUNCTIONS
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/historymethods/getHistory.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/historymethods/deleteVisitHistory.php");
+
 
 
 
@@ -468,6 +472,32 @@ try {
                         if ( $action == 'delete' )
                         {
                             deleteFavorite($userid, $object);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                }
+            }
+            else if ($request === 'history')
+            {
+                switch($method)
+                {
+                    case "GET":
+                        if ( $action == 'data' )
+                        {
+                            getHistory($userid);
+                        }
+                        else
+                        {
+                            throw new Exception ("Requête invalide");
+                        }
+                    break;
+                    case "DELETE":
+                        if ( $action == 'delete' )
+                        {
+                            deleteVisitHistory($userid, $object);
                         }
                         else
                         {

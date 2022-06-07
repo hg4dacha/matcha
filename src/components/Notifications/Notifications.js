@@ -1,4 +1,5 @@
 import React, { useState, Fragment, useEffect, useContext, useMemo, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext/UserContext';
 import Navbar from '../NavBar/NavBar';
 import NotificationAlert from './NotificationAlert';
@@ -26,6 +27,7 @@ const Notifications = () => {
     const newNotif = useMemo( () => ({newNotifications, setNewNotifications}), [newNotifications, setNewNotifications]);
     const [oldNotifications, setOldNotifications] = useState(false);
     const [initialRequest, setInitialRequest] = useState(false);
+    const navigate = useNavigate();
 
     let requestTimeOut = useRef();
 
@@ -61,7 +63,11 @@ const Notifications = () => {
                         setOldNotifications(response.data.oldNotifications);
                     }
                 })
-                .catch( () => {})
+                .catch( (error) => {
+                    if(error.request.status === 401) {
+                        navigate("/signin");
+                    }
+                })
             }
 
             requestTimeOut.current = setInterval( () => {
@@ -76,7 +82,7 @@ const Notifications = () => {
 
         }
 
-    }, [loading, initialRequest, newNotif, getNewNotifications])
+    }, [loading, initialRequest, newNotif, getNewNotifications, navigate])
 
 
 

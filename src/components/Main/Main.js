@@ -37,12 +37,11 @@ const Main = () => {
 
         if(!loading) {
 
-            setUserLocation({lat: value[0].user.lat, lng: value[0].user.lng});
-
             axios.get('/users/users')
                 .then( (response) => {
                     if (response.status === 200)
                     {
+                        setUserLocation({lat: value[0].user.lat, lng: value[0].user.lng});
                         if(response.data.length === 0) {
                             setUsers([]);
                         }

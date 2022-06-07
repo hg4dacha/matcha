@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext/UserContext';
 import Navbar from '../NavBar/NavBar';
 import ProfileFavorite from './ProfileFavorite';
@@ -21,6 +22,7 @@ const Favorites = () => {
     const { value, load } = useContext(UserContext);
     const loading = load[0];
     const [userLocation, setUserLocation] = useState({lat: '', lng: ''});
+    const navigate = useNavigate();
 
 
     useEffect( () => {
@@ -28,21 +30,24 @@ const Favorites = () => {
         document.title = 'Favoris - Matcha';
 
         if(!loading) {
-
-            setUserLocation({lat: value[0].user.lat, lng: value[0].user.lng});
         
             axios.get(`/favorites/data`)
             .then( (response) => {
                 if (response.status === 200)
                 {
+                    setUserLocation({lat: value[0].user.lat, lng: value[0].user.lng});
                     setFavoriteProfiles(response.data);
                 }
             })
-            .catch( () => {})
+            .catch( (error) => {
+                if(error.request.status === 401) {
+                    navigate("/signin");
+                }
+            })
 
         }
 
-    }, [loading, value])
+    }, [loading, value, navigate])
 
 
     const [favoriteProfiles, setFavoriteProfiles] = useState(false)

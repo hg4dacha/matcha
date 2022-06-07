@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Navbar from '../NavBar/NavBar';
 import BlockedProfile from './BlockedProfile';
@@ -21,6 +21,7 @@ const MemberProfile = () => {
     const loading = load[0];
 
     const params = useParams();
+    const navigate = useNavigate();
 
     // PROFILE DISPLAY ↓↓↓
     const [profileStatus, setProfileStatus] = useState('')
@@ -35,22 +36,24 @@ const MemberProfile = () => {
 
             if(!loading) {
 
-            document.title = 'Profil membre - Matcha';
+                document.title = 'Profil membre - Matcha';
 
-            axios.get(`/users/status/${params.userid}`)
-            .then( (response) => {
-                if (response.status === 200)
-                {
-                    setProfileStatus(response.data.toString());
-                }
-            })
-            .catch( () => {
-
-            })
+                axios.get(`/users/status/${params.userid}`)
+                .then( (response) => {
+                    if (response.status === 200)
+                    {
+                        setProfileStatus(response.data.toString());
+                    }
+                })
+                .catch( (error) => {
+                    if(error.request.status === 401) {
+                        navigate("/signin");
+                    }
+                })
 
         }
 
-    }, [loading, params])
+    }, [loading, params, navigate])
     
 
     useEffect( () => {
