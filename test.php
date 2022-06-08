@@ -8,14 +8,15 @@
 require_once($_SERVER['DOCUMENT_ROOT']."/matcha/api/configuration/database.php");
 
 
-function markMessagesAsViewed($msgId)
+function deleteAccountLikes($userid)
 {
     $dbc = db_connex();
     try
     {
-        $reqUpdate = $dbc->prepare("UPDATE messages SET messageViewed = 1 WHERE id = :msgId");
-        $reqUpdate->bindValue(':msgId', $msgId, PDO::PARAM_INT);
-        $reqUpdate->execute();
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM likes WHERE liker = :userid OR liked = :userid");
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->execute();
     }
     catch(PDOException $e)
     {
@@ -27,7 +28,7 @@ function markMessagesAsViewed($msgId)
     }
 }
 
-markMessagesAsViewed(16);
+// deleteAccountLikes(498);
 
 
 

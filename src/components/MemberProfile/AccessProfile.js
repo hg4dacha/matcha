@@ -155,8 +155,8 @@ const AccessProfile = (props) => {
                 props.onLike()
             }
         })
-        .catch( () => {
-
+        .catch( (error) => {
+            props.errorAlert();
         })
     }
 
@@ -169,8 +169,8 @@ const AccessProfile = (props) => {
                 props.onDislike()
             }
         })
-        .catch( () => {
-
+        .catch( (error) => {
+            props.errorAlert();
         })
     }
 
@@ -241,6 +241,7 @@ const AccessProfile = (props) => {
                     onChatChange={blurFunc}
                     onDeleteDiscussion={displayConfirmWindow}
                     onDeleteDiscussionConfirmation={props.onDeleteDiscussionConfirmation}
+                    errorAlert={props.errorAlert}
                 />
             }
             <div className={`profile-description ${chatState ? 'profile-blurring' : ''}`}>

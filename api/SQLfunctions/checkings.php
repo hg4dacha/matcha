@@ -307,4 +307,31 @@ function checkNotificationDeletionRights($userid, $notificationId)
 
 
 
+
+
+// CHECK HISTORY
+function checkHistory($userid, $profileid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT id FROM history WHERE visitor = :userid AND profileVisited = :profileid");
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->bindValue(':profileid', $profileid, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->rowCount();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
 ?>

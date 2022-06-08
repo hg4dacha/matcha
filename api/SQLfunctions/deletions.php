@@ -52,6 +52,56 @@ function deleteUserPictures($userid)
 
 
 
+// DELETE ACCOUNT MESSAGES
+function deleteAccountMessages($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM messages WHERE triggerID = :userid OR receiverID = :userid");
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// DELETE ACCOUNT LIKES
+function deleteAccountLikes($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM likes WHERE liker = :userid OR liked = :userid");
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
 // DELETE LIKE
 function deleteExistingLike($currentUserid, $userid)
 {

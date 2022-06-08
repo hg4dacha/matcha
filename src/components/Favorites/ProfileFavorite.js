@@ -23,17 +23,15 @@ const ProfileFavorite = ({ id, username, age, popularity, location, thumbnail, c
 
     const handleDeleteProfil = e => {
 
-        const currentProfileID = e.currentTarget.id;
-
         axios.delete(`/favorites/delete/${id}`)
         .then( (response) => {
             if (response.status === 200)
-            {console.log(response.data);
+            {
                 setHideProfile(true)
                 deleteTimeOut = setTimeout( () => {
                     setDeleteProfile(true);
-                    setFavoriteProfiles( (favoriteProfiles.filter( profil => profil.id !== currentProfileID)) );
-                    successAlert(currentProfileID);
+                    setFavoriteProfiles( (favoriteProfiles.filter( profil => profil.id !== id)) );
+                    successAlert(id);
                 } , 200)
             }
         })

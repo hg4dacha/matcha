@@ -324,6 +324,37 @@ function getUserFavorites($userid)
 
 
 
+function getUserHistory($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqSelect = $dbc->prepare(
+            "SELECT history.profileVisited, history.visitDate, pictures.profilePicture AS thumbnail, users.id, users.username,
+            users.birthdate, users.popularity, users.lat, users.lng
+            FROM history
+            LEFT JOIN pictures ON history.profileVisited = pictures.userid
+            LEFT JOIN users ON history.profileVisited = users.id
+            WHERE history.visitor = :userid ORDER BY history.visitDate DESC"
+        );
+        $reqSelect->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqSelect->execute();
+        return $reqSelect->fetchAll();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
 
 
 

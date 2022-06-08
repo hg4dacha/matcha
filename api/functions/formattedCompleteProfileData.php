@@ -323,7 +323,9 @@ function accountDeletionTreatment($password, $userid)
 
         deleteUser($userid);
         deleteUserPictures($userid);
-        //delete notif and other tables...
+        // A TESTER
+        deleteAccountMessages($userid);
+        deleteAccountLikes($userid);
 
         if(isset($_COOKIE['REFRESH_TOKEN']) && !empty($_COOKIE['REFRESH_TOKEN'])) {
             unset($_COOKIE['REFRESH_TOKEN']);

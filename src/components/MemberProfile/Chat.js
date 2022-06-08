@@ -132,7 +132,9 @@ const Chat = (props) => {
                     scrollChat.scrollTop = scrollChat.scrollHeight;
                 }
             })
-            .catch( () => {})
+            .catch( (error) => {
+                props.errorAlert();
+            })
         }
     }
     

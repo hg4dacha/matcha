@@ -82,6 +82,7 @@ const MemberProfile = () => {
                     onReportConfirmation={reportConfirmation}
                     onDeleteDiscussionConfirmation={deleteDiscussionConfirmation}
                     onCurrentUserBlocked={currentUserBlocked}
+                    errorAlert={errorAlert}
                 />
             )
         }
@@ -134,7 +135,9 @@ const MemberProfile = () => {
                 });
             }
         })
-        .catch( () => {})
+        .catch( (error) => {
+            errorAlert();
+        })
     }
 
     const reportConfirmation = () => {
@@ -170,6 +173,13 @@ const MemberProfile = () => {
         handleNewAlert({
             variant: "success",
             information: "Vous avez été débloqué par l'utilisateur."
+        });
+    }
+
+    const errorAlert = () => {
+        handleNewAlert({
+            variant: "error",
+            information: "Oups ! Erreur..."
         });
     }
 
