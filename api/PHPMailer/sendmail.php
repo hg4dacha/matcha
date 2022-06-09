@@ -19,7 +19,7 @@ function sendmail($mailadress, $subject, $body, $link, $linktext)
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'camagru042@gmail.com';
-        $mail->Password   = '********************';
+        $mail->Password   = 'puzkrwbzuglpdzed';
         $mail->SMTPSecure = 'ssl';
         $mail->Port       = 465;
         $mail->setFrom('ne_pas_repondre@matcha.com', 'Matcha Administrator');

@@ -108,13 +108,16 @@ const AccessProfile = (props) => {
                     setUserTags(
                         JSON.parse(response.data.tags)
                     );
-                    setUserPhotos([
-                        response.data.profilePicture,
-                        response.data.secondPicture,
-                        response.data.thirdPicture,
-                        response.data.fourthPicture,
-                        response.data.fifthPicture
-                    ]);
+                    response.data.profilePicture &&
+                    setUserPhotos(prevState => [...prevState, response.data.profilePicture]);
+                    response.data.secondPicture &&
+                    setUserPhotos(prevState => [...prevState, response.data.secondPicture]);
+                    response.data.thirdPicture &&
+                    setUserPhotos(prevState => [...prevState, response.data.thirdPicture]);
+                    response.data.fourthPicture &&
+                    setUserPhotos(prevState => [...prevState, response.data.fourthPicture]);
+                    response.data.fifthPicture &&
+                    setUserPhotos(prevState => [...prevState, response.data.fifthPicture]);
                     setLike(response.data.profileLiked);
                 }
             })
@@ -281,7 +284,8 @@ const AccessProfile = (props) => {
                                 <RiUser3Line className='user-infos-icons'/>{`${info.userPersonalInfo.lastname} ${info.userPersonalInfo.firstname}`}
                             </div>
                             <div className='alignment'>
-                                <FiCalendar className='user-infos-icons'/>{`${differenceInYears(new Date(), new Date(info.userPersonalInfo.birthdate))} ans`}
+                                <FiCalendar className='user-infos-icons'/>
+                                {info.userPersonalInfo.birthdate && `${differenceInYears(new Date(), new Date(info.userPersonalInfo.birthdate))} ans`}
                             </div>
                             <div className='alignment'>
                                 <GiPositionMarker className='user-infos-icons'/>{`${info.userPersonalInfo.locationUser.city}, ${info.userPersonalInfo.locationUser.state} (${info.userPersonalInfo.locationUser.country})`}

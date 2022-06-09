@@ -102,6 +102,81 @@ function deleteAccountLikes($userid)
 
 
 
+// DELETE ACCOUNT BLOCKED
+function deleteAccountBlocked($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM blocked WHERE blocker = :userid OR blocked = :userid");
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// DELETE ACCOUNT NOTIFICATIONS
+function deleteAccountNotifications($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM notifications WHERE triggerID = :userid OR receiverID = :userid");
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
+// DELETE ACCOUNT HISTORY
+function deleteAccountHistory($userid)
+{
+    $dbc = db_connex();
+    try
+    {
+        $reqDelete = $dbc->prepare(
+            "DELETE FROM history WHERE visitor = :userid OR profileVisited = :userid");
+        $reqDelete->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $reqDelete->execute();
+    }
+    catch(PDOException $e)
+    {
+        $error = [
+            "error" => $e->getMessage(),
+            "code" => $e->getCode()
+        ];
+        return ($error);
+    }
+}
+
+
+
+
+
 // DELETE LIKE
 function deleteExistingLike($currentUserid, $userid)
 {
