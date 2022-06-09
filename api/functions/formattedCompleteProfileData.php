@@ -314,6 +314,13 @@ function accountDeletionTreatment($password, $userid)
 
     if(password_verify($password, $passwordDatabase[0]))
     {
+        $allUserPictures = getAllUserPictures($userid);
+        deletePictureFromFolder($allUserPictures['profilePicture']);
+        deletePictureFromFolder($allUserPictures['secondPicture']);
+        deletePictureFromFolder($allUserPictures['thirdPicture']);
+        deletePictureFromFolder($allUserPictures['fourthPicture']);
+        deletePictureFromFolder($allUserPictures['fifthPicture']);
+
         deleteUser($userid);
         deleteUserPictures($userid);
         deleteAccountMessages($userid);
@@ -321,13 +328,6 @@ function accountDeletionTreatment($password, $userid)
         deleteAccountBlocked($userid);
         deleteAccountNotifications($userid);
         deleteAccountHistory($userid);
-
-        $allUserPictures = getAllUserPictures($userid);
-        deletePictureFromFolder($allUserPictures['profilePicture']);
-        deletePictureFromFolder($allUserPictures['secondPicture']);
-        deletePictureFromFolder($allUserPictures['thirdPicture']);
-        deletePictureFromFolder($allUserPictures['fourthPicture']);
-        deletePictureFromFolder($allUserPictures['fifthPicture']);
 
         if(isset($_COOKIE['REFRESH_TOKEN']) && !empty($_COOKIE['REFRESH_TOKEN'])) {
             unset($_COOKIE['REFRESH_TOKEN']);
