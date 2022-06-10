@@ -49,6 +49,9 @@ const MemberProfile = () => {
                     if(error.request.status === 401) {
                         navigate("/signin");
                     }
+                    else {
+                        navigate("/notfound");
+                    }
                 })
 
         }

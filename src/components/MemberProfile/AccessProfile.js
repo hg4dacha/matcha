@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useRef, useCallback, useContext, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext/UserContext';
 import { v4 as uuidv4 } from 'uuid';
 import ConfirmWindow from '../ConfirmWindow/ConfirmWindow';
@@ -29,6 +29,7 @@ const AccessProfile = (props) => {
 
     const { value } = useContext(UserContext);
     const user = value[0];
+    const navigate = useNavigate();
 
     const [userPersonalInfo, setUserPersonalInfo] = useState({
         username: '',
@@ -76,9 +77,11 @@ const AccessProfile = (props) => {
                 }
             }
         })
-        .catch( () => {})
+        .catch( (error) => {
+            navigate("/users");
+        })
 
-    }, [currentUserBlocked, params.userid, info])
+    }, [currentUserBlocked, params.userid, info, navigate])
 
 
     useEffect( () => {
@@ -121,7 +124,9 @@ const AccessProfile = (props) => {
                     setLike(response.data.profileLiked);
                 }
             })
-            .catch( () => {})
+            .catch( (error) => {
+                navigate("/notfound");
+            })
 
             setPictureSize(document.querySelector('.profile-description').offsetHeight);
 
@@ -142,7 +147,7 @@ const AccessProfile = (props) => {
             clearInterval(requestTimeOut.current);
         }
 
-    }, [params.userid, getDisplayData, info, initialRequest])
+    }, [params.userid, getDisplayData, info, initialRequest, navigate])
 
 
 

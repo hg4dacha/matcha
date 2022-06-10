@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ConfirmWindow from '../ConfirmWindow/ConfirmWindow';
 import Button from 'react-bootstrap/Button'
 import { BiLockOpenAlt } from "react-icons/bi";
@@ -13,6 +13,7 @@ import axios from 'axios';
 const BlockedProfile = (props) => {
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const [userData, setUserData] = useState({
         username: '',
@@ -32,9 +33,11 @@ const BlockedProfile = (props) => {
                 });
             }
         })
-        .catch( () => {})
+        .catch( (error) => {
+            navigate("/notfound");
+        })
 
-    }, [params.userid])
+    }, [params.userid, navigate])
 
 
     const unblockProfile = () => {

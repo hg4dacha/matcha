@@ -97,6 +97,7 @@ const Navbar$ = () => {
             return () => {
                 clearInterval(requestTimeOut.current);
                 window.onresize = () => null;
+                setDashboardData(null);
             }
             
         }

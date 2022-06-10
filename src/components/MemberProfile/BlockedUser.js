@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button'
 import { IoReturnUpBack } from "react-icons/io5";
 import axios from 'axios';
@@ -12,6 +12,7 @@ const BlockedUser = (props) => {
     
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const [userData, setUserData] = useState({
         username: '',
@@ -33,9 +34,11 @@ const BlockedUser = (props) => {
                 }
             }
         })
-        .catch( () => {})
+        .catch( (error) => {
+            navigate("/users");
+        })
 
-    }, [currentUserDeblocked, params.userid])
+    }, [currentUserDeblocked, params.userid, navigate])
 
 
     useEffect( () => {
@@ -50,7 +53,9 @@ const BlockedUser = (props) => {
                 });
             }
         })
-        .catch( () => {})
+        .catch( (error) => {
+            navigate("/notfound");
+        })
 
         requestTimeOut.current = setInterval( () => {
             getDisplayData();
@@ -60,7 +65,7 @@ const BlockedUser = (props) => {
             clearInterval(requestTimeOut.current);
         }
 
-    }, [params.userid, getDisplayData])
+    }, [params.userid, getDisplayData, navigate])
 
 
     const previousPage = () => {
