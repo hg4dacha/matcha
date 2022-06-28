@@ -333,8 +333,8 @@ function checkLocation($userLocation)
             }
         
             if (isset($decoded['address']['city'])) { $reqCity = $decoded['address']['city']; }
-            else if (isset($decoded['address']['city_district'])) { $reqCity = $decoded['address']['city']; }
-            else if (isset($decoded['address']['town'])) { $reqCity = $decoded['address']['city']; }
+            else if (isset($decoded['address']['city_district'])) { $reqCity = $decoded['address']['city_district']; }
+            else if (isset($decoded['address']['town'])) { $reqCity = $decoded['address']['town']; }
             $reqState = $decoded['address']['state'];
             $reqCountry = $decoded['address']['country'];
 

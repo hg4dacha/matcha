@@ -188,7 +188,6 @@ function completeUserData($data, $userid)
                     'httponly' => true,
                     'samesite' => 'Lax'
                 );
-                // setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, time() + 60 * 60 * 24 * 30, '/', NULL, false, true);
                 setcookie('REFRESH_TOKEN', $REFRESH_TOKEN, $arr_cookie_options);
                 http_response_code(200);
             }
