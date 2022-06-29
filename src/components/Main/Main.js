@@ -5,9 +5,9 @@ import Card from '../Card/Card';
 import { UserContext } from '../UserContext/UserContext';
 import { IoClose, IoOptions, IoCalendarClear } from 'react-icons/io5';
 import { AiFillStar } from 'react-icons/ai';
-import { HiOutlineEmojiSad } from 'react-icons/hi';
 import { FaSlackHash, FaMapMarkedAlt } from "react-icons/fa";
 import Spinner from 'react-bootstrap/Spinner';
+import noResult from '../../images/no-result.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -196,8 +196,8 @@ const Main = () => {
                     <IoOptions className='filter-logo' />}
                 </button>
             </div>
-            <div className='main-container'>
-                {   users.length === 0 ? <div className='no-result'><HiOutlineEmojiSad className='no-result-icon' />Aucun résultat</div> :
+            <div className={`main-container ${offcanvasVisibility && 'blur'}`}>
+                {   users.length === 0 ? <div className='no-result'><img src={noResult} alt='no-result-icon' className='no-result-icon' />Aucun résultat</div> :
                     users !== false ?
                     users.map( data => {
                         return (

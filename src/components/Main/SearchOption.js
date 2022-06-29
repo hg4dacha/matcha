@@ -62,7 +62,7 @@ const SearchOption = ({
             <div className='range-filter-container'>
             <div
                 className='slider-track'
-                style={{background:`linear-gradient(to right, #d5d5d5 ${sliderTrackBg.minPercentage}%, #008176 ${sliderTrackBg.minPercentage}%, #008176 ${sliderTrackBg.maxPercentage}%, #d5d5d5 ${sliderTrackBg.maxPercentage}%`}}
+                style={{background:`linear-gradient(to right, #d5d5d5 ${sliderTrackBg.minPercentage}%, #b2bec3 ${sliderTrackBg.minPercentage}%, #b2bec3 ${sliderTrackBg.maxPercentage}%, #d5d5d5 ${sliderTrackBg.maxPercentage}%`}}
             ></div>
             <input
                 type="range"
