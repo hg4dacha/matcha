@@ -94,6 +94,7 @@ const Main = () => {
 
     const handleImplementingOptions = () => {
 
+        setOffcanvasVisibility(false);
         setUsers(false);
 
         axios.get(`/users/filter/options?minAge=${ageRange.minimumValue}&maxAge=${ageRange.maximumValue}&minPop=${popularityRange.minimumValue}&maxPop=${popularityRange.maximumValue}&minGap=${gapRange.minimumValue}&maxGap=${gapRange.maximumValue}&minTag=${tagsRange.minimumValue}&maxTag=${tagsRange.maximumValue}`)
@@ -111,6 +112,7 @@ const Main = () => {
         .catch( () => {
             setUsers([]);
         })
+
     }
 
 
