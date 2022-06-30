@@ -116,47 +116,47 @@ const Navbar$ = () => {
                 <Nav className="mr-auto">
                     {windowSize > 950 ?
                     <Fragment>
-                        <NavLink to="/users" className='nav-link'>
+                        <NavLink to="/users" className={(navData) => navData.isActive && window.location.pathname === '/users' ? 'nav-link actived' : 'nav-link'}>
                             <CgHome size={14} className='iconsNavbar'/>
                             Acceuil
                         </NavLink>
-                        <NavLink to="/notifications" className='nav-link'>
+                        <NavLink to="/notifications" className={(navData) => navData.isActive ? 'nav-link actived' : 'nav-link'}>
                             <IoNotificationsOutline size={16} className='iconsNavbar'/>
                             Notifications
                             {notifNumber !== null && <span className={`nb-notifications ${notifNumber > 0 ? "notifs-true" : "notifs-false"}`}>{notifNumber}</span>}
                         </NavLink>
-                        <NavLink to="/favorites" className='nav-link'>
+                        <NavLink to="/favorites" className={(navData) => navData.isActive ? 'nav-link actived' : 'nav-link'}>
                             <RiHeart3Line size={16} className='iconsNavbar'/>
                             Favoris
                         </NavLink>
-                        <NavLink to="/history" className='nav-link'>
+                        <NavLink to="/history" className={(navData) => navData.isActive ? 'nav-link actived' : 'nav-link'}>
                             <RiHistoryFill size={16} className='iconsNavbar'/>
                             Historique
                         </NavLink>
-                        <NavLink to="/profile" className='nav-link'>
+                        <NavLink to="/profile" className={(navData) => navData.isActive ? 'nav-link actived' : 'nav-link'}>
                             <RiUser3Line size={16} className='iconsNavbar'/>
                             Profil
                         </NavLink>
                     </Fragment>
                     :
                     <NavDropdown title={<BiMenu className='dropdown-small-width-logo'/>} id="basic-nav-dropdown" className='dropdown-small-width'>
-                        <NavLink to="/users" className='nav-link-small-width'>
+                        <NavLink to="/users" className={(navData) => navData.isActive && window.location.pathname === '/users' ? 'nav-link-small-width actived' : 'nav-link-small-width'}>
                             <CgHome size={14} className='iconsNavbar'/>
                             Acceuil
                         </NavLink>
-                        <NavLink to="/notifications" className='nav-link-small-width'>
+                        <NavLink to="/notifications" className={(navData) => navData.isActive ? 'nav-link-small-width actived' : 'nav-link-small-width'}>
                             <IoNotificationsOutline size={16} className='iconsNavbar'/>
                             Notifications
                         </NavLink>
-                        <NavLink to="/favorites" className='nav-link-small-width'>
+                        <NavLink to="/favorites" className={(navData) => navData.isActive ? 'nav-link-small-width actived' : 'nav-link-small-width'}>
                             <RiHeart3Line size={16} className='iconsNavbar'/>
                             Favoris
                         </NavLink>
-                        <NavLink to="/history" className='nav-link-small-width'>
+                        <NavLink to="/history" className={(navData) => navData.isActive ? 'nav-link-small-width actived' : 'nav-link-small-width'}>
                             <RiHistoryFill size={16} className='iconsNavbar'/>
                             Historique
                         </NavLink>
-                        <NavLink to="/profile" className='nav-link-small-width'>
+                        <NavLink to="/profile" className={(navData) => navData.isActive ? 'nav-link-small-width actived' : 'nav-link-small-width'}>
                             <RiUser3Line size={16} className='iconsNavbar'/>
                             Profil
                         </NavLink>
