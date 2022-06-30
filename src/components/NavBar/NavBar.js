@@ -118,7 +118,7 @@ const Navbar$ = () => {
                     <Fragment>
                         <NavLink to="/users" className={(navData) => navData.isActive && window.location.pathname === '/users' ? 'nav-link actived' : 'nav-link'}>
                             <CgHome size={14} className='iconsNavbar'/>
-                            Acceuil
+                            Accueil
                         </NavLink>
                         <NavLink to="/notifications" className={(navData) => navData.isActive ? 'nav-link actived' : 'nav-link'}>
                             <IoNotificationsOutline size={16} className='iconsNavbar'/>
